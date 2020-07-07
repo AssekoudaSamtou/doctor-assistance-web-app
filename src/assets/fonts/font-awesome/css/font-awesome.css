@@ -6,10 +6,10 @@
  * -------------------------- */
 @font-face {
   font-family: 'FontAwesome';
-  src: url('https://mashfa.netlify.app/assets/fonts/font-awesome/fonts/fontawesome-webfont.eot?v=4.2.0');
-  src: url('https://mashfa.netlify.app/assets/fonts/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), 
-  url('https://mashfa.netlify.app/assets/fonts/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0') format('woff'), 
-  url('https://mashfa.netlify.app/assets/fonts/font-awesome/fonts/fontawesome-webfont.ttf?v=4.2.0') format('truetype');
+  src: url('../../../../assets/fonts/font-awesome/fonts/fontawesome-webfont.eot?v=4.2.0');
+  src: url('/assets/fonts/font-awesome/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), 
+  url('/assets/fonts/font-awesome/fonts/fontawesome-webfont.woff?v=4.2.0') format('woff'), 
+  url('/assets/fonts/font-awesome/fonts/fontawesome-webfont.ttf?v=4.2.0') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
