@@ -1,31 +1,14 @@
 import React from 'react';
 
-// import Col from 'react-bootstrap/Col';
-// import Image from 'react-bootstrap/Image';
-
-import '../../assets/plugins/pace/pace-theme-flash.css';
-import '../../assets/plugins/bootstrap/css/bootstrap.min.css';
-import '../../assets/plugins/bootstrap/css/bootstrap-theme.min.css';
-// import '../../assets/fonts/font-awesome/css/font-awesome.css';
-import 'font-awesome/css/font-awesome.css';
-import '../../assets/fonts/webfont/cryptocoins.css';
-import '../../assets/css/animate.min.css';
-import '../../assets/plugins/perfect-scrollbar/perfect-scrollbar.css';
-
-import '../../assets/plugins/jvectormap/jquery-jvectormap-2.0.1.css';
-import '../../assets/plugins/morris-chart/css/morris.css';
-import '../../assets/plugins/calendar/fullcalendar.css';
-import '../../assets/plugins/icheck/skins/minimal/minimal.css';
-
-import '../../assets/css/style.css';
-import '../../assets/css/responsive.css';
-
 import Avatar1 from '../../data/profile/avatar-1.png'
 import Avatar2 from '../../data/profile/avatar-2.png'
 import Avatar3 from '../../data/profile/avatar-3.png'
 import Avatar4 from '../../data/profile/avatar-4.png'
 import Avatar5 from '../../data/profile/avatar-5.png'
 import Profile from '../../data/profile/profile.jpg'
+
+import TopnavItem from './topnavItem/TopnavItem';
+import TopNavSearchForm from './topnavSearchForm/TopNavSearchForm';
 
 const TopBar = () => (
     <div className="page-topbar gradient-blue1">
@@ -35,39 +18,21 @@ const TopBar = () => (
         <div className="quick-area">
             <div className="pull-left">
                 <ul className="info-menu left-links list-inline list-unstyled">
+                    
                     <li className="sidebar-toggle-wrap">
                         <a href="#" data-toggle="sidebar" className="sidebar_toggle">
                             <i className="fa fa-bars"></i>
                         </a>
                     </li>
-                    <li className="topnav-item item1">
-                        <a href="#" className="new-link w-text">Schedule
-                          <span className="badge badge-primary ml-5">New</span>
-                        </a>
-                    </li>
-                    <li className="topnav-item active item2">
-                        <a href="#" className="nav-link w-text">
-                          <i className="fa fa-area-chart mr-10"></i>Reports
-                        </a>
-                    </li>
-                    <li className="topnav-item item3">
-                        <a href="#" className="nav-link w-text">
-                          <i className="fa fa-sitemap mr-10"></i>Trading
-                        </a>
-                    </li>
-                
+
+                    <TopnavItem label="Schedule" icon="fa-user" isActive={false}/>
+
+                    <TopnavItem label="Reports" icon="fa-area-chart" isActive={true}/>
+
+                    <TopnavItem label="Trading" icon="fa-sitemap" isActive={false}/>
                     
-                    <li className="hidden-sm hidden-xs searchform showopacity">
-                        <form action="#" method="post">
-                            <div className="input-group">
-                                <span className="input-group-addon">
-                                <i className="fa fa-search"></i>
-                            </span>
-                                <input type="text" className="form-control animated fadeIn" placeholder="Search &amp; Enter"/>
-                            </div>
-                            <input type="submit" value=""/>
-                        </form>
-                    </li>
+                    <TopNavSearchForm/>
+
                 </ul>
             </div>
             <div className="pull-right">
@@ -80,9 +45,9 @@ const TopBar = () => (
                         <ul className="dropdown-menu notifications animated fadeIn">
                             <li className="total">
                                 <span className="small">
-                                You have <strong>3</strong> new notifications.
-                                <a href="javascript:;" className="pull-right">Mark all as Read</a>
-                            </span>
+                                    You have <strong>3</strong> new notifications.
+                                    <a href="javascript:;" className="pull-right">Mark all as Read</a>
+                                </span>
                             </li>
                             <li className="list ps-container">
 
