@@ -4,36 +4,53 @@ import FormBoxHeader from './FormBoxHeader';
 import FormBoxItem from './FormBoxItem';
 import FormBoxFooter from './FormBoxFooter';
 
-const FormBox = ({box}) => (
-    <div className="col-lg-10 col-lg-offset-1 col-xs-12">
-        <section className="box">
-            
-            <FormBoxHeader title={box.headerTitle} />
+class FormBox extends React.Component {
 
-            <div className="content-body">
-                <div className="row">
-                    <div className="col-xs-12">
-                        <form action="#" method="post">
-                            { box.fields.map(({type, label, description, selectOptions}) => 
-                                <FormBoxItem type={type} label={label} description={description} selectOptions={selectOptions} />
-                            )}
-                            {/* <FormBoxItem type="text" label="Name" />
+    constructor(props) {
+        super(props);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSaveBtnTapped = this.handleSaveBtnTapped.bind(this);
+    }
 
-                            <FormBoxItem type="date" label="Date of Birth" description='e.g. "04/03/2018"' />
-                            
-                            <FormBoxItem type="select" label="Gender" selectOptions={mySelectOptions} />
-                            
-                            <FormBoxItem type="file" label="Profile Image" />
-                            
-                            <FormBoxItem type="text" label="Name" /> */}
+    handleInputChange(e) {
+        this.props.onInputChange(e);
+    }
+    handleSaveBtnTapped() {
+        this.props.onSaveBtnTapped();
+    }
 
-                            <FormBoxFooter/>
-                        </form>
+    render() {
+        return (
+            <div className="col-lg-10 col-lg-offset-1 col-xs-12">
+                <section className="box">
+                    
+                    <FormBoxHeader title={this.props.box.headerTitle} />
+        
+                    <div className="content-body">
+                        <div className="row">
+                            <div className="col-xs-12">
+                                <form action="#" method="post">
+                                    
+                                    { this.props.box.fields.map(({type, label, description, selectOptions, name, value}) =>
+                                        <FormBoxItem 
+                                            type={type} 
+                                            label={label} 
+                                            description={description} 
+                                            selectOptions={selectOptions} 
+                                            onInputChange={this.handleInputChange}
+                                            name={name}
+                                            value={value} />
+                                    )}
+        
+                                    <FormBoxFooter onSaveBtnTapped={this.handleSaveBtnTapped} />
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </section>
             </div>
-        </section>
-    </div>
-)
+        );
+    }
+} 
 
 export default FormBox;
