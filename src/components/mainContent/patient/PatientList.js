@@ -2,18 +2,41 @@ import React from 'react';
 
 import PageTitle from '../../card/PageTitle';
 import PatientItem from './PatientItem';
+import PatientDataService from "../../../services/patient.service";
 
 
 class PatientList extends React.Component {
-    render() {
-        const patients = this.props.patients;
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            patients: [],
+        }
+    }
+
+    componentWillMount() {
+        
+        console.log("WillMount");
+        PatientDataService.getAll()
+        .then(response => {
+            console.log(response.data.results);
+            this.setState({patients: response.data.results});
+        }).catch(e => {
+            console.log(e);
+        });
+    }
+
+    render() {
         return (
             <div>
                 <PageTitle title="Tous Les Patients" />
                 
-                {patients.map((patient) => 
-                    <PatientItem fullname={patient.fullname} gender={patient.gender} age={patient.age} key={patient.id}/>
+                {this.state.patients.map(({nom, prenom, genre="Masculin", age=21, id, adresse}) => 
+                    <PatientItem 
+                        fullname={`${nom} ${prenom}`} 
+                        gender={genre} 
+                        age={age} 
+                        key={id}/>
                 )}
             </div>
         )

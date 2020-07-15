@@ -1,44 +1,71 @@
 import React from 'react';
 
-const FormBoxItem = ({type, label, description, selectOptions}) => (
+class FormBoxItem extends React.Component{
 
-    <div className="form-group">
-        <label className="form-label">{label}</label>
-        <span className="desc">{description} </span>
+    constructor(props) {
+        super(props);
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    handleInputChange(e) {
+        this.props.onInputChange(e);
+    }
+
+    render() {
+        return (
+            <div className="form-group">
+                <label className="form-label">{this.props.label}</label>
+                <span className="desc">{this.props.description} </span>
+                
+                {this.props.type === "select" && 
+                    <select 
+                        className="form-control" 
+                        onChange={this.handleInputChange} 
+                        name={this.props.name} value={this.props.value} >
+                        {this.props.selectOptions.map((option) => (
+                            <option key={option.id} value={option.id}>{option.label}</option>
+                        ))}
+                    </select>
+                }
         
-        {type === "select" && 
-            <select className="form-control">
-                {selectOptions.map((option) => (
-                    <option key={option.id} value={option.id}>{option.label}</option>
-                ))}
-            </select>
-        }
-
-        {type === "textarea" && 
-            <div className="controls">
-                <textarea className="form-control autogrow" cols="5" style={{overflow: 'hidden', overflowWrap: 'break-word', resize: 'horizontal', height: 54+'px',}}></textarea>
+                {this.props.type === "textarea" && 
+                    <div className="controls">
+                        <textarea name={this.props.name} value={this.props.value}
+                            className="form-control autogrow" cols="5" 
+                            style={{overflow: 'hidden', overflowWrap: 'break-word', resize: 'horizontal', height: 54+'px',}}
+                            onChange={this.handleInputChange} >
+        
+                        </textarea>
+                    </div>
+                }
+        
+                {this.props.type === "date" && 
+                    <div className="controls">
+                        <input type="text" name={this.props.name} value={this.props.value} className="form-control" onChange={this.handleInputChange} />
+                    </div>
+                }
+        
+                {this.props.type === "file" && 
+                    <div className="controls">
+                        <input type="file" name={this.props.name} value={this.props.value} className="form-control" onChange={this.handleInputChange} />
+                    </div>
+                }
+        
+                {this.props.type === "password" && 
+                    <div className="controls">
+                        <input type="password" name={this.props.name} value={this.props.value} className="form-control" onChange={this.handleInputChange} />
+                    </div>
+                }
+        
+                {this.props.type === "text" && 
+                    <div className="controls">
+                        <input type="text" name={this.props.name} value={this.props.value} className="form-control" onChange={this.handleInputChange} />
+                    </div>
+                }
+                    
             </div>
-        }
-
-        {type === "date" && 
-            <div className="controls">
-                <input type="text" value="" className="form-control"/>
-            </div>
-        }
-
-        {type === "file" && 
-            <div className="controls">
-                <input type="file" value="" className="form-control"/>
-            </div>
-        }
-
-        {type === "text" && 
-            <div className="controls">
-                <input type="text" value="" className="form-control"/>
-            </div>
-        }
-            
-    </div>
-)
+        )
+    }
+}
 
 export default FormBoxItem;

@@ -15,27 +15,17 @@ import './assets/css/style.css';
 import './assets/css/responsive.css';
 
 import React from 'react';
-//import { Button } from 'react-bootstrap';
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-// import './assets/js/jquery.easing.min.js';
-// import './assets/plugins/bootstrap/js/bootstrap.min.js';
-// import './assets/plugins/pace/pace.min.js';
-// import './assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js';
-// import './assets/plugins/viewport/viewportchecker.js';
-// import './assets/plugins/flot-chart/jquery.flot.js';
-// import './assets/plugins/flot-chart/jquery.flot.time.js';
-// import './assets/js/chart-flot.js';
-// import './assets/js/dashboard-hos.js';
-// import './assets/js/scripts.js';
-// window.jQuery = window.$ = $;
-
 ReactDOM.render(
   <React.StrictMode>
-    <App/>
+    <BrowserRouter>
+      <App/>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
