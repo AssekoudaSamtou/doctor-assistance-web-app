@@ -113,9 +113,9 @@ const SideBar = () => {
                                 <img src={icon6} alt="" className="width-20"/>
                             </i>
                             <span className="title">Appointments</span>
-                            <span className="arrow  open"></span>
+                            <span className="arrow"></span>
                         </a>
-                        <ul className="sub-menu" wfd-invisible="true" style={{display:'block'}}>
+                        <ul className="sub-menu" wfd-invisible="true">
                             <li>
                                 <a className="" href="hos-schedule.html">Doctor Schedule</a>
                             </li>

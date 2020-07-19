@@ -1,10 +1,40 @@
 import React from 'react';
 
-const FormBoxFooter = ({onSaveBtnTapped}) => (
+const FormBoxFooter = ({onSaveBtnTapped, onDeleteBtnTapped, isSubmitting, fromType}) => (
     <div className="padding-bottom-30">
+
+        <div className="modal fade col-xs-12 in" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-hidden="true" style={{display: 'none'}}>
+            <div className="modal-dialog animated shake">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h4 className="modal-title">Modal Tittle</h4>
+                    </div>
+                    <div className="modal-body">
+
+                        Do you really want to delete ?
+
+                    </div>
+                    <div className="modal-footer">
+                        <button data-dismiss="modal" className="btn btn-default" type="button">Close</button>
+                        <button className="btn btn-warning" type="button" onClick={(fromType==="edit") && onDeleteBtnTapped}> Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div className="text-left">
-            <button type="button" className="btn btn-primary gradient-blue" onClick={onSaveBtnTapped} >Save</button>
-            <button type="button" className="btn">Cancel</button>
+            <button 
+                type="button" 
+                className={`btn btn-primary gradient-blue ${isSubmitting && 'disabled'}`} 
+                onClick={onSaveBtnTapped} >Save</button>
+            
+            <button 
+                type={fromType==="add" ? 'reset' : 'button'} data-toggle="modal" href="#deleteConfirmationModal"
+                className={`btn ${isSubmitting && 'disabled'} ${fromType==="add" ? '' : 'btn-danger'}`}
+                onClick={(fromType==="add") && onDeleteBtnTapped} >
+                {fromType==="add" ? 'Cancel' : 'Delete'}
+            </button>
         </div>
     </div>
 )

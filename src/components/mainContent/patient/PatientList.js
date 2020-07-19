@@ -15,8 +15,6 @@ class PatientList extends React.Component {
     }
 
     componentWillMount() {
-        
-        console.log("WillMount");
         PatientDataService.getAll()
         .then(response => {
             console.log(response.data.results);
@@ -35,7 +33,8 @@ class PatientList extends React.Component {
                     <PatientItem 
                         fullname={`${nom} ${prenom}`} 
                         gender={genre} 
-                        age={age} 
+                        age={age}
+                        id={id}
                         key={id}/>
                 )}
             </div>

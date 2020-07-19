@@ -6,7 +6,6 @@ import PatientDataService from "../../../services/patient.service";
 
 import PageTitle from '../../card/PageTitle';
 import Alert from '../../card/Alert';
-// import PatientItem from './PatientItem';
 
 
 class AddPatient extends React.Component {
@@ -16,6 +15,7 @@ class AddPatient extends React.Component {
         this.state = {
             patient: {id: null, nom: "sam", prenom: "", adresse: ""},
             submitted: false,
+            isSubmitting: false
         };
         this.handleInputChange = this.handleInputChange.bind(this)
         this.savePatient = this.savePatient.bind(this)
@@ -40,15 +40,12 @@ class AddPatient extends React.Component {
     
         PatientDataService.create(data)
             .then(response => {
-                this.setState({ patient: {
-                        id: response.data.id,
-                        nom: response.data.nom,
-                        prenom: response.data.prenom,
-                        adresse: response.data.adresse
-                    } 
-                });
-                this.setState({ submitted: true });
+                this.newPatient();
                 console.log(response.data, this.state.submitted);
+                window.showSuccess('Your patient has been saved successfuly');
+                setTimeout( () => {
+                    this.props.history.push(`/patients_details/${response.data.id}`)
+                }, 500);
             })
             .catch(e => {
                 console.log(e);
@@ -57,7 +54,7 @@ class AddPatient extends React.Component {
 
     newPatient() {
         this.setState({ patient: {id: null, nom: "", prenom: "", adresse: ""} });
-        this.setState({ submitted: false });
+        this.setState({ submitted: true });
     }
 
     render() {
@@ -97,28 +94,22 @@ class AddPatient extends React.Component {
             //     ]
             // },
         ];
-        const SUCCESS_MSG = "Well done! You successfully read this important alert message.";
 
         return (
             <div>
                 <PageTitle title="Ajout de patient" />
                 
                 <div className="col-xs-12 ">
-                    <AddHeader entityName="patient"/>
+                    <AddHeader entityName="patient" type="add" />
 
                     <div className="bg-w">
-                        
-                        {this.state.submitted && (
-                            <Alert type="success" mode="fade in" isDismissible={true} msg={SUCCESS_MSG} />
-                        )}
-
                         { formBoxes.map((box) => 
                             <FormBox 
-                                box={box} 
+                                box={box} fromType="add"
+                                isSubmitting={this.state.isSubmitting}
                                 onInputChange={this.handleInputChange} 
                                 onSaveBtnTapped={this.savePatient} />
                         )}
-                        
                     </div>
                 </div>
             </div>

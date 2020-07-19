@@ -62,6 +62,12 @@ class FormBoxItem extends React.Component{
                         <input type="text" name={this.props.name} value={this.props.value} className="form-control" onChange={this.handleInputChange} />
                     </div>
                 }
+
+                {this.props.type === "email" && 
+                    <div className="controls">
+                        <input type="email" name={this.props.name} value={this.props.value} className="form-control" onChange={this.handleInputChange} />
+                    </div>
+                }
                     
             </div>
         )

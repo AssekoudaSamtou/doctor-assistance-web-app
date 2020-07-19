@@ -1,10 +1,11 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 // import {Col} from 'react-bootstrap';
 
 import avatar1 from '../../../data/profile/avatar-1.png';
 import PatientInfoItem from '../../card/PatientInfoItem';
 
-const PatientItem = ({fullname, gender, age}) => (
+const PatientItem = ({fullname, gender, age, id}) => (
     <div className="col-lg-4 col-md-6">
         <section className="box ">
             <div className="content-body p">
@@ -27,7 +28,12 @@ const PatientItem = ({fullname, gender, age}) => (
                         
                         <div className="col-xs-12 mb-30">
                             <div className="form-group no-mb">
-                                <button type="button" className="btn btn-primary btn-lg gradient-blue" style={{width: 100+'%'}}> View Profile</button>
+                                <Link to={`/patients_details/${id}`}>
+                                    <a className="btn btn-primary btn-lg gradient-blue" style={{width: 100+'%'}}>
+                                        View Profile
+                                    </a>
+                                </Link>
+                                {/* <button type="button" className="btn btn-primary btn-lg gradient-blue" style={{width: 100+'%'}}> View Profile</button> */}
                             </div>
                         </div>
                     </div>
