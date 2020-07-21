@@ -21,7 +21,7 @@ class App extends React.Component {
         this.state = {
             isLoginPageLoaded: false,
             isRegisterPageLoaded: false,
-            loggedIn: cookies.get("token") ? true : false
+            loggedIn: cookies.get("token") && cookies.get("loggedUser") ? true : false
         };
         this.handleLoginPageLoaded = this.handleLoginPageLoaded.bind(this);
         this.handleRegisterPageLoaded = this.handleRegisterPageLoaded.bind(this);
@@ -37,11 +37,9 @@ class App extends React.Component {
     }
 
     componentWillMount() {
-        console.log("aaaaaaaaaaaaaaaa");
     }
 
     render() {
-        console.log("aaaaaaaaaaaaaaaa");
         return (
             <div>
                 <Switch>

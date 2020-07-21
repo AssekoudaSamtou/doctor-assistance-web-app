@@ -14,32 +14,50 @@ class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: "",
-            email: "dsd",
-            password: "",
+            username: "", email: "",
+            password: "", r_password: "",
             redirect: null
         };
         this.register = this.register.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSignInClicked = this.handleSignInClicked.bind(this);
     }
 
-    register() {
+    register(event) {
         var data = {
             username: this.state.username,
             email: this.state.email,
             password: this.state.password,
-        };console.log(data);
+        };
     
-        AuthService.login(data)
+        AuthService.register(data)
             .then(response => {
-                this.setState({ username: "" });
-                this.setState({ email: "" });
-                this.setState({ password: "" });
-                cookies.set('token', response.data.token, { path: '/' });
-                window.location.href =  "dashboard";
+                this.setState({ username: "" ,email: "", password: "" });
+                cookies.set('loggedUser', response.data, { path: '/' });
+                
+                window.location.href =  "login";
             })
-            .catch(e => {
-                console.log(e);
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                    for (var key in error.response.data) {
+                        if (error.response.status === 400) {
+                            if (this.state.hasOwnProperty(key)) {
+                                window.$(`#${key}-control`).find("span").text(error.response.data[key]);
+                                window.$(`#${key}-control`).find("span").addClass("error");
+                            }
+                        }
+                    }
+                } 
+                else if (error.request) {
+                    console.log(error.request);
+                } 
+                else {
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
             });
     }
 
@@ -48,8 +66,42 @@ class Login extends React.Component {
         this.setState({ [name]: value });
     }
 
+    handleSignInClicked() {
+        console.log("handleSignInClicked");
+        window.$("#msg_validate").submit();
+    }
+
     componentDidMount() {
         window.$("body").addClass("login_page");
+        window.$("#msg_validate").validate({
+            rules: {
+               "username":{
+                    "required": true,
+                    "minlength": 6,
+               },
+               "email": {
+                    "required": true,
+                    "email": true,
+               },
+               "password": {
+                    "required": true
+               },
+               "r_password": {
+                    "required": true,
+                    "equals_to": "password",
+                }
+            },
+            submitHandler: (form) => {
+                this.register();
+            }
+        });
+        window.$.validator.addMethod(
+            "equals_to",
+            function(value, element, name) {
+                console.log(value === window.$(`input[name='${name}']`).val());
+                return value === window.$(`input[name='${name}']`).val();
+            },"doit etre egale au mot de passe"
+        );
         this.props.onLoginPageLoaded();
     }
 
@@ -62,7 +114,7 @@ class Login extends React.Component {
                 <div>
                     <div className="container-fluid">
                         <div className="login-wrapper row">
-                            <div id="login" className="login loginpage col-lg-offset-2 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-8" style={{marginTop: '-8.5px'}}>    
+                            <div id="register" className="login loginpage col-lg-offset-2 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-8" style={{marginTop: '-8.5px'}}>    
                                 <div className="login-form-header">
                                     <img src={signup} alt="login-icon" style={{maxWidth:'64px'}}/>
                                     <div className="login-header">
@@ -75,7 +127,7 @@ class Login extends React.Component {
 
                                     <div className="content-body" style={{paddingTop:'30px'}}>
 
-                                        <form id="msg_validate" action="#" noValidate="novalidate" className="no-mb no-mt">
+                                        <form id="msg_validate" onSubmit={this.register} action="#" noValidate="novalidate" className="no-mb no-mt">
                                             <div className="row">
                                                 <div className="col-xs-12">
 
@@ -111,12 +163,12 @@ class Login extends React.Component {
                                                             type="password"
                                                             label="REPEAT Password" 
                                                             onInputChange={this.handleInputChange}
-                                                            name="repeat_password"
-                                                            value={this.state.password}/>
+                                                            name="r_password"
+                                                            value={this.state.r_password}/>
                                                     </div>
 
                                                     <div className="pull-left">
-                                                        <a onClick={this.register} className="btn btn-primary mt-10 btn-corner right-15">Sign up</a>
+                                                        <a onClick={this.handleSignInClicked} className="btn btn-primary mt-10 btn-corner right-15">Sign up</a>
                                                         <a  className="btn mt-10 btn-corner signup">Log in</a>
                                                     </div>
 

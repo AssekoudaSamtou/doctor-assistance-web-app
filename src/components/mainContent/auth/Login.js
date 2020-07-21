@@ -30,13 +30,28 @@ class Login extends React.Component {
     
         AuthService.login(data)
             .then(response => {
-                this.setState({ username: "" });
-                this.setState({ password: "" });
+                this.setState({ username: "", password: "" });
                 cookies.set('token', response.data.token, { path: '/' });
                 window.location.href =  "dashboard";
             })
-            .catch(e => {
-                console.log(e);
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                    for (var key in error.response.data) {
+                        if (error.response.status === 400) {
+                            window.showErrorMessage(error.response.data.error);
+                        }
+                    }
+                } 
+                else if (error.request) {
+                    console.log(error.request);
+                } 
+                else {
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
             });
     }
 
@@ -73,7 +88,7 @@ class Login extends React.Component {
 
                                     <div className="content-body" style={{paddingTop:'30px'}}>
 
-                                        <form id="msg_validate" action="#" noValidate="novalidate" className="no-mb no-mt">
+                                        <form id="msg_validate" action="#" method="post" noValidate="novalidate" className="no-mb no-mt">
                                             <div className="row">
                                                 <div className="col-xs-12">
 
