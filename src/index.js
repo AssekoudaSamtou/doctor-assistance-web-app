@@ -11,6 +11,10 @@ import './assets/plugins/morris-chart/css/morris.css';
 import './assets/plugins/calendar/fullcalendar.css';
 import './assets/plugins/icheck/skins/minimal/minimal.css';
 
+import './assets/plugins/messenger/css/messenger.css';
+import './assets/plugins/messenger/css/messenger-theme-future.css';
+import './assets/plugins/messenger/css/messenger-theme-flat.css';
+
 import './assets/css/style.css';
 import './assets/css/responsive.css';
 

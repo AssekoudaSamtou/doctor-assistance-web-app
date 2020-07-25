@@ -10,6 +10,7 @@ class FormBox extends React.Component {
         super(props);
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSaveBtnTapped = this.handleSaveBtnTapped.bind(this);
+        this.handleDeleteBtnTapped = this.handleDeleteBtnTapped.bind(this);
     }
 
     handleInputChange(e) {
@@ -17,6 +18,9 @@ class FormBox extends React.Component {
     }
     handleSaveBtnTapped() {
         this.props.onSaveBtnTapped();
+    }
+    handleDeleteBtnTapped() {
+        this.props.onDeleteBtnTapped();
     }
 
     render() {
@@ -33,6 +37,7 @@ class FormBox extends React.Component {
                                     
                                     { this.props.box.fields.map(({type, label, description, selectOptions, name, value}) =>
                                         <FormBoxItem 
+                                            key={name}
                                             type={type} 
                                             label={label} 
                                             description={description} 
@@ -42,7 +47,11 @@ class FormBox extends React.Component {
                                             value={value} />
                                     )}
         
-                                    <FormBoxFooter onSaveBtnTapped={this.handleSaveBtnTapped} />
+                                    <FormBoxFooter 
+                                        isSubmitting={this.props.isSubmitting} 
+                                        onSaveBtnTapped={this.handleSaveBtnTapped} 
+                                        onDeleteBtnTapped={this.handleDeleteBtnTapped} 
+                                        fromType={this.props.fromType} />
                                 </form>
                             </div>
                         </div>

@@ -15,8 +15,6 @@ class PatientList extends React.Component {
     }
 
     componentWillMount() {
-        
-        console.log("WillMount");
         PatientDataService.getAll()
         .then(response => {
             console.log(response.data.results);
@@ -31,11 +29,14 @@ class PatientList extends React.Component {
             <div>
                 <PageTitle title="Tous Les Patients" />
                 
-                {this.state.patients.map(({nom, prenom, genre="Masculin", age=21, id, adresse}) => 
+                {this.state.patients.map(({nom, prenom, genre, id, adresse, telephone, date_naissance}) => 
                     <PatientItem 
                         fullname={`${nom} ${prenom}`} 
                         gender={genre} 
-                        age={age} 
+                        adresse={adresse}
+                        telephone={telephone}
+                        date_naissance={date_naissance}
+                        id={id}
                         key={id}/>
                 )}
             </div>
