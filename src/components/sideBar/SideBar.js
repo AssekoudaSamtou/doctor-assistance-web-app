@@ -64,16 +64,14 @@ const SideBar = () => {
                         </a>
                         <ul className="sub-menu" wfd-invisible="true">
                             <li>
-                                <a className="" href="#">All Doctors</a>
+                                <Link to={"/doctors"}>
+                                    All Doctors
+                                </Link>
                             </li>
                             <li>
-                                <a className="" href="#">Add Doctor</a>
-                            </li>
-                            <li>
-                                <a className="" href="#">Edit Doctor</a>
-                            </li>
-                            <li>
-                                <a className="" href="#">Doctor Profile</a>
+                                <Link to={"/doctors_new"}>
+                                    Add Doctor
+                                </Link>
                             </li>
                         </ul>
                     </li>
@@ -95,15 +93,6 @@ const SideBar = () => {
                                 <Link to={"/patients_new"}>
                                     Add Patient
                                 </Link>
-                                {/* <Link to={`/patients/new`}>
-                                    Add Patient
-                                </Link> */}
-                            </li>
-                            <li>
-                                <a className="" href="hos-edit-patient.html">Edit Patient</a>
-                            </li>
-                            <li>
-                                <a className="" href="hos-patient-profile.html">Patient Profile</a>
                             </li>
                         </ul>
                     </li>

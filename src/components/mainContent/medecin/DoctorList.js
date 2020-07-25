@@ -1,24 +1,23 @@
 import React from 'react';
 
 import PageTitle from '../../card/PageTitle';
-import PatientItem from './PatientItem';
-import PatientDataService from "../../../services/patient.service";
+import DoctorItem from './DoctorItem';
+import DoctorDataService from "../../../services/doctor.service";
 
 
-class PatientList extends React.Component {
+class DoctorList extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            patients: [],
+            medecins: [],
         }
     }
 
     componentWillMount() {
-        PatientDataService.getAll()
+        DoctorDataService.getAll()
         .then(response => {
-            console.log(response.data.results);
-            this.setState({patients: response.data.results});
+            this.setState({medecins: response.data.results});
         }).catch(e => {
             console.log(e);
         });
@@ -27,11 +26,11 @@ class PatientList extends React.Component {
     render() {
         return (
             <div>
-                <PageTitle title="Tous Les Patients" />
+                <PageTitle title="Tous Les Médécins" />
                 
-                {this.state.patients.map(({nom, prenom, genre="Masculin", age=21, id, adresse}) => 
-                    <PatientItem 
-                        fullname={`${nom} ${prenom}`} 
+                {this.state.medecins.map(({first_name, last_name, username, genre="Masculin", age=21, id, adresse}) => 
+                    <DoctorItem 
+                        fullname={`${first_name} ${last_name}` && username} 
                         gender={genre} 
                         age={age}
                         id={id}
@@ -42,4 +41,4 @@ class PatientList extends React.Component {
     }
 }
 
-export default PatientList;
+export default DoctorList;

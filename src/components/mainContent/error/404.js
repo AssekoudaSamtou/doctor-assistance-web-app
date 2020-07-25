@@ -16,10 +16,8 @@ const NotFound = () => (
                                 <div className="row">
                                     <div className="col-md-offset-3 col-sm-offset-3 col-xs-offset-2 col-xs-8 col-sm-6">
                                         <div className="text-center page_error_btn">
-                                        <Link to={"/"}>
-                                                <a className="btn btn-primary btn-lg">
-                                                    <i className="fa fa-location-arrow"></i> &nbsp; Back to Home
-                                                </a>
+                                        <Link to={"/"} className="btn btn-primary btn-lg">
+                                            <i className="fa fa-location-arrow"></i> &nbsp; Back to Home
                                         </Link>
                                             
                                         </div>

@@ -2,6 +2,7 @@ import React from 'react';
 import Cookies from 'universal-cookie';
 
 import AuthService from "../../../services/auth.service";
+import DoctorDataService from "../../../services/doctor.service";
 
 import padlock from "../../../data/icons/padlock.png"
 import FormBoxItem from '../../card/FormBoxItem';
@@ -32,6 +33,8 @@ class Login extends React.Component {
             .then(response => {
                 this.setState({ username: "", password: "" });
                 cookies.set('token', response.data.token, { path: '/' });
+                cookies.set('loggedUser', response.data.user, { path: '/' });
+                cookies.set('userType', response.data.user_type, { path: '/' });
                 window.location.href =  "dashboard";
             })
             .catch(error => {
@@ -108,7 +111,7 @@ class Login extends React.Component {
 
                                                     <div className="pull-left">
                                                         <a onClick={this.login} className="btn btn-primary mt-10 btn-corner right-15">Log in</a>
-                                                        <a className="btn mt-10 btn-corner signup">Sign up</a>
+                                                        <Link to="/signup" className="btn mt-10 btn-corner signup" title="Sign In" >Sign Up</Link>
                                                     </div>
 
                                                 </div>

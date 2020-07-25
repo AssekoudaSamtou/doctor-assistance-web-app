@@ -2,10 +2,12 @@ import React from 'react';
 import Cookies from 'universal-cookie';
 
 import AuthService from "../../../services/auth.service";
+import SpecialiteDataService from "../../../services/specialite.service";
 
 import signup from "../../../data/icons/signup.png"
 import FormBoxItem from '../../card/FormBoxItem';
 import { Link } from 'react-router-dom';
+import { error } from 'jquery';
 
 const cookies = new Cookies();
 
@@ -16,6 +18,7 @@ class Login extends React.Component {
         this.state = {
             username: "", email: "",
             password: "", r_password: "",
+            genre: "M",
             redirect: null
         };
         this.register = this.register.bind(this);
@@ -28,6 +31,8 @@ class Login extends React.Component {
             username: this.state.username,
             email: this.state.email,
             password: this.state.password,
+            genre: this.state.genre,
+            specialite: this.state.specialite,
         };
     
         AuthService.register(data)
@@ -69,6 +74,16 @@ class Login extends React.Component {
     handleSignInClicked() {
         console.log("handleSignInClicked");
         window.$("#msg_validate").submit();
+    }
+
+    componentWillMount() {
+        // SpecialiteDataService.getAll()
+        //     .then(response => {
+        //         this.setState({specialites: response.data.results});
+        //     })
+        //     .catch(error => {
+        //         console.log(error);
+        //     })
     }
 
     componentDidMount() {
@@ -114,7 +129,7 @@ class Login extends React.Component {
                 <div>
                     <div className="container-fluid">
                         <div className="login-wrapper row">
-                            <div id="register" className="login loginpage col-lg-offset-2 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-8" style={{marginTop: '-8.5px'}}>    
+                            <div id="login" className="login loginpage col-lg-offset-2 col-md-offset-3 col-sm-offset-3 col-xs-offset-0 col-xs-12 col-sm-6 col-lg-8" style={{marginTop: '-8.5px'}}>    
                                 <div className="login-form-header">
                                     <img src={signup} alt="login-icon" style={{maxWidth:'64px'}}/>
                                     <div className="login-header">
@@ -139,7 +154,6 @@ class Login extends React.Component {
                                                             name="username"
                                                             value={this.state.username}/>
                                                     </div>
-
                                                     <div class="col-lg-6 no-pl">
                                                         <FormBoxItem 
                                                             type="email"
@@ -157,7 +171,6 @@ class Login extends React.Component {
                                                             name="password"
                                                             value={this.state.password}/>
                                                     </div>
-
                                                     <div class="col-lg-6 no-pl">
                                                         <FormBoxItem 
                                                             type="password"
@@ -167,6 +180,25 @@ class Login extends React.Component {
                                                             value={this.state.r_password}/>
                                                     </div>
 
+                                                    <div class="col-lg-6 no-pl">
+                                                        <FormBoxItem 
+                                                            type="select"
+                                                            label="Gender"
+                                                            selectOptions={[{id: "M", libelle: "Masculin"}, {id: "F", libelle: "Féminin"}]}
+                                                            onInputChange={this.handleInputChange}
+                                                            name="genre"
+                                                            value={this.state.genre}/>
+                                                    </div>
+                                                    {/* <div class="col-lg-6 no-pl">
+                                                        <FormBoxItem 
+                                                            type="select"
+                                                            label="your speciality" 
+                                                            selectOptions={this.state.specialites}
+                                                            onInputChange={this.handleInputChange}
+                                                            name="specialite"
+                                                            value={this.state.specialite}/>
+                                                    </div> */}
+                                                    
                                                     <div className="pull-left">
                                                         <a onClick={this.handleSignInClicked} className="btn btn-primary mt-10 btn-corner right-15">Sign up</a>
                                                         <a  className="btn mt-10 btn-corner signup">Log in</a>

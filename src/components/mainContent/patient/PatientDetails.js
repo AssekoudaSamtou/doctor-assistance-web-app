@@ -14,8 +14,9 @@ class PatientDetails extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            patient: {id: null, nom: "", prenom: "", adresse: ""},
+            patient: {id: null, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""},
         }
+        this.computedAge = this.computedAge.bind(this);
     }
 
     componentWillMount() {
@@ -33,6 +34,10 @@ class PatientDetails extends React.Component {
 
     componentDidMount() {
         
+    }
+
+    computedAge(date_naissance) {
+        return 41;
     }
 
     render() {
@@ -54,13 +59,13 @@ class PatientDetails extends React.Component {
                                                         <img src={profile} className="rad-50 center-block" alt=""/>
                                                         <div className="stutas"></div>
                                                     </div>
-                                                    <h3 className="header w-text relative bold">Name : {this.state.patient.nom} {this.state.patient.prenom}</h3>
+                                                    <h3 className="header w-text relative bold">Nom : {this.state.patient.nom} {this.state.patient.prenom}</h3>
                                                     <p className="desc g-text relative">Lorem ipsum dolor sit amet, Earum nes ciunt fugiat enim. Sequi quos labore.</p>
                                                 </div>
                                                 <div className="row">
                                                     <div className="patients-info relative">
-                                                        <PatientInfoItem title="Patient  Gender" value="Female" />
-                                                        <PatientInfoItem title="Years Old" value="Age: 23" />
+                                                        <PatientInfoItem title="Sexe" value={this.state.patient.genre === "M" ? "Masculin" : "Féminin"} />
+                                                        <PatientInfoItem title="Age" value={`${this.computedAge(this.state.patient.date_naissance)} Ans`} />
                                                         <PatientInfoItem title="Patient  Height" value="176 cm" />
                                                         <PatientInfoItem title="Patient Weight" value="67 Kg" />
                                                     </div>

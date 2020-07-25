@@ -2,7 +2,7 @@ import React from 'react';
 
 const FormBoxFooter = ({onSaveBtnTapped, onDeleteBtnTapped, isSubmitting, fromType}) => (
     <div className="padding-bottom-30">
-
+        { fromType === "edit" && (
         <div className="modal fade col-xs-12 in" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-hidden="true" style={{display: 'none'}}>
             <div className="modal-dialog animated shake">
                 <div className="modal-content">
@@ -22,18 +22,20 @@ const FormBoxFooter = ({onSaveBtnTapped, onDeleteBtnTapped, isSubmitting, fromTy
                 </div>
             </div>
         </div>
+        )}
+        
 
         <div className="text-left">
             <button 
                 type="button" 
                 className={`btn btn-primary gradient-blue ${isSubmitting && 'disabled'}`} 
-                onClick={onSaveBtnTapped} >Save</button>
+                onClick={onSaveBtnTapped} >{fromType === "add" ? "Ajouter" : "Sauvegarder"}</button>
             
             <button 
                 type={fromType==="add" ? 'reset' : 'button'} data-toggle="modal" href="#deleteConfirmationModal"
                 className={`btn ${isSubmitting && 'disabled'} ${fromType==="add" ? '' : 'btn-danger'}`}
                 onClick={(fromType==="add") && onDeleteBtnTapped} >
-                {fromType==="add" ? 'Cancel' : 'Delete'}
+                {fromType==="add" ? 'Annuler' : 'Supprimer'}
             </button>
         </div>
     </div>

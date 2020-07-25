@@ -10,11 +10,19 @@ import Profile from '../../data/profile/profile.jpg'
 import TopnavItem from './topnavItem/TopnavItem';
 import TopNavSearchForm from './topnavSearchForm/TopNavSearchForm';
 import Cookies from 'universal-cookie';
+import { Link } from 'react-router-dom';
 
 const cookies = new Cookies();
 
 const TopBar = () => {
     const user = cookies.get("loggedUser");
+
+    const logout = () => {
+        cookies.remove("loggedUser");
+        cookies.remove("token");
+        cookies.remove("userType");
+        window.location.href =  "login";
+    }
 
     return (
         <div className="page-topbar gradient-blue1">
@@ -35,7 +43,7 @@ const TopBar = () => {
 
                         <TopnavItem label="Reports" icon="fa-area-chart" isActive={true}/>
 
-                        <TopnavItem label="Trading" icon="fa-sitemap" isActive={false}/>
+                        <TopnavItem label="New Patient" icon="fa-plus" isActive={false}/>
                         
                         <TopNavSearchForm/>
 
@@ -43,6 +51,25 @@ const TopBar = () => {
                 </div>
                 <div className="pull-right">
                     <ul className="info-menu right-links list-inline list-unstyled">
+                        <li className="notify-toggle-wrapper spec showopacity">
+                            <a href="#" data-toggle="dropdown" className="toggle">
+                                <i className="fa fa-plus"></i>
+                            </a>
+                            <ul className="dropdown-menu profile animated fadeIn" style={{ left:-20+'px'}}>
+                                
+                                <li>
+                                    <Link to="/patients_new">
+                                        <i className="fa fa-user"></i> Patient
+                                    </Link>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        <i className="fa fa-book"></i> Consultation
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        
                         <li className="notify-toggle-wrapper spec showopacity">
                             <a href="#" data-toggle="dropdown" className="toggle">
                                 <i className="fa fa-bell"></i>
@@ -298,34 +325,36 @@ const TopBar = () => {
                             </ul>
 
                         </li>
+                        { user && (
                         <li className="profile showopacity">
-                            <a href="#" data-toggle="dropdown" className="toggle">
-                                <img src={Profile} alt="user-image" className="img-circle img-inline"/>
-                                <span>@{user.username} <i className="fa fa-angle-down"></i></span>
-                            </a>
-                            <ul className="dropdown-menu profile animated fadeIn">
-                                <li>
-                                    <a href="crypto-account-setting.html">
-                                        <i className="fa fa-wrench"></i> Settings
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="crypto-profile.html">
-                                        <i className="fa fa-user"></i> Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="crypto-faq.html">
-                                        <i className="fa fa-info"></i> Help
-                                    </a>
-                                </li>
-                                <li className="last">
-                                    <a href="crypto-login.html">
-                                        <i className="fa fa-lock"></i> Logout
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                                <a href="#" data-toggle="dropdown" className="toggle">
+                                    <img src={Profile} alt="user-image" className="img-circle img-inline"/>
+                                    <span>@{user.username} <i className="fa fa-angle-down"></i></span>
+                                </a>
+                                <ul className="dropdown-menu profile animated fadeIn">
+                                    <li>
+                                        <a href="crypto-account-setting.html">
+                                            <i className="fa fa-wrench"></i> Settings
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="crypto-profile.html">
+                                            <i className="fa fa-user"></i> Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="crypto-faq.html">
+                                            <i className="fa fa-info"></i> Help
+                                        </a>
+                                    </li>
+                                    <li className="last">
+                                        <a onClick={logout} style={{cursor : 'pointer'}}>
+                                            <i className="fa fa-lock"></i> Logout
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>

@@ -5,7 +5,6 @@ import FormBox from '../../card/FormBox';
 import PatientDataService from "../../../services/patient.service";
 
 import PageTitle from '../../card/PageTitle';
-import Alert from '../../card/Alert';
 import NotFound from '../error/404';
 
 
@@ -14,40 +13,37 @@ class EditPatient extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            patient: {id: null, nom: "sam", prenom: "", adresse: ""},
+            doctor: {id: null, first_name: "sam", last_name: "", username: ""},
             submitted: false,
             isSubmitting: false
         };
         this.handleInputChange = this.handleInputChange.bind(this)
-        this.savePatient = this.savePatient.bind(this)
-        this.newPatient = this.newPatient.bind(this)
-        this.deletePatient = this.deletePatient.bind(this)
+        this.saveDoctor = this.saveDoctor.bind(this)
+        this.deleteDoctor = this.deleteDoctor.bind(this)
     }
 
     componentWillMount() {
         const { match: { params } } = this.props;
         
-        PatientDataService.get(params.id)
+        DocotrDataService.get(params.id)
         .then(response => {
             console.log(response.data);
-            this.setState({patient: {...response.data}});
+            this.setState({doctor: {...response.data}});
         }).catch(e => {
             console.log(e);
-            console.log(this.state.patient.id === null);
+            console.log(this.state.doctor.id === null);
         });
     }
 
     handleInputChange(event) {
         const { name, value } = event.target;
-        this.setState({ patient: { ...this.state.patient, [name]: value } });
+        this.setState({ docotr: { ...this.state.doctor, [name]: value } });
         console.log("CHANGING... ", name, value);
     }
 
-    savePatient() {
+    saveDoctor() {
         var data = {
-            nom: this.state.patient.nom,
-            prenom: this.state.patient.prenom,
-            adresse: this.state.patient.adresse,
+            ...this.state.doctor,
             "create_date_time": "2020-07-13T02:49:00Z",
             "mod_date_time": "2020-07-13T02:49:00Z",
         }; 
@@ -77,11 +73,6 @@ class EditPatient extends React.Component {
                 console.log(e);
                 window.showErrorMessage('Something went wrong!!!');
             });
-    }
-
-    newPatient() {
-        this.setState({ patient: {id: null, nom: "", prenom: "", adresse: ""} });
-        this.setState({ submitted: true });
     }
 
     render() {

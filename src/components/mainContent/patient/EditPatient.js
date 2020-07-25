@@ -1,20 +1,22 @@
 import React, { useState } from 'react';
+import Cookies from 'universal-cookie';
+
 import AddHeader from '../../card/AddHeader';
 import FormBox from '../../card/FormBox';
 
 import PatientDataService from "../../../services/patient.service";
 
 import PageTitle from '../../card/PageTitle';
-import Alert from '../../card/Alert';
 import NotFound from '../error/404';
 
+const cookies = new Cookies();
 
 class EditPatient extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            patient: {id: null, nom: "sam", prenom: "", adresse: ""},
+            patient: {id: null, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""},
             submitted: false,
             isSubmitting: false
         };
@@ -44,12 +46,18 @@ class EditPatient extends React.Component {
     }
 
     savePatient() {
+        let loggedDoctor = null;
+        if (cookies.get("userType") === "medecin"){
+            loggedDoctor = cookies.get("loggedUser")
+        }
         var data = {
+            created_by: loggedDoctor.id,
             nom: this.state.patient.nom,
             prenom: this.state.patient.prenom,
             adresse: this.state.patient.adresse,
-            "create_date_time": "2020-07-13T02:49:00Z",
-            "mod_date_time": "2020-07-13T02:49:00Z",
+            telephone: this.state.patient.telephone,
+            date_naissance: this.state.patient.date_naissance,
+            genre: this.state.patient.genre,
         }; 
     
         PatientDataService.update(this.state.patient.id, data)
@@ -60,10 +68,11 @@ class EditPatient extends React.Component {
             })
             .catch(e => {
                 console.log(e);
+                window.showErrorMessage('Something went wrong');
             });
     }
 
-    deletePatient() {    
+    deletePatient() {
         PatientDataService.delete(this.state.patient.id)
             .then(response => {
                 console.log(response.status);
@@ -80,23 +89,27 @@ class EditPatient extends React.Component {
     }
 
     newPatient() {
-        this.setState({ patient: {id: null, nom: "", prenom: "", adresse: ""} });
+        this.setState({ patient: {nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""}, });
         this.setState({ submitted: true });
     }
 
     render() {
 
         const GenderSelectOptions = [
-            {id: 1, label: "Male"},
-            {id: 2, label: "Female"},
+            {id: null, libelle: "----Selectionnez un genre-----"},
+            {id: "M", libelle: "Masculin"},
+            {id: "F", libelle: "Féminin"},
         ];
         const formBoxes = [
             {
-                headerTitle: "Basic Info",
+                headerTitle: "Informations personnelles du patient",
                 fields: [
                     {type: "text", label: "Nom", name: "nom", value: this.state.patient.nom},
                     {type: "text", label: "Prénom", name: "prenom", value: this.state.patient.prenom},
                     {type: "text", label: "adresse", name: "adresse", value: this.state.patient.adresse, description: 'e.g. "Agoe-cacaveli"'},
+                    {type: "text", label: "Téléphone", name: "telephone", value: this.state.patient.telephone, description: 'e.g. "00228 98 76 56 87"'},
+                    {type: "date", label: "Date de naissance", name: "date_naissance", value: this.state.patient.date_naissance},
+                    {type: "select", label: "Genre", name: "genre", value: this.state.patient.genre, selectOptions: GenderSelectOptions},
                 ]
             },
         ];

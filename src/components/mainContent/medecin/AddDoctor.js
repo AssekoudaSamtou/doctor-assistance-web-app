@@ -5,7 +5,6 @@ import FormBox from '../../card/FormBox';
 import PatientDataService from "../../../services/patient.service";
 
 import PageTitle from '../../card/PageTitle';
-import Alert from '../../card/Alert';
 
 
 class AddPatient extends React.Component {
@@ -13,7 +12,7 @@ class AddPatient extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            patient: {id: null, nom: "sam", prenom: "", adresse: ""},
+            patient: {id: null, fisrt_name: "sam", last_name: "", username: ""},
             submitted: false,
             isSubmitting: false
         };
@@ -30,9 +29,9 @@ class AddPatient extends React.Component {
 
     savePatient() {
         var data = {
-            nom: this.state.patient.nom,
-            prenom: this.state.patient.prenom,
-            adresse: this.state.patient.adresse,
+            first_name: this.state.patient.nom,
+            last_name: this.state.patient.prenom,
+            uername: this.state.patient.adresse,
             "create_date_time": "2020-07-13T02:49:00Z",
             "mod_date_time": "2020-07-13T02:49:00Z",
         };

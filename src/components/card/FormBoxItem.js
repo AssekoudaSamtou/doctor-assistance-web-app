@@ -15,7 +15,7 @@ class FormBoxItem extends React.Component{
         return (
             <div className="form-group">
                 <label className="form-label">{this.props.label}</label>
-                {/* <span className="desc">{this.props.description} </span> */}
+                <span className="desc">{this.props.description} </span>
                 
                 {this.props.type === "select" && 
                     <div id={`${this.props.name}-control`}>
@@ -23,9 +23,11 @@ class FormBoxItem extends React.Component{
                             className="form-control" 
                             onChange={this.handleInputChange} 
                             name={this.props.name} value={this.props.value} >
+
                             {this.props.selectOptions.map((option) => (
-                                <option key={option.id} value={option.id}>{option.label}</option>
+                                <option key={option.id} value={option.id}>{option.libelle}</option>
                             ))}
+                            
                         </select>
                         <span className="">
                         </span>
@@ -47,7 +49,7 @@ class FormBoxItem extends React.Component{
         
                 {this.props.type === "date" && 
                     <div id={`${this.props.name}-control`} className="controls">
-                        <input type="text" name={this.props.name} value={this.props.value} className="form-control" onChange={this.handleInputChange} />
+                        <input type="date" name={this.props.name} value={this.props.value} className="form-control" onChange={this.handleInputChange} />
                         <span className="">
                         </span>
                     </div>

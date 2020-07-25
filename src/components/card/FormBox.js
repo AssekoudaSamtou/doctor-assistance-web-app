@@ -37,6 +37,7 @@ class FormBox extends React.Component {
                                     
                                     { this.props.box.fields.map(({type, label, description, selectOptions, name, value}) =>
                                         <FormBoxItem 
+                                            key={name}
                                             type={type} 
                                             label={label} 
                                             description={description} 

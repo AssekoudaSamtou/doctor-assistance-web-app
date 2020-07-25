@@ -11,6 +11,9 @@ import Login from './components/mainContent/auth/Login';
 import Register from './components/mainContent/auth/Register';
 import Cookies from 'universal-cookie';
 import EditPatient from './components/mainContent/patient/EditPatient';
+import DoctorList from './components/mainContent/medecin/DoctorList';
+import DoctorDetails from './components/mainContent/medecin/DoctorDetails';
+import DoctorDashboard from './components/mainContent/dashborad/DoctorDashboard';
 
 const cookies = new Cookies();
 
@@ -67,8 +70,10 @@ class App extends React.Component {
                             <section id="main-content">
                                 <div className="wrapper main-wrapper row">
                                     <Switch>
-                                        <Route exact path={["/", "/dashboard"]}>
-                                        {this.state.loggedIn ? <First /> : <Redirect to="/login" />}
+                                        <Route exact path={["/", "/dashboard"]}
+                                            render={ props => (
+                                                this.state.loggedIn ? <DoctorDashboard {...props} /> : <Redirect to="/login" />
+                                            )}>
                                         </Route>
 
                                         <Route path="/patients">
@@ -90,6 +95,27 @@ class App extends React.Component {
 
                                         <Route 
                                             path={`/patients_update/:id`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <EditPatient {...props} /> : <Redirect to="/login" />
+                                            ) } />
+
+                                        <Route path="/doctors">
+                                            {this.state.loggedIn ? <DoctorList /> : <Redirect to="/login" />}
+                                        </Route>
+                                        {/* <Route 
+                                            exact path={`/doctors_new`}
+                                            render={ props => (
+                                                this.state.loggedIn ? <AddPatient {...props} /> : <Redirect to="/login" />
+                                            ) } >
+                                        </Route> */}
+                                        <Route 
+                                            path={`/doctors_details/:id`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <DoctorDetails {...props} /> : <Redirect to="/login" />
+                                            ) } />
+
+                                        <Route 
+                                            path={`/doctors_update/:id`} 
                                             render={ props => (
                                                 this.state.loggedIn ? <EditPatient {...props} /> : <Redirect to="/login" />
                                             ) } />

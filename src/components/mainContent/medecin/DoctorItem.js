@@ -2,38 +2,50 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 // import {Col} from 'react-bootstrap';
 
-import avatar1 from '../../../data/profile/avatar-1.png';
+import doc2 from '../../../data/hos-dash/doc2.jpg';
 import PatientInfoItem from '../../card/PatientInfoItem';
+import DoctorInfoItem from '../../card/DoctorInfoItem';
 
-const PatientItem = ({fullname, gender, age, id}) => (
+const DoctorItem = ({fullname, gender, age, id}) => (
     <div className="col-lg-4 col-md-6">
         <section className="box ">
             <div className="content-body p">
                 <div className="row">
                     <div className="doctors-list patient relative">
                         <div className="doctors-head relative text-center">
-                            <div className="patient-img img-circle">
-                                <img src={avatar1} className="rad-50 center-block" alt=""/>
-                                <div className="stutas recent"></div>
+                            <div className="doctor-card has-shadow">
+                                <div className="doc-info-wrap text-left">
+                                    <div className="doctor-img">
+                                        <img src={doc2} alt=""/>
+                                    </div>
+                                    <div className="doc-info">
+                                        <h4 className="bold">{fullname}</h4>
+                                        <h5>Surgeon</h5>
+                                        <div className="doc-rating">
+                                            <i className="fa fa-star"></i>
+                                            <i className="fa fa-star"></i>
+                                            <i className="fa fa-star"></i>
+                                            <i className="fa fa-star"></i>
+                                            <i className="fa fa-star"></i>
+                                            <span>4.8</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <h3 className="header w-text relative bold">Nom : {fullname} </h3>
                             
                         </div>
                         <div className="row">
                             <div className="patients-info relative">
-                                <PatientInfoItem title="Patient  Gender" value={gender} />
-                                <PatientInfoItem title="Years Old" value={`Age: ${age}`} />
+                                <DoctorInfoItem title="Patient" value="3542" />
+                                <DoctorInfoItem title="Doc age" value="45 yrs" />
+                                <DoctorInfoItem title="Points" value="4563" />
                             </div>
                         </div>
+                        {/* <!-- end row --> */}
                         
                         <div className="col-xs-12 mb-30">
                             <div className="form-group no-mb">
-                                <Link to={`/patients_details/${id}`}>
-                                    <a className="btn btn-primary btn-lg gradient-blue" style={{width: 100+'%'}}>
-                                        View Profile
-                                    </a>
-                                </Link>
-                                {/* <button type="button" className="btn btn-primary btn-lg gradient-blue" style={{width: 100+'%'}}> View Profile</button> */}
+                                <Link to={`/doctors_details/${id}`} className="btn btn-primary btn-lg gradient-blue" style={{width:100+'%'}}>View Profile</Link>
                             </div>
                         </div>
                     </div>
@@ -43,4 +55,4 @@ const PatientItem = ({fullname, gender, age, id}) => (
     </div>
 )
 
-export default PatientItem;
+export default DoctorItem;
