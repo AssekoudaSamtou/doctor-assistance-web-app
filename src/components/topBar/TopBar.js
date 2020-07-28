@@ -39,11 +39,11 @@ const TopBar = () => {
                             </a>
                         </li>
 
-                        <TopnavItem label="Schedule" icon="fa-user" isActive={false}/>
+                        <TopnavItem label="Schedule" icon="fa-user" to="#" isActive={false}/>
 
-                        <TopnavItem label="Reports" icon="fa-area-chart" isActive={true}/>
+                        <TopnavItem label="Reports" icon="fa-area-chart" to="#" isActive={false}/>
 
-                        <TopnavItem label="New Patient" icon="fa-plus" isActive={false}/>
+                        <TopnavItem label="Mes Patients" icon="fa-users" to="/patients/" isActive={false}/>
                         
                         <TopNavSearchForm/>
 

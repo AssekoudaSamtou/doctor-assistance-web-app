@@ -18,8 +18,7 @@ class Login extends React.Component {
         this.state = {
             username: "", email: "",
             password: "", r_password: "",
-            genre: "M",
-            redirect: null
+            // genre: "M",
         };
         this.register = this.register.bind(this);
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -31,8 +30,8 @@ class Login extends React.Component {
             username: this.state.username,
             email: this.state.email,
             password: this.state.password,
-            genre: this.state.genre,
-            specialite: this.state.specialite,
+            // genre: this.state.genre,
+            // specialite: this.state.specialite,
         };
     
         AuthService.register(data)
@@ -125,6 +124,12 @@ class Login extends React.Component {
     }
 
     render() {
+        const GenderSelectOptions = [
+            {id: null, libelle: "----Selectionnez un genre-----"},
+            {id: "M", libelle: "Masculin"},
+            {id: "F", libelle: "Féminin"},
+        ];
+
         return (
                 <div>
                     <div className="container-fluid">
@@ -162,7 +167,6 @@ class Login extends React.Component {
                                                             name="email"
                                                             value={this.state.email}/>
                                                     </div>
-
                                                     <div class="col-lg-6 no-pl">
                                                         <FormBoxItem 
                                                             type="password"
@@ -179,32 +183,21 @@ class Login extends React.Component {
                                                             name="r_password"
                                                             value={this.state.r_password}/>
                                                     </div>
-
-                                                    <div class="col-lg-6 no-pl">
-                                                        <FormBoxItem 
-                                                            type="select"
-                                                            label="Gender"
-                                                            selectOptions={[{id: "M", libelle: "Masculin"}, {id: "F", libelle: "Féminin"}]}
-                                                            onInputChange={this.handleInputChange}
-                                                            name="genre"
-                                                            value={this.state.genre}/>
-                                                    </div>
                                                     {/* <div class="col-lg-6 no-pl">
                                                         <FormBoxItem 
                                                             type="select"
-                                                            label="your speciality" 
-                                                            selectOptions={this.state.specialites}
+                                                            label="Gender"
+                                                            selectOptions={GenderSelectOptions}
                                                             onInputChange={this.handleInputChange}
-                                                            name="specialite"
-                                                            value={this.state.specialite}/>
+                                                            name="genre"
+                                                            value={this.state.genre}/>
                                                     </div> */}
-                                                    
-                                                    <div className="pull-left">
-                                                        <a onClick={this.handleSignInClicked} className="btn btn-primary mt-10 btn-corner right-15">Sign up</a>
-                                                        <a  className="btn mt-10 btn-corner signup">Log in</a>
-                                                    </div>
-
                                                 </div>
+                                            </div>
+
+                                            <div className="pull-left">
+                                                <a onClick={this.handleSignInClicked} className="btn btn-primary mt-10 btn-corner right-15">Sign up</a>
+                                                <a  className="btn mt-10 btn-corner signup">Log in</a>
                                             </div>
                                         </form>
                                     </div>

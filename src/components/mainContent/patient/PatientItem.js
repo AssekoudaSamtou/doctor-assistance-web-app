@@ -21,7 +21,7 @@ const PatientItem = ({fullname, gender, date_naissance, id, }) => {
                                     <img src={avatar1} className="rad-50 center-block" alt=""/>
                                     <div className="stutas recent"></div>
                                 </div>
-                                <h3 className="header w-text relative bold">Nom : {fullname} </h3>
+                                <h3 className="header w-text relative bold">{fullname} </h3>
                                 
                             </div>
                             <div className="row">
