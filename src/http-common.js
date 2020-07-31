@@ -5,6 +5,7 @@ const cookies = new Cookies();
 let token = "Token " + cookies.get("token");
 const BASE_URL = "http://127.0.0.1:7000";
 
+export {BASE_URL};
 export default axios.create({
   baseURL: BASE_URL,
   headers: {

@@ -13,7 +13,7 @@ import Cookies from 'universal-cookie';
 import EditPatient from './components/mainContent/patient/EditPatient';
 import DoctorList from './components/mainContent/medecin/DoctorList';
 import DoctorDetails from './components/mainContent/medecin/DoctorDetails';
-import DoctorDashboard from './components/mainContent/dashborad/DoctorDashboard';
+import DoctorDashboard from './components/mainContent/dashborad/doctor/DoctorDashboard';
 
 const cookies = new Cookies();
 

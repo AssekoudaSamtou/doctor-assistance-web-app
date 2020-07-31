@@ -85,26 +85,7 @@ class AddPatient extends React.Component {
                     {type: "date", label: "Date de naissance", name: "date_naissance", value: this.state.patient.date_naissance},
                     {type: "select", label: "Genre", name: "genre", value: this.state.patient.genre, selectOptions: GenderSelectOptions},
                 ]
-            },
-
-            // {
-            //     headerTitle: "Patient Account Info",
-            //     fields: [
-            //         {type: "text", label: "Email"},
-            //         {type: "text", label: "Phone", description: 'e.g. "(534) 253-5353"'},
-            //         {type: "password", label: "Password"},
-            //         {type: "password", label: "Confirm Password"},
-            //     ]
-            // },
-
-            // {
-            //     headerTitle: "Patient Social Media Info",
-            //     fields: [
-            //         {type: "text", label: "Facebook URL"},
-            //         {type: "text", label: "Twitter URL"},
-            //         {type: "text", label: "Google Plus URL"},
-            //     ]
-            // },
+            }
         ];
 
         return (
