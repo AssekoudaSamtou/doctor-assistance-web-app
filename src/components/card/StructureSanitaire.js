@@ -18,7 +18,7 @@ const StructureSanitaire = ({nom, adresse, onClick, id, onMount}) => {
         <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow" onClick={(event) => {onClick(id);}}>
             <input type='hidden' name='medecinStructureSanitaireID' value=''/>
             <div className="doc-info-wrap text-left">
-                <div className="doctor-img">
+                <div className="doctor-img" style={{borderRadius: 0}}>
                     <img src={hospitalBuilding} alt=""/>
                 </div>
                 <div className="doc-info">

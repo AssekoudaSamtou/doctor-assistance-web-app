@@ -83,18 +83,18 @@ class DoctorDetailForm extends React.Component {
 
     updateDoctorInfo = () => {
         let data = cookies.get("loggedUser");
+        data = Object.assign( {}, data, this.state );
         data["first_name"] = this.state.nom;
         data["last_name"] = this.state.prenom;
-        data["date_naissance"] = this.state.date_naissance;
-        data["genre"] = this.state.genre;
-        data["adresse"] = this.state.adresse;
-        data["specialite"] = this.state.specialite;
-        data["telephone"] = this.state.telephone;
-        data["bio"] = this.state.bio;
 
+        window.$('#pills .finish').text("sending....").addClass("disabled");
+        // window.setTimeout(()=>{console.log("waiting")}, 1000000);
         DoctorDataService.update(data["id"], data)
         .then(response => {
             cookies.set("loggedUser", response.data);
+            this.setState({...response.data});
+            window.$('#pills .finish').text("Finish").removeClass("disabled");
+            window.$('#doctorDetailsModal').modal('toggle');
         })
         .catch(error => {
             if (error.response) {
@@ -256,18 +256,18 @@ class DoctorDetailForm extends React.Component {
 
                                 <div id="pills" className="wizardpills">
                                     <ul className="form-wizard nav nav-pills">
-                                        <li className=""><a href="#pills-tab1" data-toggle="tab" aria-expanded="false"><span>Etat Civil</span></a></li>
+                                        <li className="active"><a href="#pills-tab1" data-toggle="tab" aria-expanded="false"><span>Etat Civil</span></a></li>
                                         <li className=""><a href="#pills-tab2" data-toggle="tab" aria-expanded="true"><span>Adresse</span></a></li>
                                         <li className=""><a href="#pills-tab3" data-toggle="tab" aria-expanded="false"><span>Bio</span></a></li>
                                         <li className=""><a href="#pills-tab4" data-toggle="tab" aria-expanded="false"><span>Spécialité</span></a></li>
-                                        <li className="active"><a href="#pills-tab5" data-toggle="tab" aria-expanded="false"><span>Structures Sanitaires</span></a></li>
+                                        <li className=""><a href="#pills-tab5" data-toggle="tab" aria-expanded="false"><span>Structures Sanitaires</span></a></li>
                                     </ul>
                                     <div id="bar" className="progress active">
-                                        <div className="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style={{width: 50+'%'}}></div>
+                                        <div className="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style={{width: 20+'%'}}></div>
                                     </div>
 
                                     <div className="tab-content">
-                                        <div className="tab-pane" id="pills-tab1">
+                                        <div className="tab-pane active" id="pills-tab1">
 
                                             <h4>Informations Personnelles</h4>
                                             <br/>
@@ -328,12 +328,12 @@ class DoctorDetailForm extends React.Component {
                                             
                                         </div>
                                         
-                                        <div className="tab-pane active" id="pills-tab5">
+                                        <div className="tab-pane" id="pills-tab5">
                                             <h4>Vous intervenez dans l'une de ces structures en tant que Médécin ? sans plus tarder, .</h4>
                                             <br/>
                                             <div className="row">
                                                 { this.state.structureSanitaires.map(({denomination, adresse, id}) => (
-                                                    <div className="col-lg-3 col-xs-6" key={id}>
+                                                    <div className="col-lg-3 col-xs-12" key={id}>
                                                         <StructureSanitaire nom={denomination} adresse={adresse} id={id} onClick={this.handleStructureSanitaireClick} onMount={this.handleStructureSanitaireChildMount} />
                                                     </div>
                                                 ))}

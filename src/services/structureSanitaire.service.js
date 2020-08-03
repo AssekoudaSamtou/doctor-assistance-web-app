@@ -15,6 +15,10 @@ class StructureSanitaireDataService {
     return http.get("/structureSanitaires/", options);
   }
 
+  getMine() {
+    return http.get("/structureSanitaires/my/", options);
+  }
+
   get(id) {
     return http.get(`/structureSanitaires/${id}/`, options);
   }
