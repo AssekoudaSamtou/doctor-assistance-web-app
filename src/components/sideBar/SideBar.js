@@ -74,7 +74,43 @@ const SideBar = () => {
                                 </Link>
                             </li>
                         </ul>
+                        <ul className="sub-menu" wfd-invisible="true">
+                            <li>
+                                <Link to={"/doctors"}>
+                                    All Doctors
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/doctors_new"}>
+                                    Add Doctor
+                                </Link>
+                            </li>
+                        </ul>
                     </li>
+
+                    <li className="">
+                        <a href="javascript:;">
+                            <i className="img">
+                                <img src={icon2} alt="" className="width-20"/>
+                            </i>
+                            <span className="title">Consultations</span>
+                            <span className="arrow "></span>
+                        </a>
+                        
+                        <ul className="sub-menu" wfd-invisible="true">
+                            <li>
+                                <Link to={"/consultations"}>
+                                    All Consultations
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/consultation_new"}>
+                                    Add Consultation
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+
                     <li className="">
                         <a href="javascript:;">
                             <i className="img">

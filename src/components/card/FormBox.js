@@ -3,6 +3,7 @@ import React from 'react';
 import FormBoxHeader from './FormBoxHeader';
 import FormBoxItem from './FormBoxItem';
 import FormBoxFooter from './FormBoxFooter';
+import { data } from 'jquery';
 
 class FormBox extends React.Component {
 
@@ -35,7 +36,7 @@ class FormBox extends React.Component {
                             <div className="col-xs-12">
                                 <form action="#" method="post">
                                     
-                                    { this.props.box.fields.map(({type, label, description, selectOptions, name, value}) =>
+                                    { this.props.box.fields.map(({type, label, description, selectOptions, name, value,data}) =>
                                         <FormBoxItem 
                                             key={name}
                                             type={type} 
@@ -44,6 +45,7 @@ class FormBox extends React.Component {
                                             selectOptions={selectOptions} 
                                             onInputChange={this.handleInputChange}
                                             name={name}
+                                            data={data}
                                             value={value} />
                                     )}
         

@@ -2,20 +2,22 @@ import React, { useState } from 'react';
 import AddHeader from '../../card/AddHeader';
 import FormBox from '../../card/FormBox';
 
-import PatientDataService from "../../../services/patient.service";
+import DoctorDataService from "../../../services/doctor.service";
+import SpecialiteDataService from "../../../services/specialite.service";
 
 import PageTitle from '../../card/PageTitle';
 import NotFound from '../error/404';
 
 
-class EditPatient extends React.Component {
+class EditDoctor extends React.Component {
 
     constructor(props) {
         super(props)
         this.state = {
-            doctor: {id: null, first_name: "sam", last_name: "", username: ""},
+            doctor: {id: null, fisrt_name: null, last_name: null, username: null, email: null, password: String, specialite:null, bio:null,genre:null, telephone:null, adresse:null, date_naissance:null},
             submitted: false,
-            isSubmitting: false
+            isSubmitting: false,
+            specialites:[]
         };
         this.handleInputChange = this.handleInputChange.bind(this)
         this.saveDoctor = this.saveDoctor.bind(this)
@@ -25,13 +27,20 @@ class EditPatient extends React.Component {
     componentWillMount() {
         const { match: { params } } = this.props;
         
-        DocotrDataService.get(params.id)
+        DoctorDataService.get(params.id)
         .then(response => {
             console.log(response.data);
             this.setState({doctor: {...response.data}});
         }).catch(e => {
             console.log(e);
             console.log(this.state.doctor.id === null);
+        });
+
+        SpecialiteDataService.getAll()
+        .then(response => {
+            this.setState({specialites: response.data.results});
+        }).catch(e => {
+            console.log(e);
         });
     }
 
@@ -43,30 +52,36 @@ class EditPatient extends React.Component {
 
     saveDoctor() {
         var data = {
-            ...this.state.doctor,
-            "create_date_time": "2020-07-13T02:49:00Z",
-            "mod_date_time": "2020-07-13T02:49:00Z",
+            "first_name": this.state.doctor.nom,
+            email: this.state.doctor.email,
+            "last_name": this.state.doctor.prenom,
+            username: this.state.doctor.username,
+            specialite: this.state.doctor.specialite,
+            bio: this.state.doctor.bio,
+            genre: this.state.doctor.genre,
+            telephone: this.state.doctor.telephone,
+            adresse: this.state.doctor.adresse,
+            "date_naissance": this.state.doctor.date_naissance,
         }; 
-    
-        PatientDataService.update(this.state.patient.id, data)
+        DoctorDataService.update(this.state.doctor.id, data)
             .then(response => {
-                this.setState({ patient: { ...response.data } });
-                console.log(response.data);
-                window.showSuccess('Your patient has been saved successfuly');
+                this.setState({ doctor: { ...response.data } });
+                console.log(response);
+                window.showSuccess('Your doctor has been saved successfuly');
             })
             .catch(e => {
-                console.log(e);
+                console.log(e.response);
             });
     }
 
-    deletePatient() {    
-        PatientDataService.delete(this.state.patient.id)
+    deleteDoctor() {    
+        DoctorDataService.delete(this.state.doctor.id)
             .then(response => {
                 console.log(response.status);
                 window.$('#deleteConfirmationModal').modal('toggle');
-                window.showSuccess('Patient deleted successfuly');
+                window.showSuccess('Doctor deleted successfuly');
                 setTimeout( () => {
-                    this.props.history.push("/patients/")
+                    this.props.history.push("/doctors/")
                 }, 500)
             })
             .catch(e => {
@@ -78,28 +93,39 @@ class EditPatient extends React.Component {
     render() {
 
         const GenderSelectOptions = [
-            {id: 1, label: "Male"},
-            {id: 2, label: "Female"},
+            {id: null, libelle: "----Selectionnez le genre-----"},
+            {id: "M", libelle: "Masculin"},
+            {id: "F", libelle: "Femminin"},
         ];
+        const specialiteSelectOptions = [
+            {id: null, libelle: "----Selectionnez une specialite-----"},
+        ].concat(this.state.specialites);
         const formBoxes = [
             {
-                headerTitle: "Basic Info",
+                headerTitle: "Information personnelle du medecin",
                 fields: [
-                    {type: "text", label: "Nom", name: "nom", value: this.state.patient.nom},
-                    {type: "text", label: "Prénom", name: "prenom", value: this.state.patient.prenom},
-                    {type: "text", label: "adresse", name: "adresse", value: this.state.patient.adresse, description: 'e.g. "Agoe-cacaveli"'},
+                    {type: "text", label: "Username", name: "username", value: this.state.doctor.username},
+                    {type: "text", label: "Nom", name: "nom", value: this.state.doctor.nom},
+                    {type: "text", label: "Prénom", name: "prenom", value: this.state.doctor.prenom},
+                    {type: "text", label: "Email", name: "email", value: this.state.doctor.email},
+                    {type: "text", label: "adresse", name: "adresse", value: this.state.doctor.adresse, description: 'e.g. "Agoe-cacaveli"'},
+                    {type: "select", label: "specialite", name: "specialite", value: this.state.doctor.specialite, selectOptions: specialiteSelectOptions},
+                    {type: "textarea", label: "bio", name: "bio", value: this.state.doctor.bio, description: 'e.g. "Biologie"'},
+                    {type: "date", label: "Date de naissance", name: "date_naissance", value: this.state.doctor.date_naissance},
+                    {type: "text", label: "Telephone", name: "telephone", value: this.state.doctor.telephone},
+                    {type: "select", label: "Genre", name: "genre", value: this.state.doctor.genre, selectOptions: GenderSelectOptions},
                 ]
             },
         ];
 
         return (
             <div>
-                {this.state.patient.id !== null ? (
+                {this.state.doctor.id !== null ? (
                     <div>
-                        <PageTitle title="Edit patient" />
+                        <PageTitle title="Edit medecin" />
                         
                         <div className="col-xs-12 ">
-                            <AddHeader entityName="patient" type="edit" />
+                            <AddHeader entityName="medecin" type="edit" />
 
                             <div className="bg-w">
                                 { formBoxes.map((box) => 
@@ -107,8 +133,8 @@ class EditPatient extends React.Component {
                                         box={box} fromType="edit"
                                         isSubmitting={this.state.isSubmitting}
                                         onInputChange={this.handleInputChange} 
-                                        onSaveBtnTapped={this.savePatient}
-                                        onDeleteBtnTapped={this.deletePatient} />
+                                        onSaveBtnTapped={this.saveDoctor}
+                                        onDeleteBtnTapped={this.deleteDoctor} />
                                 )}                        
                             </div>
                         </div>
@@ -122,4 +148,4 @@ class EditPatient extends React.Component {
     }
 }
 
-export default EditPatient;
+export default EditDoctor;
