@@ -1,5 +1,5 @@
 import React from 'react';
-
+import Select from 'react-select';
 class FormBoxItem extends React.Component{
 
     constructor(props) {
@@ -10,7 +10,6 @@ class FormBoxItem extends React.Component{
     handleInputChange(e) {
         this.props.onInputChange(e);
     }
-
     render() {
         return (
             <div className="form-group">
@@ -25,7 +24,7 @@ class FormBoxItem extends React.Component{
                             name={this.props.name} value={this.props.value} >
 
                             {this.props.selectOptions.map((option) => (
-                                <option key={option.id} value={option.id}>{option.libelle}</option>
+                                option.id ?<option key={option.id} value={option.id}>{option.libelle}</option>:null
                             ))}
                             
                         </select>

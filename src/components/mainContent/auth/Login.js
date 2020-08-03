@@ -36,6 +36,7 @@ class Login extends React.Component {
                 cookies.set('loggedUser', response.data.user, { path: '/' });
                 cookies.set('userType', response.data.user_type, { path: '/' });
                 window.location.href =  "dashboard";
+                console.log(response.data.user)
             })
             .catch(error => {
                 if (error.response) {
