@@ -40,8 +40,7 @@ class EditConsultation extends React.Component {
     componentWillMount() {
         DemandeConsultationsDataService.get(this.props.consultation.id)
         .then(response => {
-            this.setState({consultation: {...response.data}});
-            console.log("==========="+this.state.consultation+"==========")
+            this.setState({consultation: {...response.data}});            
         }).catch(e => {
             console.log(e);
         });
