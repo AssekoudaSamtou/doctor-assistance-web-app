@@ -57,7 +57,7 @@ class AddPatient extends React.Component {
                 }, 1000);
             })
             .catch(e => {
-                console.log(e.response);
+                console.log(e);
                 window.showErrorMessage('Something went wrong');
             });
     }

@@ -8,7 +8,6 @@ import profile from "../../../data/profile/profile.jpg"
 import clock from "../../../data/hos-dash/clock.png"
 import PatientInfoItem from '../../card/PatientInfoItem';
 import { Link } from 'react-router-dom';
-import AddConsultation from '../consultation/AddConsultation';
 
 class PatientDetails extends React.Component {
 
@@ -86,26 +85,9 @@ class PatientDetails extends React.Component {
                                                     <Link to={`/patients_update/${this.state.patient.id}`} className="btn btn-primary btn-lg gradient-blue d-block" style={{display: 'block', marginTop: '20px'}}>
                                                         <span>Edit</span>
                                                     </Link>
-                                                    <a data-toggle="modal" href="#cmpltadminModal-7" className="btn btn-primary btn-lg gradient-blue d-block" style={{display: 'block', marginTop: '20px'}}>
-                                                        <span>Nouvelle consultation</span>
-                                                    </a>
                                                 </div>
-                                                <div class="modal fade col-xs-12" id="cmpltadminModal-7" tabindex="-1" role="dialog" aria-hidden="true">
-                                            <div class="modal-dialog" style={{width:"80%"}}>
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title">{this.state.patient.nom} {this.state.patient.prenom}</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <AddConsultation detail={"detail"} patientId={this.state.patient.id} />
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                                
+
                                             </div>
                                         
                                         </div>

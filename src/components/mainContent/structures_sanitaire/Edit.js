@@ -7,11 +7,11 @@ import FormBox from '../../card/FormBox';
 import PatientDataService from "../../../services/patient.service";
 
 import PageTitle from '../../card/PageTitle';
-import Alert from '../../card/Alert';
+import NotFound from '../error/404';
 
 const cookies = new Cookies();
 
-class AddPatient extends React.Component {
+class EditPatient extends React.Component {
 
     constructor(props) {
         super(props)
@@ -23,6 +23,20 @@ class AddPatient extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.savePatient = this.savePatient.bind(this)
         this.newPatient = this.newPatient.bind(this)
+        this.deletePatient = this.deletePatient.bind(this)
+    }
+
+    componentWillMount() {
+        const { match: { params } } = this.props;
+        
+        PatientDataService.get(params.id)
+        .then(response => {
+            console.log(response.data);
+            this.setState({patient: {...response.data}});
+        }).catch(e => {
+            console.log(e);
+            console.log(this.state.patient.id === null);
+        });
     }
 
     handleInputChange(event) {
@@ -44,26 +58,38 @@ class AddPatient extends React.Component {
             telephone: this.state.patient.telephone,
             date_naissance: this.state.patient.date_naissance,
             genre: this.state.patient.genre,
-        };
-        console.log(data); 
+        }; 
     
-        PatientDataService.create(data)
+        PatientDataService.update(this.state.patient.id, data)
             .then(response => {
-                this.newPatient();
-                console.log(response.data, this.state.submitted);
+                this.setState({ patient: { ...response.data } });
+                console.log(response.data);
                 window.showSuccess('Your patient has been saved successfuly');
-                setTimeout( () => {
-                    this.props.history.push(`/patients_details/${response.data.id}`)
-                }, 1000);
             })
             .catch(e => {
-                console.log(e.response);
+                console.log(e);
                 window.showErrorMessage('Something went wrong');
             });
     }
 
+    deletePatient() {
+        PatientDataService.delete(this.state.patient.id)
+            .then(response => {
+                console.log(response.status);
+                window.$('#deleteConfirmationModal').modal('toggle');
+                window.showSuccess('Patient deleted successfuly');
+                setTimeout( () => {
+                    this.props.history.push("/patients/")
+                }, 500)
+            })
+            .catch(e => {
+                console.log(e);
+                window.showErrorMessage('Something went wrong!!!');
+            });
+    }
+
     newPatient() {
-        this.setState({ patient: {id: null, nom: null, prenom: null, adresse: null, telephone: null, date_naissance: null, genre: null} });
+        this.setState({ patient: {nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""}, });
         this.setState({ submitted: true });
     }
 
@@ -85,30 +111,37 @@ class AddPatient extends React.Component {
                     {type: "date", label: "Date de naissance", name: "date_naissance", value: this.state.patient.date_naissance},
                     {type: "select", label: "Genre", name: "genre", value: this.state.patient.genre, selectOptions: GenderSelectOptions},
                 ]
-            }
+            },
         ];
 
         return (
             <div>
-                <PageTitle title="Ajout de patient" />
-                
-                <div className="col-xs-12 ">
-                    <AddHeader entityName="patient" type="add" />
+                {this.state.patient.id !== null ? (
+                    <div>
+                        <PageTitle title="Edit patient" />
+                        
+                        <div className="col-xs-12 ">
+                            <AddHeader entityName="patient" type="edit" />
 
-                    <div className="bg-w">
-                        { formBoxes.map((box) => 
-                            <FormBox 
-                                key={box.headerTitle}
-                                box={box} fromType="add"
-                                isSubmitting={this.state.isSubmitting}
-                                onInputChange={this.handleInputChange} 
-                                onSaveBtnTapped={this.savePatient} />
-                        )}
+                            <div className="bg-w">
+                                { formBoxes.map((box) => 
+                                    <FormBox 
+                                        box={box} fromType="edit"
+                                        isSubmitting={this.state.isSubmitting}
+                                        onInputChange={this.handleInputChange} 
+                                        onSaveBtnTapped={this.savePatient}
+                                        onDeleteBtnTapped={this.deletePatient} />
+                                )}                        
+                            </div>
+                        </div>
                     </div>
-                </div>
+                ) : (
+                    <NotFound/>
+                )}
+                
             </div>
         )
     }
 }
 
-export default AddPatient;
+export default EditPatient;

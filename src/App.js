@@ -13,11 +13,15 @@ import Cookies from 'universal-cookie';
 import EditPatient from './components/mainContent/patient/EditPatient';
 import DoctorList from './components/mainContent/medecin/DoctorList';
 import DoctorDetails from './components/mainContent/medecin/DoctorDetails';
-import DoctorDashboard from './components/mainContent/dashborad/DoctorDashboard';
+
+import DoctorDashboard from './components/mainContent/dashborad/doctor/DoctorDashboard';
+import HopitalList from './components/mainContent/structures_sanitaire/All';
+
 import AddDoctor from './components/mainContent/medecin/AddDoctor';
 import EditDoctor from './components/mainContent/medecin/EditDoctor';
 import AddConsultation from './components/mainContent/consultation/AddConsultation';
 import ConsultationList from './components/mainContent/consultation/ConsultationList';
+
 
 const cookies = new Cookies();
 
@@ -134,6 +138,23 @@ class App extends React.Component {
                                             path={`/consultation_new`} 
                                             render={ props => (
                                                 this.state.loggedIn ? <AddConsultation {...props} /> : <Redirect to="/login" />
+                                            ) } />
+                                        
+                                        <Route path="/hospitals">
+                                            {this.state.loggedIn ? <HopitalList /> : <Redirect to="/login" />}
+                                        </Route>
+
+                                        <Route 
+                                            exact path={`/hospitals_new`}
+                                            render={ props => (
+                                                this.state.loggedIn ? <AddPatient {...props} /> : <Redirect to="/login" />
+                                            ) } >
+                                        </Route>
+
+                                        <Route 
+                                            path={`/hospitals_details/:id`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <PatientDetails {...props} /> : <Redirect to="/login" />
                                             ) } />
                                     </Switch>
                                 </div>

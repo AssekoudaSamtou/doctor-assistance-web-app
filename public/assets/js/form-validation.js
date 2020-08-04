@@ -203,7 +203,7 @@ $(document).ready(function() {
 
 
         //Form Wizard Validations
-        var $validator = $("#commentForm").validate({
+        var $validator = $("#doctorDetailForm").validate({
             rules: {
                 txtFullName: {
                     required: true,
@@ -240,7 +240,7 @@ $(document).ready(function() {
             onNext: function(tab, navigation, index) {
                 console.log('onNext');
                 if ($.isFunction($.fn.validate)) {
-                    var $valid = $("#commentForm").valid();
+                    var $valid = $("#doctorDetailForm").valid();
                     if (!$valid) {
                         $validator.focusInvalid();
                         return false;
@@ -271,10 +271,7 @@ $(document).ready(function() {
             }
         });
 
-        $('#pills .finish').click(function() {
-            alert('Finished!, Starting over!');
-            $('#pills').find("a[href*='tab1']").trigger('click');
-        });
+        
 
 
 
