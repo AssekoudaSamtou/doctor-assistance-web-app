@@ -8,12 +8,22 @@ import PatientInfoItem from '../../card/PatientInfoItem';
 let v = true
 class ConsultationItem extends React.Component {
     render() {
+        const date = new Date(this.props.demande?.date_consultation)
+        const newDate = new Date()
+        newDate.setFullYear(date.getFullYear())
+        newDate.setMonth(date.getMonth())
+        newDate.setDate(date.getDate())
+        newDate.setHours(date.getHours())
+        newDate.setMinutes(date.getMinutes())
+        newDate.setSeconds(date.getSeconds())
+        const mdate = ("0"+date.getDay()).slice(-2, 3)+"/"+("0"+date.getMonth()).slice(-2,3)+"/"+date.getFullYear()+" "+("0"+date.getHours()).slice(-2,3)+":"+("0"+date.getMinutes()).slice(-2,3)+":"+("0"+date.getSeconds()).slice(-2,3)
        return (
         <tr onClick={this.props.updateConsultation} data-toggle="modal" href={`#cmpltadminModal-${this.props.consultation.id}`} style={{cursor:'pointer'}}>
         <td>
             <div className="round">S</div>
             <div className="designer-info">
-                <h6>{new Intl.DateTimeFormat("en-US", {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(new Date())}
+                <h6>
+                {mdate}
                 </h6>
                 <small className="text-muted">Status: {this.props.demande?.status}</small>
             </div>

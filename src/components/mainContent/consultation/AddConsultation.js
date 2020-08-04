@@ -101,11 +101,11 @@ class AddConsultation extends React.Component {
     }
     newConsultation(){
         this.setState({consultation:  {
-            demande_consultation:null,
-            motif: null,
-            interrogatoire:null,
-            resume:null,
-            hypothese_diagnostique:null,
+            demande_consultation:"",
+            motif: "",
+            interrogatoire:"",
+            resume:"",
+            hypothese_diagnostique:"",
         }})
     }
     
