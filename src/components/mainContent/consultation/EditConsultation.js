@@ -18,11 +18,11 @@ class EditConsultation extends React.Component {
         this.state = {
             consultation:  {
                 id:null,
-                demande_consultation:3,
-                motif: "ddsads",
+                demande_consultation:null,
+                motif: "",
                 interrogatoire:null,
                 resume:null,
-                hypothese_diagnostique:"aDSDS",
+                hypothese_diagnostique:"",
             },
             submitted: false,
             isSubmitting: false,
@@ -40,8 +40,7 @@ class EditConsultation extends React.Component {
     componentWillMount() {
         DemandeConsultationsDataService.get(this.props.consultation.id)
         .then(response => {
-            this.setState({consultation: {...response.data}});
-            console.log("==========="+this.state.consultation+"==========")
+            this.setState({consultation: {...response.data}});            
         }).catch(e => {
             console.log(e);
         });
