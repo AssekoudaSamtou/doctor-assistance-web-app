@@ -21,6 +21,8 @@ import AddDoctor from './components/mainContent/medecin/AddDoctor';
 import EditDoctor from './components/mainContent/medecin/EditDoctor';
 import AddConsultation from './components/mainContent/consultation/AddConsultation';
 import ConsultationList from './components/mainContent/consultation/ConsultationList';
+import authService from './services/auth.service';
+// import Schedule from './components/mainContent/emploi_du_temps/Schedule';
 
 
 const cookies = new Cookies();
@@ -47,7 +49,26 @@ class App extends React.Component {
         this.setState({isLoginPageLoaded: true});
     }
 
-    componentWillMount() {
+    componentWillMount() {            
+        authService.assert({token: cookies.get("token")})
+            .then(response => {
+                cookies.set('loggedUser', response.data.user);
+                this.setState({loggedIn: true});
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response.data);
+                } 
+                else if (error.request) {
+                    console.log(error.request);
+                } 
+                else {
+                    console.log('Error', error.message);
+                }
+                this.setState({loggedIn: false});
+                window.showErrorMessage("Wrong credential ! Please try to login");
+                console.log(error.config);
+            });
     }
 
     render() {
@@ -66,7 +87,6 @@ class App extends React.Component {
                         render={ props => (
                             <Register onLoginPageLoaded={this.handleLoginPageLoaded} {...props} />
                         )} >
-                        
                     </Route>
                 </Switch>
 
@@ -156,6 +176,12 @@ class App extends React.Component {
                                             render={ props => (
                                                 this.state.loggedIn ? <PatientDetails {...props} /> : <Redirect to="/login" />
                                             ) } />
+
+                                        {/* <Route 
+                                            path={`/schedules`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <Schedule {...props} /> : <Redirect to="/login" />
+                                            ) } /> */}
                                     </Switch>
                                 </div>
                             </section>

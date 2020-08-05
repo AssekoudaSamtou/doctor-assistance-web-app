@@ -5,10 +5,8 @@ import FormBoxItem from '../../../card/FormBoxItem';
 import Specialite from '../../../card/Specialite';
 import SpecialiteDataService from '../../../../services/specialite.service';
 import DoctorDataService from '../../../../services/doctor.service';
-import StructureSanitaireDataService from '../../../../services/structureSanitaire.service';
-import MedecinStructureSanitaireDataService from '../../../../services/medecinStructureSanitaire.service';
-import StructureSanitaire from '../../../card/StructureSanitaire';
 import './DoctorDetailForm.css'
+import StructureSanitaireTabPane from './StructureSanitaireTabPane';
 
 const cookies = new Cookies();
 
@@ -28,12 +26,9 @@ class DoctorDetailForm extends React.Component {
             telephone: user.telephone,
             bio: user.bio,
             specialites: [],
-            structureSanitaires: [],
-            selectedStructureSanitaires: user.structure_sanitaires,
         };
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSpecialiteClik = this.handleSpecialiteClik.bind(this);
-        this.handleStructureSanitaireClick = this.handleStructureSanitaireClick.bind(this);
     }
 
     handleInputChange(event) {
@@ -45,25 +40,6 @@ class DoctorDetailForm extends React.Component {
         SpecialiteDataService.getAll()
         .then(response => {
             this.setState({ specialites: response.data.results });
-        })
-        .catch(error => {
-            if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } 
-            else if (error.request) {
-                console.log(error.request);
-            } 
-            else {
-                console.log('Error', error.message);
-            }
-            console.log(error.config);
-        });
-        
-        StructureSanitaireDataService.getAll()
-        .then(response => {
-            this.setState({ structureSanitaires: response.data.results });
         })
         .catch(error => {
             if (error.response) {
@@ -120,16 +96,16 @@ class DoctorDetailForm extends React.Component {
         }
     }
 
-    handleStructureSanitaireChildMount = (ss_id) => {
-        const selector = "#pills-tab5 #structureSanitaire-";
-        if (this.state.selectedStructureSanitaires.includes(ss_id)) {
-            window.$(selector + ss_id).find(".doc-info span").removeClass("disabled").text("Retirer la Demande").css("background", "#26e2d6");
+    componentDidMount() {
+        if (!this.mustComplete()) {
+            window.$('#doctorDetailsModal').modal('toggle');
         }
+        window.$('#pills .finish').click(this.updateDoctorInfo);
     }
 
-    componentDidMount() {
-        window.$('#doctorDetailsModal').modal('toggle');
-        window.$('#pills .finish').click(this.updateDoctorInfo);
+    mustComplete() {
+        // return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
+        return false;
     }
 
     handleSpecialiteClik(id) {
@@ -148,94 +124,6 @@ class DoctorDetailForm extends React.Component {
         console.log(this.state.specialite);
     }
 
-    handleStructureSanitaireClick(id) {
-        console.log(id);
-        const selector = "#pills-tab5 #structureSanitaire-";
-        if (!this.state.selectedStructureSanitaires.includes(id)) {
-            console.log(cookies.get("loggedUser")["id"]);
-            var data = {
-                "demandeur": "M",
-                "medecin": cookies.get("loggedUser")["id"],
-                "centre_medical": id
-            };
-            window.$(selector + id).find(".doc-info span").addClass("disabled").text("En cours...");
-            MedecinStructureSanitaireDataService.create(data)
-            .then(response => {
-                this.state.selectedStructureSanitaires.push(id);
-                let temp = cookies.get("loggedUser");
-                temp.structure_sanitaires = this.state.selectedStructureSanitaires;
-                cookies.set("loggedUser", temp);
-                window.$(selector + id).find(".doc-info span").removeClass("disabled").text("Retirer la Demande").css("background", "#26e2d6");
-                window.$(selector + id).find("input[name='medecinStructureSanitaireID']").val(response.data.id);
-                window.showSuccess("Demande envoer");
-            })
-            .catch(error => {
-                if (error.response) {
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                } 
-                else if (error.request) {
-                    console.log(error.request);
-                } 
-                else {
-                    console.log('Error', error.message);
-                }
-                console.log(error.config);
-            });
-        }
-        else {
-            window.$(selector + id).find(".doc-info span").addClass("disabled").text("En cours...");
-            let MSSID = window.$(selector + id).find("input[name='medecinStructureSanitaireID']").val();
-            if (MSSID === "samtou") {//ne va jamais sexecuter
-                MedecinStructureSanitaireDataService.delete(parseInt(MSSID))
-                .then(response => {
-                    this.state.selectedStructureSanitaires.splice(this.state.selectedStructureSanitaires.indexOf(id), 1);
-                    window.$(selector + id).find(".doc-info span").removeClass("disabled").text("Ajouter").css("background", "#eaeaea");
-                    window.showSuccess("Demande supprimée");
-                })
-                .catch(error => {
-                    if (error.response) {
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                    } 
-                    else if (error.request) {
-                        console.log(error.request);
-                    } 
-                    else {
-                        console.log('Error', error.message);
-                    }
-                    console.log(error.config);
-                });
-            }
-            else{
-                var user = cookies.get("loggedUser");
-                MedecinStructureSanitaireDataService.delete(user.id, id)
-                .then(response => {
-                    this.state.selectedStructureSanitaires.splice(this.state.selectedStructureSanitaires.indexOf(id), 1);
-                    cookies.set("loggedUser", response.data)
-                    window.$(selector + id).find(".doc-info span").removeClass("disabled").text("Ajouter").css("background", "#eaeaea");
-                    window.showSuccess("Demande supprimée");
-                })
-                .catch(error => {
-                    if (error.response) {
-                        console.log(error.response.data);
-                        console.log(error.response.status);
-                        console.log(error.response.headers);
-                    } 
-                    else if (error.request) {
-                        console.log(error.request);
-                    } 
-                    else {
-                        console.log('Error', error.message);
-                    }
-                    console.log(error.config);
-                });
-            }
-        }
-        
-    }
 
     render() {
         const GenderSelectOptions = [
@@ -256,18 +144,18 @@ class DoctorDetailForm extends React.Component {
 
                                 <div id="pills" className="wizardpills">
                                     <ul className="form-wizard nav nav-pills">
-                                        <li className="active"><a href="#pills-tab1" data-toggle="tab" aria-expanded="false"><span>Etat Civil</span></a></li>
-                                        <li className=""><a href="#pills-tab2" data-toggle="tab" aria-expanded="true"><span>Adresse</span></a></li>
-                                        <li className=""><a href="#pills-tab3" data-toggle="tab" aria-expanded="false"><span>Bio</span></a></li>
-                                        <li className=""><a href="#pills-tab4" data-toggle="tab" aria-expanded="false"><span>Spécialité</span></a></li>
-                                        <li className=""><a href="#pills-tab5" data-toggle="tab" aria-expanded="false"><span>Structures Sanitaires</span></a></li>
+                                        <li className=""><a href="#pills-tab1" data-toggle="tab" aria-expanded="true"><span><i class="fas fa-user-edit fa-3x" title="Etat Civil"></i></span></a></li>
+                                        <li className=""><a href="#pills-tab2" data-toggle="tab" aria-expanded="false"><span><i class="fas fa-address-card fa-3x" title="Adresse"></i></span></a></li>
+                                        <li className=""><a href="#pills-tab3" data-toggle="tab" aria-expanded="false"><span><i class="fas fa-info-circle fa-3x" title="Biographie"></i></span></a></li>
+                                        <li className=""><a href="#pills-tab4" data-toggle="tab" aria-expanded="false"><span><i class="fas fa-briefcase-medical fa-3x" title="Spécialité"></i></span></a></li>
+                                        <li className=""><a href="#pills-tab5" data-toggle="tab" aria-expanded="false"><span><i class="fas fa-hospital fa-3x" title="Structures Sanitaires"></i></span></a></li>
                                     </ul>
                                     <div id="bar" className="progress active">
                                         <div className="progress-bar progress-bar-primary" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style={{width: 20+'%'}}></div>
                                     </div>
 
                                     <div className="tab-content">
-                                        <div className="tab-pane active" id="pills-tab1">
+                                        <div className="tab-pane" id="pills-tab1">
 
                                             <h4>Informations Personnelles</h4>
                                             <br/>
@@ -329,15 +217,10 @@ class DoctorDetailForm extends React.Component {
                                         </div>
                                         
                                         <div className="tab-pane" id="pills-tab5">
-                                            <h4>Vous intervenez dans l'une de ces structures en tant que Médécin ? sans plus tarder, .</h4>
-                                            <br/>
-                                            <div className="row">
-                                                { this.state.structureSanitaires.map(({denomination, adresse, id}) => (
-                                                    <div className="col-lg-3 col-xs-12" key={id}>
-                                                        <StructureSanitaire nom={denomination} adresse={adresse} id={id} onClick={this.handleStructureSanitaireClick} onMount={this.handleStructureSanitaireChildMount} />
-                                                    </div>
-                                                ))}
-                                            </div>
+                                            <StructureSanitaireTabPane 
+                                                structureSanitaires={this.state.structureSanitaires} 
+                                                onStructureSanitaireClick={this.handleStructureSanitaireClick} 
+                                                onStructureSanitaireMount={this.handleStructureSanitaireChildMount} />
                                         </div>
 
                                         <div className="clearfix"></div>

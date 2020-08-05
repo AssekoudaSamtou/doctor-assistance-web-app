@@ -35,8 +35,18 @@ class EditPatient extends React.Component {
             this.setState({patient: {...response.data}});
         }).catch(e => {
             console.log(e);
-            console.log(this.state.patient.id === null);
         });
+    }
+
+    handleNotFoundMount = ()=> {
+        alert("out");
+        if (this.state.patient.id !== null) {
+            window.$("#notfoundpage").css("display", "none");
+        }
+        else{
+            alert("in");
+            // window.$("#notfoundpage").css("display", "block");
+        }
     }
 
     handleInputChange(event) {
@@ -136,7 +146,7 @@ class EditPatient extends React.Component {
                         </div>
                     </div>
                 ) : (
-                    <NotFound/>
+                    <NotFound onMount={this.handleNotFoundMount} />
                 )}
                 
             </div>

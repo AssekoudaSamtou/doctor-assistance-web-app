@@ -14,7 +14,7 @@ class EditDoctor extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            doctor: {id: null, fisrt_name: null, last_name: null, username: null, email: null, password: String, specialite:null, bio:null,genre:null, telephone:null, adresse:null, date_naissance:null},
+            doctor: {id: null, first_name: null, last_name: null, username: null, email: null, password: String, specialite:null, bio:null,genre:null, telephone:null, adresse:null, date_naissance:null},
             submitted: false,
             isSubmitting: false,
             specialites:[]
@@ -46,15 +46,15 @@ class EditDoctor extends React.Component {
 
     handleInputChange(event) {
         const { name, value } = event.target;
-        this.setState({ docotr: { ...this.state.doctor, [name]: value } });
+        this.setState({ doctor: { ...this.state.doctor, [name]: value } });
         console.log("CHANGING... ", name, value);
     }
 
     saveDoctor() {
         var data = {
-            "first_name": this.state.doctor.nom,
+            "first_name": this.state.doctor.first_name,
             email: this.state.doctor.email,
-            "last_name": this.state.doctor.prenom,
+            "last_name": this.state.doctor.last_name,
             username: this.state.doctor.username,
             specialite: this.state.doctor.specialite,
             bio: this.state.doctor.bio,
@@ -105,8 +105,8 @@ class EditDoctor extends React.Component {
                 headerTitle: "Information personnelle du medecin",
                 fields: [
                     {type: "text", label: "Username", name: "username", value: this.state.doctor.username},
-                    {type: "text", label: "Nom", name: "nom", value: this.state.doctor.nom},
-                    {type: "text", label: "Prénom", name: "prenom", value: this.state.doctor.prenom},
+                    {type: "text", label: "Nom", name: "first_name", value: this.state.doctor.first_name},
+                    {type: "text", label: "Prénom", name: "last_name", value: this.state.doctor.last_name},
                     {type: "text", label: "Email", name: "email", value: this.state.doctor.email},
                     {type: "text", label: "adresse", name: "adresse", value: this.state.doctor.adresse, description: 'e.g. "Agoe-cacaveli"'},
                     {type: "select", label: "specialite", name: "specialite", value: this.state.doctor.specialite, selectOptions: specialiteSelectOptions},

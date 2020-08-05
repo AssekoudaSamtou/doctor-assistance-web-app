@@ -24,16 +24,24 @@ class PatientDetails extends React.Component {
         
         PatientDataService.get(params.id)
         .then(response => {
-            console.log(response.data);
             this.setState({patient: {...response.data}});
         }).catch(e => {
             console.log(e);
-            console.log(this.state.patient.id === null);
         });
     }
 
     componentDidMount() {
         
+    }
+
+    handleNotFoundMount = ()=> {
+        alert("out");
+        if (this.state.patient.id !== null) {
+            window.$("#notfoundpage").css("display", "none");
+        }else{
+            alert("in");
+            // window.$("#notfoundpage").css("display", "block");
+        }
     }
 
     computedAge(date_naissance) {
@@ -343,7 +351,7 @@ class PatientDetails extends React.Component {
                             <div className="clearfix"></div>
                         </div>
                     ) : (
-                        <NotFound />
+                        <NotFound onMount={this.handleNotFoundMount} />
                     )}
                     
                 </div>

@@ -6,6 +6,10 @@ class AuthService {
     return http.post("/login/", data);
   }
 
+  assert(data) {
+    return http.post("/assert_user_by_token/", data);
+  }
+
   register(data) {
     return http.post(`/register/`, data);
   }

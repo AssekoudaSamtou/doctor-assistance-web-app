@@ -6334,6 +6334,12 @@ code {
 .pager li>a:hover, .pager li>a:focus {
     background-color: #f5f5f5;
 }
+.pager li.finish>a{
+    background: linear-gradient(40deg,#2096ff,#05ffa3) !important;
+    color: white;
+    border-radius: 30px;
+    font-weight: 700;
+}
 .pager.primary li>a, .pager.primary li>span {
     border: 1px solid #4d9cf8;
     color: #ffffff;
@@ -8254,13 +8260,19 @@ border-left: 3px solid transparent;
 }
 
 .form-wizard li a span{
-  position: absolute;
-  color: #777777;
-  width: auto;
-  display: inline-block;
-  margin-left: -25px;
-  font-family: 'Open Sans', Arial, Helvetica, sans-serif;
-  top: 40px;
+    position: absolute;
+    color: #080808;
+    /* width: 100px; */
+    display: inline-block;
+    margin-left: -23px;
+    font-family: 'Open Sans', Arial, Helvetica, sans-serif;
+    top: 40px;
+    text-align: start;
+    font-weight: 700;
+}
+
+.form-wizard li a span i{
+    color: #412b56;
 }
 
 .form-wizard li.complete a span{
@@ -11013,4 +11025,20 @@ table.dataTable tfoot th select, table.dataTable tfoot td select{
 
 table.dataTable.display tbody tr:first-child td {
     border-top: 1px solid #eeeeee;
+}
+#searchbarbox .input-group input{
+    height: 64px;
+    line-height: 100%;
+    font-size: 25px;
+    border-radius: 30px;
+    border-color: aqua;
+    background: aliceblue;
+}
+#searchbarbox .input-group {
+    width: 90%;
+    /* margin: auto; */
+}
+#searchbarbox {
+    margin-bottom: 50px;
+    margin-top: 40px;
 }

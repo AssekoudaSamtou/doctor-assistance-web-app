@@ -76,7 +76,7 @@ class AddDoctor extends React.Component {
     render() {
 
         const GenderSelectOptions = [
-            {id: null, libelle: "----Selectionnez un genre-----"},
+            {id: "N", libelle: "----Selectionnez un genre-----"},
             {id: "M", libelle: "Masculin"},
             {id: "F", libelle: "Féminin"},
         ];

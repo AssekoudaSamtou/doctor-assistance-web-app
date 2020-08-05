@@ -8,14 +8,10 @@ const handleOnclik = (event) => {
 
 }
 
-const StructureSanitaire = ({nom, adresse, onClick, id, onMount}) => {
-
-    useEffect(() => {
-        onMount(id);
-    });
+const StructureSanitaire = ({nom, adresse, onClick, id, isSelected}) => {
 
     return (
-        <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow" onClick={(event) => {onClick(id);}}>
+        <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow">
             <input type='hidden' name='medecinStructureSanitaireID' value=''/>
             <div className="doc-info-wrap text-left">
                 <div className="doctor-img" style={{borderRadius: 0}}>
@@ -25,7 +21,14 @@ const StructureSanitaire = ({nom, adresse, onClick, id, onMount}) => {
                     <h4 className="bold">{nom}</h4>
                     <h5>{adresse}</h5>
                     <div className="doc-rating">
-                        <span className="btn" style={{cursor: 'pointer'}}>Ajouter</span>
+                        <span 
+                            onClick={(event) => {onClick(id);}} 
+                            className="btn" style={{
+                                                    cursor: 'pointer', 
+                                                    background: `${ isSelected ? "#26e2d6" : "" }`,
+                                                    color: `${ isSelected ? "#333333" : "" }`}}>
+                                { isSelected ? "Retirer la demande" : "Ajouter" }
+                        </span>
                     </div>
                 </div>
             </div>
