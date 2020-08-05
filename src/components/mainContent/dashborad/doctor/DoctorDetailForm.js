@@ -15,7 +15,7 @@ class DoctorDetailForm extends React.Component {
     constructor(props) {
         super(props);
         var user = cookies.get("loggedUser");
-        console.log(user);
+        // console.log(user);
         this.state = {
             nom: user.first_name,
             prenom: user.last_name,

@@ -6,19 +6,17 @@ const handleOnclik = (event) => {
 
 }
 
-const ListeStructureSanitaire = ({filterText, liste, onClick, selected}) => {
-    const cookies = new Cookies();
-    const my_structure_sanitaires = cookies.get("loggedUser")['structure_sanitaires'];
-
+const ListeStructureSanitaire = ({filterText, liste, onClick, owned, added}) => {
+    
     const filteredList = liste.filter( elt =>  {
-        return !my_structure_sanitaires.includes(elt.id) && (elt.denomination.toLowerCase() + elt.adresse.toLowerCase()).indexOf(filterText.toLowerCase()) !== -1;
+        return !owned.includes(elt.id) && (elt.denomination.toLowerCase() + elt.adresse.toLowerCase()).indexOf(filterText.toLowerCase()) !== -1;
     })
 
     return (
         <div className="row">
             { filteredList.map(({denomination, adresse, id}) => (
                 <div className="col-lg-3 col-xs-12" key={id}>
-                    <StructureSanitaire nom={denomination} adresse={adresse} id={id} onClick={onClick} isSelected={selected.includes(id)} />
+                    <StructureSanitaire nom={denomination} adresse={adresse} id={id} onClick={onClick} isSelected={added.includes(id)} />
                 </div>
             ))}
             { filteredList.length === 0 && (
