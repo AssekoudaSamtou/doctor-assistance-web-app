@@ -19,6 +19,10 @@ class StructureSanitaireDataService {
     return http.get("/structureSanitaires/my/", options);
   }
 
+  getAdded() {
+    return http.get("/structureSanitaires/added/", options);
+  }
+
   get(id) {
     return http.get(`/structureSanitaires/${id}/`, options);
   }

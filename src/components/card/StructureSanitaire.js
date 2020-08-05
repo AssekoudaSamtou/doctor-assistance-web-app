@@ -9,7 +9,9 @@ const handleOnclik = (event) => {
 }
 
 const StructureSanitaire = ({nom, adresse, onClick, id, isSelected}) => {
-
+    // if (isSelected) {
+        // console.log("S-S", id, isSelected);
+    // }
     return (
         <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow">
             <input type='hidden' name='medecinStructureSanitaireID' value=''/>

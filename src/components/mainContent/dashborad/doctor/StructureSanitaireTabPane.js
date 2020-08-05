@@ -13,7 +13,8 @@ class StructureSanitaireTabPane extends Component {
         this.state = {
             filterText : "",
             structureSanitaires: [],
-            selectedStructureSanitaires: user.structure_sanitaires,
+            addedStructureSanitaires: [],
+            ownedStructureSanitaires: user.structure_sanitaires,
         };
     }
 
@@ -21,6 +22,25 @@ class StructureSanitaireTabPane extends Component {
         StructureSanitaireDataService.getAll()
         .then(response => {
             this.setState({ structureSanitaires: response.data.results });
+        })
+        .catch(error => {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } 
+            else if (error.request) {
+                console.log(error.request);
+            } 
+            else {
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+        });
+
+        StructureSanitaireDataService.getAdded()
+        .then(response => {
+            this.setState({ addedStructureSanitaires: response.data.results.map( ss => { return ss.id }) });
         })
         .catch(error => {
             if (error.response) {
@@ -52,7 +72,7 @@ class StructureSanitaireTabPane extends Component {
     handleStructureSanitaireClick = (id) => {
         console.log(id);
         const selector = "#pills-tab5 #structureSanitaire-";
-        if (!this.state.selectedStructureSanitaires.includes(id)) {
+        if (!this.state.addedStructureSanitaires.includes(id)) {
             var data = {
                 "demandeur": "M",
                 "medecin": cookies.get("loggedUser")["id"],
@@ -61,11 +81,8 @@ class StructureSanitaireTabPane extends Component {
             window.$(selector + id).find(".doc-info span").addClass("disabled").text("En cours...");
             MedecinStructureSanitaireDataService.create(data)
             .then(response => {
-                let temp = cookies.get("loggedUser");
-                temp.structure_sanitaires = this.state.selectedStructureSanitaires.concat([id]);
-                cookies.set("loggedUser", temp);
                 window.showSuccess("Demande envoer");
-                this.setState({selectedStructureSanitaires: this.state.selectedStructureSanitaires.concat([id])});
+                this.setState({addedStructureSanitaires: this.state.addedStructureSanitaires.concat([id])});
             })
             .catch(error => {
                 if (error.response) {
@@ -89,7 +106,8 @@ class StructureSanitaireTabPane extends Component {
             .then(response => {
                 cookies.set("loggedUser", response.data);
                 window.showSuccess("Demande supprimée");
-                this.setState({selectedStructureSanitaires: response.data.structure_sanitaires});
+                this.state.addedStructureSanitaires.splice(this.state.addedStructureSanitaires.indexOf(id), 1)
+                this.setState({addedStructureSanitaires: this.state.addedStructureSanitaires});
             })
             .catch(error => {
                 if (error.response) {
@@ -122,7 +140,7 @@ class StructureSanitaireTabPane extends Component {
                             </div>
                         </div>
                         <div className="col-lg-4">
-                            <span className="btn btn-success btn-sm" style={{marginTop: 20+'px'}}>
+                            <span className="btn btn-success btn-lg" style={{marginTop: 0+'px'}}>
                                 <i className="fas fa-plus"></i> Nouvelle structure sanitaire
                             </span>
                         </div>
@@ -133,7 +151,8 @@ class StructureSanitaireTabPane extends Component {
                 </div>
 
                 <ListeStructureSanitaire 
-                    selected={this.state.selectedStructureSanitaires}
+                    owned={this.state.ownedStructureSanitaires}
+                    added={this.state.addedStructureSanitaires}
                     filterText={this.state.filterText}
                     liste={this.state.structureSanitaires}
                     onClick={this.handleStructureSanitaireClick} />
