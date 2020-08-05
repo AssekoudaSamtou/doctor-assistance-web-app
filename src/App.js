@@ -21,6 +21,8 @@ import AddDoctor from './components/mainContent/medecin/AddDoctor';
 import EditDoctor from './components/mainContent/medecin/EditDoctor';
 import AddConsultation from './components/mainContent/consultation/AddConsultation';
 import ConsultationList from './components/mainContent/consultation/ConsultationList';
+import AddDemandeConsultation from './components/mainContent/demande_consultation/AddDemandeConsultation';
+import DemandeConsultationList from './components/mainContent/demande_consultation/DemandeConsultationList';
 
 
 const cookies = new Cookies();
@@ -155,6 +157,19 @@ class App extends React.Component {
                                             path={`/hospitals_details/:id`} 
                                             render={ props => (
                                                 this.state.loggedIn ? <PatientDetails {...props} /> : <Redirect to="/login" />
+                                            ) } />
+
+<Route 
+                                        exact path={`/demande_consultation_new`}
+                                            render={ props => (
+                                                this.state.loggedIn ? <AddDemandeConsultation {...props} /> : <Redirect to="/login" />
+                                            ) } >
+                                        </Route>
+
+                                        <Route 
+                                            path={`/demande_consultations`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <DemandeConsultationList {...props} /> : <Redirect to="/login" />
                                             ) } />
                                     </Switch>
                                 </div>

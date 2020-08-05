@@ -93,6 +93,29 @@ const SideBar = () => {
                             <i className="img">
                                 <img src={icon2} alt="" className="width-20"/>
                             </i>
+                            <span className="title">Demande Consultations</span>
+                            <span className="arrow "></span>
+                        </a>
+                        
+                        <ul className="sub-menu" wfd-invisible="true">
+                            <li>
+                                <Link to={"/demande_consultations"}>
+                                    All demandes de consultations
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={"/demande_consultation_new"}>
+                                    Add Demande de consultations
+                                </Link>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li className="">
+                        <a href="javascript:;">
+                            <i className="img">
+                                <img src={icon2} alt="" className="width-20"/>
+                            </i>
                             <span className="title">Consultations</span>
                             <span className="arrow "></span>
                         </a>

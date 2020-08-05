@@ -110,11 +110,11 @@ class AddConsultation extends React.Component {
     }
     
     render() {
-        function getConsultationMessage(patients,patient, date){
-            const convDate = new Date(date)
+        function getConsultationMessage(patients,patient, ndate){
+            const date = new Date(ndate)
+            const mdate = ("0"+date.getDay()).slice(-2, 3)+"/"+("0"+date.getMonth()).slice(-2,3)+"/"+date.getFullYear()+" A "+("0"+date.getHours()).slice(-2,3)+":"+("0"+date.getMinutes()).slice(-2,3)+":"+("0"+date.getSeconds()).slice(-2,3)
             var person = patients.find((p) => p.id === patient);
-            var message = person?.nom + " "+person?.prenom+" a demande une consultation le "+convDate.getDate()+"/"+convDate.getMonth()+"/"+convDate.getFullYear();
-            message += " a "+convDate.getHours()+":"+convDate.getMinutes()
+            var message = person?.nom + " "+person?.prenom+" a demande une consultation, le  "+mdate
             return message
         }
         const GenderSelectOptions = [
