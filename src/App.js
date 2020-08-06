@@ -23,6 +23,8 @@ import AddConsultation from './components/mainContent/consultation/AddConsultati
 import ConsultationList from './components/mainContent/consultation/ConsultationList';
 import authService from './services/auth.service';
 // import Schedule from './components/mainContent/emploi_du_temps/Schedule';
+import AddDemandeConsultation from './components/mainContent/demande_consultation/AddDemandeConsultation';
+import DemandeConsultationList from './components/mainContent/demande_consultation/DemandeConsultationList';
 
 
 const cookies = new Cookies();
@@ -177,11 +179,24 @@ class App extends React.Component {
                                                 this.state.loggedIn ? <PatientDetails {...props} /> : <Redirect to="/login" />
                                             ) } />
 
+
                                         {/* <Route 
                                             path={`/schedules`} 
                                             render={ props => (
                                                 this.state.loggedIn ? <Schedule {...props} /> : <Redirect to="/login" />
                                             ) } /> */}
+
+                                        <Route exact path={`/demande_consultation_new`}
+                                            render={ props => (
+                                                this.state.loggedIn ? <AddDemandeConsultation {...props} /> : <Redirect to="/login" />
+                                            ) } >
+                                        </Route>
+
+                                        <Route 
+                                            path={`/demande_consultations`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <DemandeConsultationList {...props} /> : <Redirect to="/login" />
+                                            ) } />
                                     </Switch>
                                 </div>
                             </section>
