@@ -11027,12 +11027,13 @@ table.dataTable.display tbody tr:first-child td {
     border-top: 1px solid #eeeeee;
 }
 #searchbarbox .input-group input{
-    height: 50px;
+    height: 40px;
     line-height: 100%;
     font-size: 25px;
     border-radius: 30px;
     border-color: aqua;
     background: aliceblue;
+    padding: 23px;
 }
 #searchbarbox .input-group {
     width: 90%;
@@ -11041,4 +11042,30 @@ table.dataTable.display tbody tr:first-child td {
 #searchbarbox {
     margin-bottom: 50px;
     margin-top: 40px;
+}
+.close {
+    padding-left: 10px !important;
+    padding-right: 10px  !important;
+    border-radius: 20px;
+    border: solid aqua !important;
+}
+.dot {
+    height: 40px;
+    width: 40px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+    text-align: center;
+  }
+.dot i {
+    display: inline-block;
+    vertical-align: -webkit-baseline-middle;
+    line-height: 150%;
+}
+.dot:hover {
+    background-color: rgb(219, 215, 215);
+}
+.hos-info-footer{
+    padding-bottom: 15px;
+    padding-top: 15px;
 }

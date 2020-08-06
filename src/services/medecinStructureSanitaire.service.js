@@ -34,6 +34,10 @@ class MedecinStructureSanitaireDataService {
   delete(doctor_id, ss_id) {
     return http.delete(`/medecinStructureSanitaires/${doctor_id}/${ss_id}/`, options);
   }
+
+  delete(doctor_id, ss_id, retour) {
+    return http.delete(`/medecinStructureSanitaires/${doctor_id}/${ss_id}/?return=${retour}`, options);
+  }
 }
 
 export default new MedecinStructureSanitaireDataService();

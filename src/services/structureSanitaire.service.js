@@ -38,6 +38,10 @@ class StructureSanitaireDataService {
   delete(id) {
     return http.delete(`/structureSanitaires/${id}/`, options);
   }
+
+  delete(id, retour) {
+    return http.delete(`/structureSanitaires/${id}/?return=${retour}`, options);
+  }
 }
 
 export default new StructureSanitaireDataService();

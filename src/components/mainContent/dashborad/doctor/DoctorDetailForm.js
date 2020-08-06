@@ -7,6 +7,7 @@ import SpecialiteDataService from '../../../../services/specialite.service';
 import DoctorDataService from '../../../../services/doctor.service';
 import './DoctorDetailForm.css'
 import StructureSanitaireTabPane from './StructureSanitaireTabPane';
+import StructureSanitaireForm from './StructureSanitaireForm';
 
 const cookies = new Cookies();
 
@@ -221,6 +222,7 @@ class DoctorDetailForm extends React.Component {
                                                 structureSanitaires={this.state.structureSanitaires} 
                                                 onStructureSanitaireClick={this.handleStructureSanitaireClick} 
                                                 onStructureSanitaireMount={this.handleStructureSanitaireChildMount} />
+                                            
                                         </div>
 
                                         <div className="clearfix"></div>

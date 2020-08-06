@@ -3,7 +3,10 @@ import React from 'react';
 import PageTitle from '../../card/PageTitle';
 import HospitalItem from './Item';
 import StructureSanitaireDataService from "../../../services/structureSanitaire.service";
+import MedecinStructureSanitaireDataService from "../../../services/medecinStructureSanitaire.service";
+import Cookies from 'universal-cookie';
 
+const cookies = new Cookies();
 
 class HopitalList extends React.Component {
 
@@ -24,18 +27,62 @@ class HopitalList extends React.Component {
         });
     }
 
+    delete = (id, owner) => {
+        let doctor_id = cookies.get("loggedUser")['id'];
+
+        if (!owner) {
+            MedecinStructureSanitaireDataService.delete(doctor_id, id, 'my_hos')
+            .then(response => {
+                window.showSuccess("Hopital Supprimé !");
+                this.setState({hopitals: response.data});
+            })
+            .catch(e => {
+                console.log(e);
+                window.showErrorMessage('Something went wrong!!!');
+            });
+        }
+        else if( owner === doctor_id ) {
+            StructureSanitaireDataService.delete(id, 'my_hos')
+            .then(response => {
+                window.showSuccess("Hopital Supprimé !");
+                this.setState({hopitals: response.data});
+            })
+            .catch(e => {
+                console.log(e);
+                window.showErrorMessage('Something went wrong!!!');
+            });
+        }
+        
+    }
+
+    edit = (id) => {
+        
+    }
+
+    seeDetails = (id) => {
+        
+    }
+
     render() {
         return (
             <div>
                 <PageTitle title="Toutes Les Structures Sanitaires" />
                 
                 <div className="row">
-                    {this.state.hopitals.map(({denomination, adresse, id}) => 
+                    {this.state.hopitals.map(({denomination, adresse, id, email, description, owner, telephone}) => 
                         <div className="col-xs-12 col-lg-3" key={id}>
                             <HospitalItem 
                                 nom={denomination} 
                                 id={id} 
-                                adresse={adresse}/>
+                                email={email} 
+                                description={description} 
+                                owner={owner} 
+                                telephone={telephone} 
+                                adresse={adresse}
+                                onDeleteClick={this.delete}
+                                onEditClick={this.edit}
+                                onSeeClick={this.seeDetails}
+                                 />
                         </div>
                         
                     )}

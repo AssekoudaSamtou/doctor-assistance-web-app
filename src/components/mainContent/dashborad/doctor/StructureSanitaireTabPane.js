@@ -3,6 +3,7 @@ import ListeStructureSanitaire from './ListeStructureSanitaire';
 import StructureSanitaireDataService from '../../../../services/structureSanitaire.service';
 import MedecinStructureSanitaireDataService from '../../../../services/medecinStructureSanitaire.service';
 import Cookies from 'universal-cookie';
+import StructureSanitaireForm from './StructureSanitaireForm';
 
 const cookies = new Cookies();
 class StructureSanitaireTabPane extends Component {
@@ -15,6 +16,7 @@ class StructureSanitaireTabPane extends Component {
             structureSanitaires: [],
             addedStructureSanitaires: [],
             ownedStructureSanitaires: user.structure_sanitaires,
+            showModal: false
         };
     }
 
@@ -69,6 +71,20 @@ class StructureSanitaireTabPane extends Component {
         });
     }
 
+    setAdded = (added) => {
+        console.log("###", added)
+        this.setState({
+            addedStructureSanitaires: added,
+        });
+        this.toggleModal();
+    }
+
+    toggleModal = () => {
+        this.setState({
+            showModal: !this.state.showModal,
+        });
+    }
+
     handleStructureSanitaireClick = (id) => {
         console.log(id);
         const selector = "#pills-tab5 #structureSanitaire-";
@@ -104,7 +120,7 @@ class StructureSanitaireTabPane extends Component {
             var user = cookies.get("loggedUser");
             MedecinStructureSanitaireDataService.delete(user.id, id)
             .then(response => {
-                cookies.set("loggedUser", response.data);
+                // cookies.set("loggedUser", response.data);
                 window.showSuccess("Demande supprimée");
                 this.state.addedStructureSanitaires.splice(this.state.addedStructureSanitaires.indexOf(id), 1)
                 this.setState({addedStructureSanitaires: this.state.addedStructureSanitaires});
@@ -136,11 +152,11 @@ class StructureSanitaireTabPane extends Component {
                     <div className="row">
                         <div className="col-lg-7">
                             <div className="input-group">
-                                <input type="text" className="form-control animated fadeIn" placeholder="Search &amp; Enter" onChange={this.handleFilterTextChange} />
+                                <input type="text" className="form-control animated fadeIn" placeholder="Search &amp; Enter" onChange={this.handleFilterTextChange}  />
                             </div>
                         </div>
                         <div className="col-lg-4">
-                            <span className="btn btn-success btn-lg" style={{marginTop: 0+'px'}}>
+                            <span className="btn btn-success btn-lg" style={{marginTop: 0+'px'}} onClick={this.toggleModal} >
                                 <i className="fas fa-plus"></i> Nouvelle structure sanitaire
                             </span>
                         </div>
@@ -157,6 +173,21 @@ class StructureSanitaireTabPane extends Component {
                     liste={this.state.structureSanitaires}
                     onClick={this.handleStructureSanitaireClick} />
 
+                <div className={`modal fade col-xs-12 ${this.state.showModal ? 'in' : ''}`} id="cmpltadminModal-10" tabindex="-1" role="dialog" aria-hidden="true" style={{display: `${this.state.showModal ? 'block' : 'none'}`, background: '#8e898982'}}>
+                    <div className="modal-dialog animated fadeInDown">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <button type="button" className="close" onClick={this.toggleModal} >×</button>
+                                <h4 className="modal-title">Ajouter une nouvelle structure sanitaire</h4>
+                            </div>
+                            <div className="modal-body">
+
+                                <StructureSanitaireForm onSuccess={this.setAdded} />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
     }
