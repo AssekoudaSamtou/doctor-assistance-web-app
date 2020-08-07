@@ -205,7 +205,7 @@ class AddConsultation extends React.Component {
             value: this.state.consultation.motif,
           },
           {
-            type: "text",
+            type: "Cke",
             label: "Interrogatoire",
             name: "interrogatoire",
             value: this.state.consultation.interrogatoire,
@@ -217,7 +217,7 @@ class AddConsultation extends React.Component {
             value: this.state.consultation.resume,
           },
           {
-            type: "text",
+            type: "Cke",
             label: "hypothese diagnostique",
             name: "hypothese_diagnostique",
             value: this.state.consultation.hypothese_diagnostique,
