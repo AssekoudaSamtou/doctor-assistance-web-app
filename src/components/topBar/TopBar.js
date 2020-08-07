@@ -39,12 +39,12 @@ const TopBar = () => {
                             </a>
                         </li>
 
-                        <TopnavItem label="Mon Planning" icon="fa-user" to="#" isActive={false}/>
-                        <TopnavItem label="Reports" icon="fa-area-chart" to="#" isActive={false}/>
+                        <TopnavItem label="Mon Planning" icon="fa-calendar-alt" to="/schedules/" isActive={false}/>
+                        {/* <TopnavItem label="Reports" icon="fa-area-chart" to="#" isActive={false}/> */}
                         <TopnavItem label="Mes Patients" icon="fa-users" to="/patients/" isActive={false}/>
-                        <TopnavItem label="Mes Hopitaux" icon="fa-hospitals" to="/hospitals/" isActive={false}/>
+                        <TopnavItem label="Mes Hopitaux" icon="fa-hospital" to="/hospitals/" isActive={false}/>
                         
-                        <TopNavSearchForm/>
+                        {/* <TopNavSearchForm/> */}
 
                     </ul>
                 </div>
@@ -66,10 +66,15 @@ const TopBar = () => {
                                         <i className="fa fa-book"></i> Consultation
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="#">
+                                        <i className="fas fa-hospital"></i> Hopital
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         
-                        <li className="notify-toggle-wrapper spec showopacity">
+                        {/* <li className="notify-toggle-wrapper spec showopacity">
                             <a href="#" data-toggle="dropdown" className="toggle">
                                 <i className="fa fa-bell"></i>
                                 <span className="badge badge-accent">3</span>
@@ -85,7 +90,6 @@ const TopBar = () => {
 
                                     <ul className="dropdown-menu-list list-unstyled ps-scrollbar">
                                         <li className="unread available">
-                                            {/* <!-- available: success, warning, info, error --> */}
                                             <a href="javascript:;">
                                                 <div className="notice-icon">
                                                     <i className="fa fa-check"></i>
@@ -99,7 +103,6 @@ const TopBar = () => {
                                             </a>
                                         </li>
                                         <li className="unread away">
-                                            {/* <!-- available: success, warning, info, error --> */}
                                             <a href="javascript:;">
                                                 <div className="notice-icon">
                                                     <i className="fa fa-clock-o"></i>
@@ -113,7 +116,6 @@ const TopBar = () => {
                                             </a>
                                         </li>
                                         <li className=" busy">
-                                            {/* <!-- available: success, warning, info, error --> */}
                                             <a href="javascript:;">
                                                 <div className="notice-icon">
                                                     <i className="fa fa-times"></i>
@@ -128,7 +130,6 @@ const TopBar = () => {
                                         </li>
                                     
                                         <li className=" available">
-                                            {/* <!-- available: success, warning, info, error --> */}
                                             <a href="javascript:;">
                                                 <div className="notice-icon">
                                                     <i className="fa fa-check"></i>
@@ -324,6 +325,7 @@ const TopBar = () => {
                             </ul>
 
                         </li>
+                         */}
                         { user && (
                         <li className="profile showopacity">
                                 <a href="#" data-toggle="dropdown" className="toggle">

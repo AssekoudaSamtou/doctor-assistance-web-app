@@ -30,6 +30,10 @@ class DoctorDataService {
   delete(id) {
     return http.delete(`/medecins/${id}/`, options);
   }
+
+  addHospital(data) {
+    return http.post(`/medecins/add_structure_sanitaire/`, data, options);
+  }
 }
 
 export default new DoctorDataService();
