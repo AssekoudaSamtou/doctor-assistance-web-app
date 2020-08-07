@@ -39,12 +39,10 @@ class EditPatient extends React.Component {
     }
 
     handleNotFoundMount = ()=> {
-        alert("out");
         if (this.state.patient.id !== null) {
             window.$("#notfoundpage").css("display", "none");
         }
         else{
-            alert("in");
             // window.$("#notfoundpage").css("display", "block");
         }
     }
@@ -75,6 +73,7 @@ class EditPatient extends React.Component {
                 this.setState({ patient: { ...response.data } });
                 console.log(response.data);
                 window.showSuccess('Your patient has been saved successfuly');
+                this.props.history.push("/patients_details/" + this.state.patient.id);
             })
             .catch(e => {
                 console.log(e);
@@ -88,9 +87,7 @@ class EditPatient extends React.Component {
                 console.log(response.status);
                 window.$('#deleteConfirmationModal').modal('toggle');
                 window.showSuccess('Patient deleted successfuly');
-                setTimeout( () => {
-                    this.props.history.push("/patients/")
-                }, 500)
+                this.props.history.push("/patients/");
             })
             .catch(e => {
                 console.log(e);

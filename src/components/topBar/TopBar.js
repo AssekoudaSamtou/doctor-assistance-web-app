@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import Avatar1 from '../../data/profile/avatar-1.png'
 import Avatar2 from '../../data/profile/avatar-2.png'
@@ -16,12 +16,20 @@ const cookies = new Cookies();
 
 const TopBar = () => {
     const user = cookies.get("loggedUser");
+    const [items, setItems] = useState([false, false, false]);
 
     const logout = () => {
         cookies.remove("loggedUser");
         cookies.remove("token");
         cookies.remove("userType");
         window.location.href =  "login";
+    }
+
+    const makeActive = (id) => {
+        console.log("cli", id);
+        var tmp = [false, false, false];
+        tmp[id] = true;
+        setItems(tmp);
     }
 
     return (
@@ -39,10 +47,10 @@ const TopBar = () => {
                             </a>
                         </li>
 
-                        <TopnavItem label="Mon Planning" icon="fa-calendar-alt" to="/schedules/" isActive={false}/>
+                        <TopnavItem label="Mon Planning" icon="fa-calendar-alt" to="/schedules/" isActive={items[0]} id={0} onClick={makeActive} />
                         {/* <TopnavItem label="Reports" icon="fa-area-chart" to="#" isActive={false}/> */}
-                        <TopnavItem label="Mes Patients" icon="fa-users" to="/patients/" isActive={false}/>
-                        <TopnavItem label="Mes Hopitaux" icon="fa-hospital" to="/hospitals/" isActive={false}/>
+                        <TopnavItem label="Mes Patients" icon="fa-users" to="/patients/" isActive={items[1]} id={1} onClick={makeActive}/>
+                        <TopnavItem label="Mes Hopitaux" icon="fa-hospital" to="/hospitals/" isActive={items[2]} id={2} onClick={makeActive}/>
                         
                         {/* <TopNavSearchForm/> */}
 
@@ -50,7 +58,7 @@ const TopBar = () => {
                 </div>
                 <div className="pull-right">
                     <ul className="info-menu right-links list-inline list-unstyled">
-                        <li className="notify-toggle-wrapper spec showopacity">
+                        <li className="notify-toggle-wrapper spec showopacity" style={{marginRight: '40px'}}>
                             <a href="#" data-toggle="dropdown" className="toggle">
                                 <i className="fa fa-plus"></i>
                             </a>
@@ -62,14 +70,14 @@ const TopBar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <a href="#">
-                                        <i className="fa fa-book"></i> Consultation
-                                    </a>
+                                    <Link to="/hospitals_new">
+                                        <i className="fas fa-hospital"></i> Hopital
+                                    </Link>
                                 </li>
                                 <li>
-                                    <a href="#">
-                                        <i className="fas fa-hospital"></i> Hopital
-                                    </a>
+                                    <Link to="#">
+                                        <i className="fa fa-book"></i> Consultation
+                                    </Link>
                                 </li>
                             </ul>
                         </li>
@@ -334,23 +342,13 @@ const TopBar = () => {
                                 </a>
                                 <ul className="dropdown-menu profile animated fadeIn">
                                     <li>
-                                        <a href="crypto-account-setting.html">
-                                            <i className="fa fa-wrench"></i> Settings
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="crypto-profile.html">
-                                            <i className="fa fa-user"></i> Profile
+                                            <i className="fas fa-id-badge"></i> Profile
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="crypto-faq.html">
-                                            <i className="fa fa-info"></i> Help
-                                        </a>
-                                    </li>
-                                    <li className="last">
+                                    <li className="">
                                         <a onClick={logout} style={{cursor : 'pointer'}}>
-                                            <i className="fa fa-lock"></i> Logout
+                                            <i className="fas fa-sign-out-alt"></i> Logout
                                         </a>
                                     </li>
                                 </ul>

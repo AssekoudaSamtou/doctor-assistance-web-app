@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import StructureSanitaire from '../../../card/StructureSanitaire';
 import Cookies from 'universal-cookie';
+import noItem from '../../../../data/icons/no-item2.png';
 
 const handleOnclik = (event) => {
 
@@ -20,7 +21,9 @@ const ListeStructureSanitaire = ({filterText, liste, onClick, owned, added}) => 
                 </div>
             ))}
             { filteredList.length === 0 && (
-                <h3>Vide</h3>
+                <div>
+                    <img src={noItem} style={{width: 10+'%', margin: 'auto', display: 'block'}} />
+                </div>
             )}
         </div>
     )

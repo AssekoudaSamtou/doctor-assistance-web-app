@@ -8,15 +8,15 @@ const HospitalItem = ({nom, adresse, id, email, description, owner, onDeleteClic
         onDeleteClick(id, owner);
     }
 
-    let handleEditClick = (id) => {
-        onEditClick();
+    let handleEditClick = () => {
+        onEditClick(id);
     }
 
-    let handleSeeClick = (id) => {
-        onSeeClick();
+    let handleSeeClick = () => {
+        onSeeClick(id);
     }
     return (
-        <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow structure-sanitaire" style={{marginBottom: 20+'px', background: "linear-gradient(-12deg,#2a57d7 0,#9eeeff 100%)"}} >
+        <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow structure-sanitaire" style={{marginBottom: 20+'px', background: "linear-gradient(120deg, #5983e8, #00e4d0)"}} >
             <div className="doc-info-wrap text-left">
                 <div className="doctor-img" style={{borderRadius: 0}}>
                     <img src={hospitalBuilding} alt=""/>
@@ -31,9 +31,9 @@ const HospitalItem = ({nom, adresse, id, email, description, owner, onDeleteClic
                         <span className="dot" style={{cursor: 'pointer', marginRight:15+'px'}} onClick={handleEditClick}>
                             <i className="far fa-edit" style={{color:'black'}}></i>
                         </span>
-                        <span className="dot" style={{cursor: 'pointer', marginRight:15+'px'}} onClick={handleSeeClick}>
+                        {/* <span className="dot" style={{cursor: 'pointer', marginRight:15+'px'}} onClick={handleSeeClick}>
                             <i className="far fa-eye" style={{color:'black'}}></i>
-                        </span>
+                        </span> */}
                     </div>
                 </div>
             </div>

@@ -3,6 +3,7 @@ import React from 'react';
 import PageTitle from '../../card/PageTitle';
 import PatientDataService from "../../../services/patient.service";
 import NotFound from "../error/404";
+import computedAge from '../../../utils'
 
 import profile from "../../../data/profile/profile.jpg"
 import clock from "../../../data/hos-dash/clock.png"
@@ -17,7 +18,6 @@ class PatientDetails extends React.Component {
         this.state = {
             patient: {id: null, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""},
         }
-        this.computedAge = this.computedAge.bind(this);
     }
 
     componentWillMount() {
@@ -36,17 +36,11 @@ class PatientDetails extends React.Component {
     }
 
     handleNotFoundMount = ()=> {
-        alert("out");
         if (this.state.patient.id !== null) {
             window.$("#notfoundpage").css("display", "none");
         }else{
-            alert("in");
             // window.$("#notfoundpage").css("display", "block");
         }
-    }
-
-    computedAge(date_naissance) {
-        return 41;
     }
 
     render() {
@@ -69,12 +63,12 @@ class PatientDetails extends React.Component {
                                                         <div className="stutas"></div>
                                                     </div>
                                                     <h3 className="header w-text relative bold">Nom : {this.state.patient.nom} {this.state.patient.prenom}</h3>
-                                                    <p className="desc g-text relative">Lorem ipsum dolor sit amet, Earum nes ciunt fugiat enim. Sequi quos labore.</p>
+                                                    {/* <p className="desc g-text relative">Lorem ipsum dolor sit amet, Earum nes ciunt fugiat enim. Sequi quos labore.</p> */}
                                                 </div>
                                                 <div className="row">
                                                     <div className="patients-info relative">
                                                         <PatientInfoItem title="Sexe" value={this.state.patient.genre === "M" ? "Masculin" : "Féminin"} />
-                                                        <PatientInfoItem title="Age" value={`${this.computedAge(this.state.patient.date_naissance)} Ans`} />
+                                                        <PatientInfoItem title="Age" value={`${computedAge(this.state.patient.date_naissance)} Ans`} />
                                                         <PatientInfoItem title="Patient  Height" value="176 cm" />
                                                         <PatientInfoItem title="Patient Weight" value="67 Kg" />
                                                     </div>
@@ -127,11 +121,7 @@ class PatientDetails extends React.Component {
                                         <section className="box ">
                                             <header className="panel_header">
                                                 <h2 className="title pull-left">Blood Levels</h2>
-                                                <div className="actions panel_actions pull-right">
-                                                    <a className="box_toggle fa fa-chevron-down"></a>
-                                                    <a className="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a>
-                                                    <a className="box_close fa fa-times"></a>
-                                                </div>
+                                                
                                             </header>
                                             <div className="content-body">    
                                                 <div className="row">
@@ -147,12 +137,8 @@ class PatientDetails extends React.Component {
                                         
                                         <section className="box ">
                                             <header className="panel_header">
-                                                <h2 className="title pull-left">Notifications</h2>
-                                                <div className="actions panel_actions pull-right">
-                                                    <a className="box_toggle fa fa-chevron-down"></a>
-                                                    <a className="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a>
-                                                    <a className="box_close fa fa-times"></a>
-                                                </div>
+                                                <h2 className="title pull-left">Consultations</h2>
+                                                
                                             </header>
                                             <div className="content-body">    
                                                 <div className="row">
@@ -162,12 +148,15 @@ class PatientDetails extends React.Component {
                                                                 <div className="detail-info">
                                                                     <div className="visit-doc">
                                                                         <small className="text-muted">
-                                                                            You comfirm Dr sultads visit 
+                                                                            I feel better Now :)
                                                                         </small>
                                                                         <p className="message">
-                                                                            27 July - 05:34
+                                                                            Meditation
                                                                         </p>
                                                                         
+                                                                    </div>
+                                                                    <div className="visit-date visit-stat pull-right">
+                                                                        <p className="mb-0">OPENED</p>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -176,11 +165,14 @@ class PatientDetails extends React.Component {
                                                                 <div className="detail-info">
                                                                     <div className="visit-doc">
                                                                         <small className="text-muted">
-                                                                            Reminder : Treatment Time!
+                                                                            Treatment was good!
                                                                         </small>
                                                                         <p className="message">
-                                                                            25 july - 20:00
+                                                                            Thyroid Test
                                                                         </p>
+                                                                    </div>
+                                                                    <div className="visit-date visit-stat pull-right">
+                                                                        <p className="mb-0 uppercase">closed</p>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -188,11 +180,14 @@ class PatientDetails extends React.Component {
                                                                 <div className="detail-info">
                                                                     <div className="visit-doc">
                                                                         <small className="text-muted">
-                                                                            You completed Dr Joun visit 
+                                                                            My hair is gone!
                                                                         </small>
                                                                         <p className="message">
-                                                                            26 Feb - 23:47
+                                                                            Unhappy
                                                                         </p>
+                                                                    </div>
+                                                                    <div className="visit-date visit-stat pull-right">
+                                                                        <p className="mb-0 uppercase">OPENED</p>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -200,11 +195,14 @@ class PatientDetails extends React.Component {
                                                                 <div className="detail-info">
                                                                     <div className="visit-doc">
                                                                         <small className="text-muted">
-                                                                            Your Blood check is good!
+                                                                            My hair is gone!
                                                                         </small>
                                                                         <p className="message">
-                                                                            23 Jan - 21:45
+                                                                            Unhappy
                                                                         </p>
+                                                                    </div>
+                                                                    <div className="visit-date visit-stat pull-right">
+                                                                        <p className="mb-0 uppercase">closed</p>
                                                                     </div>
                                                                 </div>
                                                             </li>
@@ -212,15 +210,17 @@ class PatientDetails extends React.Component {
                                                                 <div className="detail-info pb0">
                                                                     <div className="visit-doc">
                                                                         <small className="text-muted">
-                                                                            You Cancelled Dr Wall Smith visit
+                                                                            Great Mediacal Care 
                                                                         </small>
                                                                         <p className="message">
-                                                                            17 Nov - 12:23
+                                                                            Join Pain
                                                                         </p>
+                                                                    </div>
+                                                                    <div className="visit-date visit-stat pull-right">
+                                                                        <p className="mb-0 uppercase">OPENED</p>
                                                                     </div>
                                                                 </div>
                                                             </li>
-
                                                         </ul>
                                                     </div>      
                                                 </div> 
@@ -254,7 +254,7 @@ class PatientDetails extends React.Component {
                                             </div>
                                         </section>
                                     </div>
-                                    <div className="col-md-6 col-sm-12">
+                                    {/* <div className="col-md-6 col-sm-12">
                                         <section className="box gradient-pink" style={{padding:20+'px'}}>
                                             <div className="patient-personal v2 mb-0">
                                                 <h4 className="w-text"> <span className="text-info bold">-- </span> Regular checkups</h4>
@@ -277,13 +277,13 @@ class PatientDetails extends React.Component {
                                                 <p className="mb-0 g-text">Surgeon</p>
                                             </div>
                                         </section>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
                             <div className="clearfix"></div>
 
-                            <div className="col-md-7 col-sm-12 col-xs-12">
+                            <div className="col-md-12 col-sm-12 col-xs-12">
 
                                 <div className="row mt-15">
                                     <div className="col-md-6 col-xs-12 ">
@@ -346,7 +346,7 @@ class PatientDetails extends React.Component {
                                 </div>
                             </div>
 
-                            <div className="col-xs-12 col-md-5">
+                            {/* <div className="col-xs-12 col-md-5">
                                 <section className="box ">
                                     <header className="panel_header">
                                         <h2 className="title pull-left">Patient Activities</h2>
@@ -364,7 +364,7 @@ class PatientDetails extends React.Component {
                                         </div>
                                     </div>
                                 </section>
-                            </div>
+                            </div> */}
 
                             <div className="clearfix"></div>
                         </div>

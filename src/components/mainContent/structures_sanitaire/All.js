@@ -5,6 +5,7 @@ import HospitalItem from './Item';
 import StructureSanitaireDataService from "../../../services/structureSanitaire.service";
 import MedecinStructureSanitaireDataService from "../../../services/medecinStructureSanitaire.service";
 import Cookies from 'universal-cookie';
+import noItem from '../../../data/icons/no-item3.png';
 
 const cookies = new Cookies();
 
@@ -56,7 +57,7 @@ class HopitalList extends React.Component {
     }
 
     edit = (id) => {
-        
+        this.props.history.push(`/hospitals_update/${id}`);
     }
 
     seeDetails = (id) => {
@@ -84,7 +85,11 @@ class HopitalList extends React.Component {
                                 onSeeClick={this.seeDetails}
                                  />
                         </div>
-                        
+                    )}
+                    { this.state.hopitals.length === 0 && (
+                        <div>
+                            <img src={noItem} style={{width: 50+'%', margin: 'auto', display: 'block'}} />
+                        </div>
                     )}
                 </div>
                 

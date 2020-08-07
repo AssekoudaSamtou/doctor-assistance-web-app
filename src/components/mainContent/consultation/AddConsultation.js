@@ -74,6 +74,9 @@ class AddConsultation extends React.Component {
     saveConsultation() {
         var user = cookies.get("loggedUser")
         var data = {
+                structure_sanitaire: this.state.structure.id,
+                medecin: user.id,
+                detail: this.props.detail,
                 demande_consultation:this.state.consultation.demande_consultation,
                 motif: this.state.consultation.motif,
                 interrogatoire:this.state.consultation.interrogatoire,
@@ -83,14 +86,12 @@ class AddConsultation extends React.Component {
                 status:this.state.demandeConsultation.status
             };
         console.log(data);
-        ConsultationDataService.create(data,{detail:this.props.detail,structure_sanitaire_pk:this.state.structure.id,medecin_pk:user.id})
+        ConsultationDataService.create(data)
             .then(response => {
                 console.log(response.data, this.state.submitted);
                 window.showSuccess('the consultation has been saved successfuly');
                 if(this.props.detail!="detail"){
-                    setTimeout( () => {
-                        this.props.history.push(`/consultations/`)
-                    }, 500);
+                    this.props.history.push(`/consultations/`)
                 }
                 this.newConsultation();
                 console.log(this.state.consultation)
@@ -138,8 +139,6 @@ class AddConsultation extends React.Component {
                     {type: "text", label: "Interrogatoire", name: "interrogatoire", value: this.state.consultation.interrogatoire},
                     {type: "text", label: "Resume", name: "resume", value: this.state.consultation.resume},
                     {type: "text", label: "hypothese diagnostique", name: "hypothese_diagnostique", value: this.state.consultation.hypothese_diagnostique}
-                    // {type: "text", label: "Profile Image"},
-                    // {type: "text", label: "Brief", description: 'e.g. "Enter any size of text description here"'},
                 ]
             }
         ];

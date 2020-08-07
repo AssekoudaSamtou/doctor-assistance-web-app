@@ -19,9 +19,9 @@ class ConsultationDataService {
     return http.get(`/consultations/${id}/`, options);
   }
 
-  create(data,args=null) {
-    if(args.detail=="detail"){
-      return http.post(`/consultations/?medecin_pk=${args?.medecin_pk}&structure_sanitaire_pk=${args?.structure_sanitaire_pk}&detail=${args?.detail}`, data, options);
+  create(data) {
+    if(data.detail=="detail"){
+      return http.post(`/consultations/`, data, options);
     }else{
       return http.post(`/consultations/`, data, options);
     }

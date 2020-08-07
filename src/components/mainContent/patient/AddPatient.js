@@ -16,7 +16,7 @@ class AddPatient extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            patient: {id: null, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""},
+            patient: {id: null, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: "M"},
             submitted: false,
             isSubmitting: false
         };
