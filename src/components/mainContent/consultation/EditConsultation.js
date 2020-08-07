@@ -132,10 +132,10 @@ class EditConsultation extends React.Component {
                 headerTitle: "mise a jours de la consultation",
                 fields: [
                     {type: "select",label:"Demande de consultation",name:"demande_consultation", value:this.state.consultation.demande_consultation,selectOptions:demandesSelectOptions},
-                    {type: "text", label: "Motif", name: "motif", value: this.state.consultation.motif},
-                    {type: "text", label: "Interrogatoire", name: "interrogatoire", value: this.state.consultation.interrogatoire},
-                    {type: "text", label: "Resume", name: "resume", value: this.state.consultation.resume},
-                    {type: "text", label: "hypothese diagnostique", name: "hypothese_diagnostique", value: this.state.consultation.hypothese_diagnostique}
+                    {type: "ckeditor", label: "Motif", name: "motif", value: this.state.consultation.motif},
+                    {type: "ckeditor", label: "Interrogatoire", name: "interrogatoire", value: this.state.consultation.interrogatoire},
+                    {type: "ckeditor", label: "Resume", name: "resume", value: this.state.consultation.resume},
+                    {type: "ckeditor", label: "hypothese diagnostique", name: "hypothese_diagnostique", value: this.state.consultation.hypothese_diagnostique}
                     // {type: "text", label: "Profile Image"},
                     // {type: "text", label: "Brief", description: 'e.g. "Enter any size of text description here"'},
                 ]

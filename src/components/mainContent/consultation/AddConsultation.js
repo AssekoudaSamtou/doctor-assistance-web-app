@@ -74,6 +74,8 @@ class AddConsultation extends React.Component {
     saveConsultation() {
         var user = cookies.get("loggedUser")
         var data = {
+                structure_sanitaire_pk:this.state.structure.id,
+                medecin_pk:user.id,
                 demande_consultation:this.state.consultation.demande_consultation,
                 motif: this.state.consultation.motif,
                 interrogatoire:this.state.consultation.interrogatoire,
@@ -83,7 +85,7 @@ class AddConsultation extends React.Component {
                 status:this.state.demandeConsultation.status
             };
         console.log(data);
-        ConsultationDataService.create(data,{detail:this.props.detail,structure_sanitaire_pk:this.state.structure.id,medecin_pk:user.id})
+        ConsultationDataService.create(data)
             .then(response => {
                 console.log(response.data, this.state.submitted);
                 window.showSuccess('the consultation has been saved successfuly');
