@@ -134,7 +134,7 @@ class FormBoxItem extends React.Component {
             <CKEditor
               editor={ClassicEditor}
               //   config={editorConfiguration}
-              data="<p>Hello from CKEditor 5!</p>"
+              data="<p>Veuillez Saisir</p>"
               onInit={(editor) => {
                 // You can store the "editor" and use when it is needed.
                 console.log("Editor is ready to use!", editor);

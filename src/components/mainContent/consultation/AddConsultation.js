@@ -196,7 +196,7 @@ class AddConsultation extends React.Component {
             value: this.state.consultation.resume,
           },
           {
-            type: "text",
+            type: "Cke",
             label: "hypothese diagnostique",
             name: "hypothese_diagnostique",
             value: this.state.consultation.hypothese_diagnostique,
