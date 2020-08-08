@@ -80,7 +80,7 @@ class PatientDetails extends React.Component {
                                                 {/* <!-- end row --> */}
                                                 
                                                 <div className="col-xs-12 mb-30">
-                                                    <div className="reminder-wrapper has-shadow2">
+                                                    {/* <div className="reminder-wrapper has-shadow2">
                                                         <div className="reminder-icon">
                                                             <img src={clock} width="60" alt=""/>
                                                         </div>
@@ -88,7 +88,7 @@ class PatientDetails extends React.Component {
                                                             <h4 className="w-text bold">Reminder Alarm</h4>
                                                             <h5 className="g-text">ask about medicine</h5>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
                                                     <Link to={`/patients_update/${this.state.patient.id}`} className="btn btn-primary btn-lg gradient-blue d-block" style={{display: 'block', marginTop: '20px'}}>
                                                         <span>Modifier</span>
                                                     </Link>
@@ -234,10 +234,10 @@ class PatientDetails extends React.Component {
                                     </div>
                                 </div>
                                 <div className="row">
-                                    <div className="col-md-6 col-sm-12">
+                                    <div className="col-md-12 col-sm-12">
                                         <section className="box gradient-blue" style={{padding:20+'px'}}>
                                             <div className="patient-personal mb-0">
-                                                <h4 className="w-text">Blood type :</h4>
+                                                <h4 className="w-text">Groupe sanguin :</h4>
                                                 <p className="mb-0 g-text">AB+</p>
                                             </div>
                                             <div className="patient-personal mb-0">
@@ -245,15 +245,15 @@ class PatientDetails extends React.Component {
                                                 <p className="mb-0 g-text">Penicilin, peanuts</p>
                                             </div>
                                             <div className="patient-personal mb-0">
-                                                <h4 className="w-text">Diseases :</h4>
+                                                <h4 className="w-text">Maladies :</h4>
                                                 <p className="mb-0 g-text">Diabetes</p>
                                             </div>
                                             <div className="patient-personal mb-0">
-                                                <h4 className="w-text">Pressure :</h4>
+                                                <h4 className="w-text">Pression artérielle :</h4>
                                                 <p className="mb-0 g-text">130/80 mmHG</p>
                                             </div>
                                             <div className="patient-personal mb-0">
-                                                <h4 className="w-text">Temperture :</h4>
+                                                <h4 className="w-text">Température :</h4>
                                                 <p className="mb-0 g-text">36.8 Degree</p>
                                             </div>
                                         </section>
