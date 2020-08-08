@@ -9,12 +9,12 @@ class NotFound extends React.Component {
     }
 
     componentDidMount() {
-        this.props.onMount();
+        // this.props.onMount();
     }
     
     render() {
         return (
-            <div id="notfoundpage" className="container-fluid" style={{display: "none"}} >
+            <div id="notfoundpage" className="container-fluid" style={{display: "block"}} >
                 <div className="row">
                     <div className="col-lg-12">
                         <section className="box nobox">

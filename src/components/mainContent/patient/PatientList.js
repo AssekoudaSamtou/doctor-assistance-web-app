@@ -4,6 +4,7 @@ import PageTitle from '../../card/PageTitle';
 import PatientItem from './PatientItem';
 import PatientDataService from "../../../services/patient.service";
 import noItem from '../../../data/icons/no-item3.png';
+import loading from '../../../data/icons/loading.svg';
 
 
 class PatientList extends React.Component {
@@ -11,7 +12,7 @@ class PatientList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            patients: [],
+            patients: null,
         }
     }
 
@@ -30,7 +31,7 @@ class PatientList extends React.Component {
             <div>
                 <PageTitle title="Tous Mes Patients" />
                 
-                {this.state.patients.map(({nom, prenom, genre, id, adresse, telephone, date_naissance}) => 
+                { this.state.patients !== null && this.state.patients.map(({nom, prenom, genre, id, adresse, telephone, date_naissance}) => 
                     <PatientItem 
                         fullname={`${nom} ${prenom}`} 
                         gender={genre} 
@@ -41,7 +42,13 @@ class PatientList extends React.Component {
                         key={id}/>
                 )}
 
-                { this.state.patients.length === 0 && (
+                { this.state.patients === null && (
+                    <div>
+                        <img src={loading} style={{width: '300px', margin: 'auto', display: 'block'}} />
+                    </div>
+                )}
+
+                { (this.state.patients !== null && this.state.patients.length === 0) && (
                     <div>
                         <img src={noItem} style={{width: 50+'%', margin: 'auto', display: 'block'}} />
                     </div>

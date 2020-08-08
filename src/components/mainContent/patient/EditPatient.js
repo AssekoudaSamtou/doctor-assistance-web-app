@@ -8,6 +8,7 @@ import PatientDataService from "../../../services/patient.service";
 
 import PageTitle from '../../card/PageTitle';
 import NotFound from '../error/404';
+import loading from '../../../data/icons/loading.svg';
 
 const cookies = new Cookies();
 
@@ -34,17 +35,9 @@ class EditPatient extends React.Component {
             console.log(response.data);
             this.setState({patient: {...response.data}});
         }).catch(e => {
+            this.setState({patient: {id: 0, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""}});
             console.log(e);
         });
-    }
-
-    handleNotFoundMount = ()=> {
-        if (this.state.patient.id !== null) {
-            window.$("#notfoundpage").css("display", "none");
-        }
-        else{
-            // window.$("#notfoundpage").css("display", "block");
-        }
     }
 
     handleInputChange(event) {
@@ -59,7 +52,7 @@ class EditPatient extends React.Component {
             loggedDoctor = cookies.get("loggedUser")
         }
         var data = {
-            created_by: loggedDoctor.id,
+            doctor: loggedDoctor.id,
             nom: this.state.patient.nom,
             prenom: this.state.patient.prenom,
             adresse: this.state.patient.adresse,
@@ -123,7 +116,17 @@ class EditPatient extends React.Component {
 
         return (
             <div>
-                {this.state.patient.id !== null ? (
+                { this.state.patient.id === null && (
+                    <div>
+                        <img src={loading} style={{width: '300px', margin: 'auto', display: 'block'}} />
+                    </div>
+                )}
+
+                { (this.state.patient.id === 0) && (
+                    <NotFound />
+                )}
+
+                {this.state.patient.id > 0 && (
                     <div>
                         <PageTitle title="Edit patient" />
                         
@@ -142,10 +145,7 @@ class EditPatient extends React.Component {
                             </div>
                         </div>
                     </div>
-                ) : (
-                    <NotFound onMount={this.handleNotFoundMount} />
                 )}
-                
             </div>
         )
     }

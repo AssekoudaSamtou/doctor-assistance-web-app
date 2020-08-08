@@ -3,13 +3,14 @@ import React from 'react';
 import PageTitle from '../../card/PageTitle';
 import PatientDataService from "../../../services/patient.service";
 import NotFound from "../error/404";
-import computedAge from '../../../utils'
+import computedAge, {GIRL_AVATAR, BOY_AVATAR} from '../../../utils';
 
 import profile from "../../../data/profile/profile.jpg"
 import clock from "../../../data/hos-dash/clock.png"
 import PatientInfoItem from '../../card/PatientInfoItem';
 import { Link } from 'react-router-dom';
 import AddConsultation from '../consultation/AddConsultation';
+import loading from '../../../data/icons/loading.svg';
 
 class PatientDetails extends React.Component {
 
@@ -27,6 +28,7 @@ class PatientDetails extends React.Component {
         .then(response => {
             this.setState({patient: {...response.data}});
         }).catch(e => {
+            this.setState({patient: {id: 0, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""}});
             console.log(e);
         });
     }
@@ -35,18 +37,20 @@ class PatientDetails extends React.Component {
         
     }
 
-    handleNotFoundMount = ()=> {
-        if (this.state.patient.id !== null) {
-            window.$("#notfoundpage").css("display", "none");
-        }else{
-            // window.$("#notfoundpage").css("display", "block");
-        }
-    }
-
     render() {
         return (
                 <div>
-                    {this.state.patient.id !== null ? (
+                    { this.state.patient.id === null && (
+                        <div>
+                            <img src={loading} style={{width: '300px', margin: 'auto', display: 'block'}} />
+                        </div>
+                    )}
+
+                    { (this.state.patient.id === 0) && (
+                        <NotFound />
+                    )}
+
+                    {this.state.patient.id > 0 && (
                         <div>
                             <PageTitle title="Profil Patient" />
                             
@@ -59,7 +63,7 @@ class PatientDetails extends React.Component {
                                             <div className="doctors-list patient relative">
                                                 <div className="doctors-head relative text-center">
                                                     <div className="patient-img img-circle">
-                                                        <img src={profile} className="rad-50 center-block" alt=""/>
+                                                    <img className="rad-50 center-block" src={this.state.patient.genre === "M" ? BOY_AVATAR : GIRL_AVATAR}/>
                                                         <div className="stutas"></div>
                                                     </div>
                                                     <h3 className="header w-text relative bold">Nom : {this.state.patient.nom} {this.state.patient.prenom}</h3>
@@ -254,30 +258,6 @@ class PatientDetails extends React.Component {
                                             </div>
                                         </section>
                                     </div>
-                                    {/* <div className="col-md-6 col-sm-12">
-                                        <section className="box gradient-pink" style={{padding:20+'px'}}>
-                                            <div className="patient-personal v2 mb-0">
-                                                <h4 className="w-text"> <span className="text-info bold">-- </span> Regular checkups</h4>
-                                                <p className="mb-0 g-text"></p>
-                                            </div>
-                                            <div className="patient-personal v2 mb-0">
-                                                <h4 className="w-text">Dr Anthony Wager</h4>
-                                                <p className="mb-0 g-text">dermatologist</p>
-                                            </div>
-                                            <div className="patient-personal v2 mb-0">
-                                                <h4 className="w-text">Dr Smith Wright </h4>
-                                                <p className="mb-0 g-text">Clinical doctor</p>
-                                            </div>
-                                            <div className="patient-personal v2 mb-0">
-                                                <h4 className="w-text">Dr Tom Humpton</h4>
-                                                <p className="mb-0 g-text">Dentist</p>
-                                            </div>
-                                            <div className="patient-personal v2 mb-0">
-                                                <h4 className="w-text">Dr Riphat Jion</h4>
-                                                <p className="mb-0 g-text">Surgeon</p>
-                                            </div>
-                                        </section>
-                                    </div> */}
                                 </div>
                             </div>
 
@@ -346,30 +326,8 @@ class PatientDetails extends React.Component {
                                 </div>
                             </div>
 
-                            {/* <div className="col-xs-12 col-md-5">
-                                <section className="box ">
-                                    <header className="panel_header">
-                                        <h2 className="title pull-left">Patient Activities</h2>
-                                        <div className="actions panel_actions pull-right">
-                                            <a className="box_toggle fa fa-chevron-down"></a>
-                                            <a className="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a>
-                                            <a className="box_close fa fa-times"></a>
-                                        </div>
-                                    </header>
-                                    <div className="content-body pb0">    
-                                        <div className="row">
-                                            <div className="col-md-10 col-sm-10 col-xs-10 col-md-offset-1 col-sm-offset-1 col-xs-offset-1">
-                                                <canvas id="radar-chartjs" width="303" height="303" style={{width: 303+'px', height: 303+'px'}}></canvas>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </section>
-                            </div> */}
-
                             <div className="clearfix"></div>
                         </div>
-                    ) : (
-                        <NotFound onMount={this.handleNotFoundMount} />
                     )}
                     
                 </div>

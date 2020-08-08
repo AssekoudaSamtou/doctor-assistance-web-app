@@ -37,7 +37,7 @@ class AddPatient extends React.Component {
             loggedDoctor = cookies.get("loggedUser")
         }
         var data = {
-            created_by: loggedDoctor.id,
+            doctor: loggedDoctor.id,
             nom: this.state.patient.nom,
             prenom: this.state.patient.prenom,
             adresse: this.state.patient.adresse,

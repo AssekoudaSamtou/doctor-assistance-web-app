@@ -22,8 +22,14 @@ const HospitalItem = ({nom, adresse, id, email, description, owner, onDeleteClic
                     <img src={hospitalBuilding} alt=""/>
                 </div>
                 <div className="doc-info">
-                    <span className="bold text-uppercase h3" style={{color: '#777'}}>{nom}</span>
-                    <h5>{adresse}</h5>
+                    <span className="bold text-uppercase h3" style={{color: '#777'}}>
+                        <i className="fas fa-signature" style={{color:'bisque'}}></i> 
+                        <span>{'\u00A0'}{'\u00A0'}{nom}</span>
+                    </span>
+                    <h5>
+                        <i className="fas fa-map-marker-alt"></i>
+                        <span>{'\u00A0'}{'\u00A0'}{'\u00A0'}{adresse}</span> 
+                    </h5>
                     <div className="">
                         <span className="dot" style={{cursor: 'pointer', marginRight:15+'px', marginLeft:15+'px'}} onClick={handleDeleteClick}>
                             <i className="fas fa-trash" style={{color:'black'}}></i>

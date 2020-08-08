@@ -8,110 +8,19 @@ class StructureSanitaireForm extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            denomination: "",
-            telephone: "",
-            adresse: "",
-            description: "",
-            email: "",
-            username: "",
-            send_btn_text: "Enregister",
-            delete_btn_text: "Supprimer",
-        };
     }
 
-    componentWillMount() {
-        if (this.props.id) {
-            structureSanitaireService.get(this.props.id)
-            .then(response => {
-                console.log(response.data);
-                this.setState({...response.data});
-            }).catch(e => {
-                console.log(e);
-            });
-        }
+    handleAddClick = event => {
+        this.props.onAddClick();
     }
-
-    handleInputChange = event => {
-        const { name, value } = event.target;
-        this.setState({ [name]: value });
+    handleUpdateClick = event => {
+        this.props.onUpdateClick();
     }
-
-    clean = () => {
-        this.setState({
-            denomination: "",
-            telephone: "",
-            adresse: "",
-            description: "",
-            email: "",
-            username: "",
-        });
+    handleDeleteClick = event => {
+        this.props.onDeleteClick();
     }
-
-    save = event => {
-        this.setState({send_btn_text: "En cours..."});
-        let data = {
-            denomination: this.state.denomination,
-            telephone: this.state.telephone,
-            description: this.state.description,
-            adresse: this.state.adresse,
-            email: this.state.email,
-            username: this.state.denomination.replace(/\s+/g, ''),
-        };
-        doctorService.addHospital(data)
-        .then(response => {
-            window.showSuccess("Structure sanitaire ajoutée");
-            this.setState({send_btn_text: "Ajouter"});
-            this.clean();
-            this.props.onSuccess(response.data);
-        })
-        .catch(error => {
-            if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } 
-            else if (error.request) {
-                console.log(error.request);
-            } 
-            else {
-                console.log('Error', error.message);
-            }
-            console.log(error.config);
-        });
-    }
-
-    update = event => {
-        this.setState({send_btn_text: "En cours..."});
-        let data = {
-            denomination: this.state.denomination,
-            telephone: this.state.telephone,
-            description: this.state.description,
-            adresse: this.state.adresse,
-            email: this.state.email,
-            // username: this.state.denomination.replace(/\s+/g, ''),
-        };
-        structureSanitaireService.delete(this.props.id)
-        .then(response => {
-            window.showSuccess("Structure sanitaire supprimée");
-            this.setState({send_btn_text: "Enregister"});
-            this.clean();
-            this.props.onSuccess(response.data);
-        })
-        .catch(error => {
-            if (error.response) {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } 
-            else if (error.request) {
-                console.log(error.request);
-            } 
-            else {
-                console.log('Error', error.message);
-            }
-            console.log(error.config);
-        });
+    handleCancelClick = event => {
+        this.props.onCancelClick();
     }
 
     render() {
@@ -119,35 +28,39 @@ class StructureSanitaireForm extends React.Component {
             <div style={{padding: '10px'}}>
                 <div className="row">
                     <div className="col-lg-6 col-xs-12">
-                        <FormBoxItem type="text" label="Dénomination" onInputChange={this.handleInputChange} name="denomination" value={this.state.denomination}/>
+                        <FormBoxItem type="text" label="Dénomination" onInputChange={this.props.onInputChange} name="denomination" value={this.props.hospital.denomination}/>
                     </div>
                     <div className="col-lg-6 col-xs-12">
-                        <FormBoxItem type="email" label="Adresse Email" onInputChange={this.handleInputChange} name="email" value={this.state.email}/>
+                        <FormBoxItem type="email" label="Adresse Email" onInputChange={this.props.onInputChange} name="email" value={this.props.hospital.email}/>
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="col-lg-6 col-xs-12">
-                        <FormBoxItem type="text" label="Téléphone" onInputChange={this.handleInputChange} name="telephone" value={this.state.telephone}/>
+                        <FormBoxItem type="text" label="Téléphone" onInputChange={this.props.onInputChange} name="telephone" value={this.props.hospital.telephone}/>
                     </div>
                     <div className="col-lg-6 col-xs-12">
-                        <FormBoxItem type="text" label="Adresse" onInputChange={this.handleInputChange} name="adresse" value={this.state.adresse} description="'ville, quartier, boite postale...'" />
+                        <FormBoxItem type="text" label="Adresse" onInputChange={this.props.onInputChange} name="adresse" value={this.props.hospital.adresse} description="'ville, quartier, boite postale...'" />
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="col-lg-12 col-xs-12">
-                        <FormBoxItem type="textarea" label="Description" onInputChange={this.handleInputChange} name="description" value={this.state.description}/>
+                        <FormBoxItem type="textarea" label="Description" onInputChange={this.props.onInputChange} name="description" value={this.props.hospital.description}/>
                     </div>
                 </div>
 
-                <div className="row" style={{padding: '15px'}}>
-                    <span className="btn btn-primary gradient-blue" onClick={this.save} >{ this.state.send_btn_text}</span>
-                    { this.props.id && (
-                        <span className="btn btn-default" onClick={this.delete} >{ this.state.delete_btn_text}</span>
-                    )}
-                    
-                </div>
+                { this.props.hospital.id ? (
+                    <div className="row" style={{padding: '15px'}}>
+                        <span className="btn btn-primary gradient-blue" onClick={this.handleUpdateClick} >{ this.props.send_btn_text}</span>
+                        <span className="btn btn-default" onClick={this.handleDeleteClick} >{ this.props.delete_btn_text}</span>
+                    </div>
+                ) : (
+                    <div className="row" style={{padding: '15px'}}>
+                        <span className="btn btn-primary gradient-blue" onClick={this.handleAddClick} >{ this.props.send_btn_text}</span>
+                        <span className="btn btn-default" onClick={this.handleCancelClick} >Annuler</span>
+                    </div>
+                )}
             </div>
         )
     }

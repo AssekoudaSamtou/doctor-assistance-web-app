@@ -1,3 +1,5 @@
+const GIRL_AVATAR = "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShaggyMullet&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=SadConcernedNatural&mouthType=Smile&skinColor=DarkBrown";
+const BOY_AVATAR = "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortCurly&accessoriesType=Round&hairColor=BrownDark&facialHairType=MoustacheMagnum&facialHairColor=Platinum&clotheType=BlazerSweater&eyeType=Default&eyebrowType=SadConcernedNatural&mouthType=Vomit&skinColor=DarkBrown";
 
 const computedAge = (date_naissance) => {
     var today = new Date();
@@ -9,5 +11,5 @@ const computedAge = (date_naissance) => {
     }
     return age;
 }
-
+export {GIRL_AVATAR, BOY_AVATAR};
 export default computedAge;
