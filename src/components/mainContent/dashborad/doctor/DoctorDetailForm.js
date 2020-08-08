@@ -123,10 +123,6 @@ class DoctorDetailForm extends React.Component {
       .css("color", "white");
 
     this.state.specialite = id;
-    // this.setState({specialite: id});
-    // this.setState(
-    //     (prevState, props) => ({ specialite: id })
-    // );
     console.log(this.state.specialite);
   }
 

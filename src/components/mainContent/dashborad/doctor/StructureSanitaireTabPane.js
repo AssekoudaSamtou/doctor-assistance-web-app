@@ -2,6 +2,7 @@ import React, {useEffect, useState, Component} from 'react';
 import ListeStructureSanitaire from './ListeStructureSanitaire';
 import StructureSanitaireDataService from '../../../../services/structureSanitaire.service';
 import MedecinStructureSanitaireDataService from '../../../../services/medecinStructureSanitaire.service';
+import doctorService from '../../../../services/doctor.service';
 import Cookies from 'universal-cookie';
 import StructureSanitaireForm from './StructureSanitaireForm';
 
@@ -12,12 +13,28 @@ class StructureSanitaireTabPane extends Component {
         super(props);
         var user = cookies.get("loggedUser");
         this.state = {
+            structureSanitaire: {
+                denomination: "",
+                telephone: "",
+                adresse: "",
+                description: "",
+                email: "",
+                username: "",
+            },
             filterText : "",
             structureSanitaires: [],
             addedStructureSanitaires: [],
             ownedStructureSanitaires: user.structure_sanitaires,
-            showModal: false
+            showModal: false,
+            send_btn_text: "Enregister",
         };
+    }
+
+    handleInputChange = event => {
+        const { name, value } = event.target;
+        // this.setState({ [name]: value });
+        this.setState({ structureSanitaire: {...this.state.structureSanitaire, [name]: value} });
+        console.log(name, value);
     }
 
     componentWillMount() {
@@ -63,6 +80,7 @@ class StructureSanitaireTabPane extends Component {
     componentDidMount() {
         window.$('#pills ul li a[href="#pills-tab5"]').parent().addClass("active");
         window.$('#pills-tab5').addClass("active");
+        // this.toggleModal();
     }
 
     handleFilterTextChange = (event) => {
@@ -143,6 +161,45 @@ class StructureSanitaireTabPane extends Component {
         
     }
 
+    addStructureSanitaire = () => {
+        this.setState({send_btn_text: "En cours..."});
+        let data = {
+            denomination: this.state.structureSanitaire.denomination,
+            telephone: this.state.structureSanitaire.telephone,
+            description: this.state.structureSanitaire.description,
+            adresse: this.state.structureSanitaire.adresse,
+            email: this.state.structureSanitaire.email,
+            username: this.state.structureSanitaire.denomination.replace(/\s+/g, ''),
+        };
+        doctorService.addHospital(data)
+        .then(response => {
+            window.showSuccess("Structure sanitaire ajoutée");
+            this.setState({send_btn_text: "Ajouter"});
+            this.setState({structureSanitaire: {denomination: "", telephone: "", adresse: "", description: "", email: "", username: "",}});
+            this.toggleModal();
+            // this.props.history.push(`/hospitals/`);
+            // this.props.history.push(`/hospitals_details/${response.data.id}`);
+        })
+        .catch(error => {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } 
+            else if (error.request) {
+                console.log(error.request);
+            } 
+            else {
+                console.log('Error', error.message);
+            }
+            console.log(error.config);
+        });
+    }
+
+    cancelAdding = () => {
+        this.toggleModal();
+    }
+
     render() {
         return (
             <div style={{marginTop: 20+'px'}}>
@@ -174,7 +231,7 @@ class StructureSanitaireTabPane extends Component {
                     onClick={this.handleStructureSanitaireClick} />
 
                 <div className={`modal fade col-xs-12 ${this.state.showModal ? 'in' : ''}`} id="cmpltadminModal-10" tabindex="-1" role="dialog" aria-hidden="true" style={{display: `${this.state.showModal ? 'block' : 'none'}`, background: '#8e898982'}}>
-                    <div className="modal-dialog animated fadeInDown">
+                    <div className="modal-dialog animated fadeInDown" style={{width: '750px'}}>
                         <div className="modal-content">
                             <div className="modal-header">
                                 <button type="button" className="close" onClick={this.toggleModal} >×</button>
@@ -182,7 +239,12 @@ class StructureSanitaireTabPane extends Component {
                             </div>
                             <div className="modal-body">
 
-                                <StructureSanitaireForm onSuccess={this.setAdded} />
+                            <StructureSanitaireForm 
+                                hospital={this.state.structureSanitaire}
+                                onAddClick={this.addStructureSanitaire} 
+                                onCancelClick={this.cancelAdding} 
+                                onInputChange={this.handleInputChange} 
+                                send_btn_text={this.state.send_btn_text} />
 
                             </div>
                         </div>
