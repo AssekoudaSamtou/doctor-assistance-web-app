@@ -1,26 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import computedAge from '../../../utils';
-// import {Col} from 'react-bootstrap';
-
-import avatar1 from '../../../data/profile/avatar-1.png';
+import computedAge, {GIRL_AVATAR, BOY_AVATAR} from '../../../utils';
 import PatientInfoItem from '../../card/PatientInfoItem';
-import { Avatar } from 'avataaars';
+
 
 const PatientItem = ({fullname, gender, date_naissance, id, }) => {
-    // const computedAge = (date_naissance) => {
-    //     var today = new Date();
-    //     var birthDate = new Date(date_naissance);
-    //     var age = today.getFullYear() - birthDate.getFullYear();
-    //     var m = today.getMonth() - birthDate.getMonth();
-    //     if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-    //         age--;
-    //     }
-    //     return age;
-    // }
-
-    const GIRL_AVATAR = "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShaggyMullet&accessoriesType=Blank&hairColor=Black&facialHairType=Blank&clotheType=BlazerShirt&eyeType=WinkWacky&eyebrowType=SadConcernedNatural&mouthType=Smile&skinColor=DarkBrown";
-    const BOY_AVATAR = "https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortCurly&accessoriesType=Round&hairColor=BrownDark&facialHairType=MoustacheMagnum&facialHairColor=Platinum&clotheType=BlazerSweater&eyeType=Default&eyebrowType=SadConcernedNatural&mouthType=Vomit&skinColor=DarkBrown";
 
     return (
         <div className="col-lg-4 col-md-6">

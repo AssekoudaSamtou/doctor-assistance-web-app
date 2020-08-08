@@ -7,27 +7,27 @@ import MedecinStructureSanitaireDataService from "../../../services/medecinStruc
 
 import Cookies from 'universal-cookie';
 import noItem from '../../../data/icons/no-item3.png';
+import loading from '../../../data/icons/loading.svg';
 
 const cookies = new Cookies();
 
 class HopitalList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      hopitals: [],
-    };
-  }
+    constructor(props) {
+        super(props);
+        this.state = {
+            hopitals: null,
+        }
+    }
 
-  componentWillMount() {
-    StructureSanitaireDataService.getMine()
-      .then((response) => {
-        console.log(response.data.results);
-        this.setState({ hopitals: response.data.results });
-      })
-      .catch((e) => {
-        console.log(e);
-      });
-  }
+    componentWillMount() {
+        StructureSanitaireDataService.getMine()
+        .then(response => {
+            console.log(response.data.results);
+            this.setState({hopitals: response.data.results});
+        }).catch(e => {
+            console.log(e);
+        });
+    }
 
   delete = (id, owner) => {
     let doctor_id = cookies.get("loggedUser")["id"];
@@ -65,8 +65,8 @@ class HopitalList extends React.Component {
                 <PageTitle title="Toutes Les Structures Sanitaires" />
                 
                 <div className="row">
-                    {this.state.hopitals.map(({denomination, adresse, id, email, description, owner, telephone}) => 
-                        <div className="col-xs-12 col-lg-4" key={id}>
+                    { this.state.hopitals !== null && this.state.hopitals.map(({denomination, adresse, id, email, description, owner, telephone}) => 
+                        <div className="col-xs-12 col-lg-6" key={id}>
                             <HospitalItem 
                                 nom={denomination} 
                                 id={id} 
@@ -81,11 +81,24 @@ class HopitalList extends React.Component {
                                  />
                         </div>
                     )}
-                    { this.state.hopitals.length === 0 && (
+
+                    { this.state.hopitals === null && (
+                        <div>
+                            <img src={loading} style={{width: '300px', margin: 'auto', display: 'block'}} />
+                        </div>
+                    )}
+
+                    { (this.state.hopitals !== null && this.state.hopitals.length === 0) && (
                         <div>
                             <img src={noItem} style={{width: 50+'%', margin: 'auto', display: 'block'}} />
                         </div>
                     )}
+
+                    {/* { this.state.hopitals.length === 0 && (
+                        <div>
+                            <img src={noItem} style={{width: 50+'%', margin: 'auto', display: 'block'}} />
+                        </div>
+                    )} */}
                 </div>
                 
             </div>
