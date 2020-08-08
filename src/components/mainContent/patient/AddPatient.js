@@ -13,25 +13,16 @@ const cookies = new Cookies();
 
 class AddPatient extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      patient: {
-        id: null,
-        nom: "",
-        prenom: "",
-        adresse: "",
-        telephone: "",
-        date_naissance: "",
-        genre: "",
-      },
-      submitted: false,
-      isSubmitting: false,
+        patient: {id: null, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: "M"},
+        submitted: false,
+        isSubmitting: false
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.savePatient = this.savePatient.bind(this);
-    this.newPatient = this.newPatient.bind(this);
-  }
-
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.savePatient = this.savePatient.bind(this)
+    this.newPatient = this.newPatient.bind(this)
+}
   handleInputChange(event) {
     const { name, value } = event.target;
     this.setState({ patient: { ...this.state.patient, [name]: value } });

@@ -1,88 +1,17 @@
-import React, { useState } from "react";
-import Cookies from "universal-cookie";
+import React from 'react';
+import StructureSanitaireForm from '../dashborad/doctor/StructureSanitaireForm';
+import PageTitle from '../../card/PageTitle';
+import AddHeader from '../../card/AddHeader';
 
-import AddHeader from "../../card/AddHeader";
-import FormBox from "../../card/FormBox";
+class AddHospital extends React.Component {
 
-import PatientDataService from "../../../services/patient.service";
-
-import PageTitle from "../../card/PageTitle";
-import Alert from "../../card/Alert";
-
-const cookies = new Cookies();
-
-class AddPatient extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      patient: {
-        id: null,
-        nom: "",
-        prenom: "",
-        adresse: "",
-        telephone: "",
-        date_naissance: "",
-        genre: "",
-      },
-      submitted: false,
-      isSubmitting: false,
-    };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.savePatient = this.savePatient.bind(this);
-    this.newPatient = this.newPatient.bind(this);
-  }
-
-  handleInputChange(event) {
-    const { name, value } = event.target;
-    this.setState({ patient: { ...this.state.patient, [name]: value } });
-    console.log("CHANGING... ", name, value);
-  }
-
-  savePatient() {
-    let loggedDoctor = null;
-    if (cookies.get("userType") === "medecin") {
-      loggedDoctor = cookies.get("loggedUser");
+    constructor(props) {
+        super(props);
     }
-    var data = {
-      created_by: loggedDoctor.id,
-      nom: this.state.patient.nom,
-      prenom: this.state.patient.prenom,
-      adresse: this.state.patient.adresse,
-      telephone: this.state.patient.telephone,
-      date_naissance: this.state.patient.date_naissance,
-      genre: this.state.patient.genre,
-    };
-    console.log(data);
 
-    PatientDataService.create(data)
-      .then((response) => {
-        this.newPatient();
-        console.log(response.data, this.state.submitted);
-        window.showSuccess("Votre patient a été enrégistré avec succès");
-        setTimeout(() => {
-          this.props.history.push(`/patients_details/${response.data.id}`);
-        }, 1000);
-      })
-      .catch((e) => {
-        console.log(e);
-        window.showErrorMessage("Something went wrong");
-      });
-  }
-
-  newPatient() {
-    this.setState({
-      patient: {
-        id: null,
-        nom: null,
-        prenom: null,
-        adresse: null,
-        telephone: null,
-        date_naissance: null,
-        genre: null,
-      },
-    });
-    this.setState({ submitted: true });
-  }
+    handleAddHospitalSuccess = () => {
+        this.props.history.push("/hospitals/");
+    }
 
   render() {
     const GenderSelectOptions = [
@@ -137,29 +66,20 @@ class AddPatient extends React.Component {
       },
     ];
 
-    return (
-      <div>
-        <PageTitle title="Ajout de patient" />
+        return (
+            <div>
+                <PageTitle title="Nouvelle Structure Sanitaire" />
+                
+                <div className="col-xs-12 ">
+                    <AddHeader entityName="structure sanitaire" type="add" />
 
-        <div className="col-xs-12 ">
-          <AddHeader entityName="patient" type="add" />
-
-          <div className="bg-w">
-            {formBoxes.map((box) => (
-              <FormBox
-                key={box.headerTitle}
-                box={box}
-                fromType="add"
-                isSubmitting={this.state.isSubmitting}
-                onInputChange={this.handleInputChange}
-                onSaveBtnTapped={this.savePatient}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-    );
-  }
+                    <div className="bg-w">
+                        <StructureSanitaireForm onSuccess={this.handleAddHospitalSuccess} />
+                    </div>
+                </div>
+            </div>
+        )
+    }
 }
 
-export default AddPatient;
+export default AddHospital;

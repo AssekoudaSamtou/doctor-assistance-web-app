@@ -83,15 +83,15 @@ class AddConsultation extends React.Component {
     saveConsultation() {
         var user = cookies.get("loggedUser")
         var data = {
-                structure_sanitaire_pk:this.state.structure.id,
-                medecin_pk:user.id,
-                demande_consultation:this.state.consultation.demande_consultation,
-                motif: this.state.consultation.motif,
-                interrogatoire:this.state.consultation.interrogatoire,
-                resume:this.state.consultation.resume,
-                hypothese_diagnostique:this.state.consultation.hypothese_diagnostique,
-                patient: this.state.demandeConsultation.patient,
-                status:this.state.demandeConsultation.status
+              structure_sanitaire_pk:this.state.structure.id,
+              medecin_pk:user.id,
+              demande_consultation:this.state.consultation.demande_consultation,
+              motif: this.state.consultation.motif,
+              interrogatoire:this.state.consultation.interrogatoire,
+              resume:this.state.consultation.resume,
+              hypothese_diagnostique:this.state.consultation.hypothese_diagnostique,
+              patient: this.state.demandeConsultation.patient,
+              status:this.state.demandeConsultation.status
             };
         console.log(data);
         ConsultationDataService.create(data)
@@ -99,9 +99,7 @@ class AddConsultation extends React.Component {
                 console.log(response.data, this.state.submitted);
                 window.showSuccess('the consultation has been saved successfuly');
                 if(this.props.detail!="detail"){
-                    setTimeout( () => {
-                        this.props.history.push(`/consultations/`)
-                    }, 500);
+                    this.props.history.push(`/consultations/`)
                 }
                 this.newConsultation();
                 console.log(this.state.consultation)
@@ -128,37 +126,20 @@ class AddConsultation extends React.Component {
             var message = person?.nom + " "+person?.prenom+" a demande une consultation, le  "+mdate
             return message
         }
-    const GenderSelectOptions = [
-      { id: null, libelle: "----Selectionnez un genre-----" },
-      { id: "M", libelle: "Masculin" },
-      { id: "F", libelle: "Féminin" },
-    ];
-    const demandesSelectOptions = [
-      { id: -1, libelle: "----Selectionnez une demande de consultation-----" },
-    ].concat(
-      this.state.demandes.map((demande) =>
-        this.state.patients.find((patient) => patient.id == demande.patient)
-          ? {
-              id: demande.id,
-              libelle: getConsultationMessage(
-                this.state.patients,
-                demande.patient,
-                demande.date_consultation
-              ),
-            }
-          : {}
-      )
-    );
+        const GenderSelectOptions = [
+            {id: null, libelle: "----Selectionnez un genre-----"},
+            {id: "M", libelle: "Masculin"},
+            {id: "F", libelle: "Féminin"},
+        ];
+        const demandesSelectOptions = [
+            {id: -1, libelle: "----Selectionnez une demande de consultation-----"},
+        ].concat(this.state.demandes.map((demande)=>(this.state.patients.find(patient =>patient.id == demande.patient))?(({id:demande.id, libelle: getConsultationMessage(this.state.patients,demande.patient,demande.date_consultation)})):{}));
 
-    const structureSelectOptions = [
-      { id: -1, libelle: "---- selectionner une stucture sanitaire -----" },
-    ].concat(
-      this.state.structures.map((structure) => ({
-        id: structure.id,
-        libelle: structure.denomination,
-      }))
-    );
-    const formBoxes = [
+        const structureSelectOptions = [
+            {id: -1, libelle: "---- selectionner une stucture sanitaire -----"},
+        ].concat(this.state.structures.map((structure)=>({id:structure.id,libelle:structure.denomination})));
+
+      const formBoxes = [
       {
         headerTitle: "une nouvelle consultation",
         fields: [
@@ -178,13 +159,13 @@ class AddConsultation extends React.Component {
                 selectOptions: demandesSelectOptions,
               },
           {
-            type: "text",
+            type: "Cke",
             label: "Motif",
             name: "motif",
             value: this.state.consultation.motif,
           },
           {
-            type: "text",
+            type: "Cke",
             label: "Interrogatoire",
             name: "interrogatoire",
             value: this.state.consultation.interrogatoire,

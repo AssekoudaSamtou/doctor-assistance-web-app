@@ -3,6 +3,7 @@ import React from "react";
 import PageTitle from "../../card/PageTitle";
 import PatientDataService from "../../../services/patient.service";
 import NotFound from "../error/404";
+import computedAge from '../../../utils'
 
 import profile from "../../../data/profile/profile.jpg";
 import clock from "../../../data/hos-dash/clock.png";
@@ -26,7 +27,6 @@ class PatientDetails extends React.Component {
     };
     this.computedAge = this.computedAge.bind(this);
   }
-
   componentWillMount() {
     const {
       match: { params },
@@ -40,9 +40,6 @@ class PatientDetails extends React.Component {
         console.log(e);
       });
   }
-
-  componentDidMount() {}
-
   handleNotFoundMount = () => {
     alert("out");
     if (this.state.patient.id !== null) {
@@ -52,7 +49,6 @@ class PatientDetails extends React.Component {
       // window.$("#notfoundpage").css("display", "block");
     }
   };
-
   computedAge(date_naissance) {
     return 41;
   }
@@ -188,40 +184,8 @@ class PatientDetails extends React.Component {
                 </div>
               </section>
             </div>
-
-            <div className="col-lg-8 col-md-12">
-              <div className="row">
-                <div className="col-xs-12 col-md-7">
-                  <section className="box ">
-                    <header className="panel_header">
-                      <h2 className="title pull-left">Statistiques</h2>
-                      <div className="actions panel_actions pull-right">
-                        <a className="box_toggle fa fa-chevron-down"></a>
-                        <a
-                          className="box_setting fa fa-cog"
-                          data-toggle="modal"
-                          href="#section-settings"
-                        ></a>
-                        <a className="box_close fa fa-times"></a>
-                      </div>
-                    </header>
-                    <div className="content-body">
-                      <div className="row">
-                        <div className="col-xs-12">
-                          <div className="">
-                            <canvas
-                              id="bar-chartjs"
-                              height="229"
-                              width="306"
-                              style={{ width: 306 + "px", height: 229 + "px" }}
-                            ></canvas>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                </div>
-
+            <div>
+              <div>
                 <div className="col-xs-12 col-md-5">
                   <section className="box ">
                     <header className="panel_header">
@@ -360,8 +324,6 @@ class PatientDetails extends React.Component {
                 </div>
               </div>
             </div>
-
-            <div className="clearfix"></div>
 
             <div className="col-md-7 col-sm-12 col-xs-12">
               <div className="row mt-15">

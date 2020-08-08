@@ -22,9 +22,11 @@ import EditDoctor from './components/mainContent/medecin/EditDoctor';
 import AddConsultation from './components/mainContent/consultation/AddConsultation';
 import ConsultationList from './components/mainContent/consultation/ConsultationList';
 import authService from './services/auth.service';
-// import Schedule from './components/mainContent/emploi_du_temps/Schedule';
+import Schedule from './components/mainContent/emploi_du_temps/Schedule';
 import AddDemandeConsultation from './components/mainContent/demande_consultation/AddDemandeConsultation';
 import DemandeConsultationList from './components/mainContent/demande_consultation/DemandeConsultationList';
+import AddHospital from './components/mainContent/structures_sanitaire/Add';
+import EditHospital from './components/mainContent/structures_sanitaire/Edit';
 
 
 const cookies = new Cookies();
@@ -162,16 +164,25 @@ class App extends React.Component {
                                                 this.state.loggedIn ? <AddConsultation {...props} /> : <Redirect to="/login" />
                                             ) } />
                                         
-                                        <Route path="/hospitals">
-                                            {this.state.loggedIn ? <HopitalList /> : <Redirect to="/login" />}
+                                        <Route 
+                                            path="/hospitals"
+                                            render={ props => (
+                                                this.state.loggedIn ? <HopitalList {...props} /> : <Redirect to="/login" />
+                                            ) }>
                                         </Route>
 
                                         <Route 
                                             exact path={`/hospitals_new`}
                                             render={ props => (
-                                                this.state.loggedIn ? <AddPatient {...props} /> : <Redirect to="/login" />
+                                                this.state.loggedIn ? <AddHospital {...props} /> : <Redirect to="/login" />
                                             ) } >
                                         </Route>
+
+                                        <Route 
+                                            path={`/hospitals_update/:id`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <EditHospital {...props} /> : <Redirect to="/login" />
+                                            ) } />
 
                                         <Route 
                                             path={`/hospitals_details/:id`} 
@@ -180,11 +191,11 @@ class App extends React.Component {
                                             ) } />
 
 
-                                        {/* <Route 
+                                        <Route 
                                             path={`/schedules`} 
                                             render={ props => (
                                                 this.state.loggedIn ? <Schedule {...props} /> : <Redirect to="/login" />
-                                            ) } /> */}
+                                            ) } />
 
                                         <Route exact path={`/demande_consultation_new`}
                                             render={ props => (

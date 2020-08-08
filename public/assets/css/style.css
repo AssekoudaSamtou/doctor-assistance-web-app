@@ -3345,7 +3345,7 @@ and (orientation : portrait) {
     font-size: inherit;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: #9e9e9escale;
+    -moz-osx-font-smoothing: #9e9e9e;
 }
 .icon-chevron-up:before {
     content: "\f077";

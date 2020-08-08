@@ -3,6 +3,7 @@ import React from 'react';
 import PageTitle from '../../card/PageTitle';
 import PatientItem from './PatientItem';
 import PatientDataService from "../../../services/patient.service";
+import noItem from '../../../data/icons/no-item3.png';
 
 
 class PatientList extends React.Component {
@@ -27,7 +28,7 @@ class PatientList extends React.Component {
     render() {
         return (
             <div>
-                <PageTitle title="Tous Les Patients" />
+                <PageTitle title="Tous Mes Patients" />
                 
                 {this.state.patients.map(({nom, prenom, genre, id, adresse, telephone, date_naissance}) => 
                     <PatientItem 
@@ -38,6 +39,12 @@ class PatientList extends React.Component {
                         date_naissance={date_naissance}
                         id={id}
                         key={id}/>
+                )}
+
+                { this.state.patients.length === 0 && (
+                    <div>
+                        <img src={noItem} style={{width: 50+'%', margin: 'auto', display: 'block'}} />
+                    </div>
                 )}
             </div>
         )

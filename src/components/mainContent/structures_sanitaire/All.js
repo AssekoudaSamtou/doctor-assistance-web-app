@@ -4,7 +4,9 @@ import PageTitle from "../../card/PageTitle";
 import HospitalItem from "./Item";
 import StructureSanitaireDataService from "../../../services/structureSanitaire.service";
 import MedecinStructureSanitaireDataService from "../../../services/medecinStructureSanitaire.service";
-import Cookies from "universal-cookie";
+
+import Cookies from 'universal-cookie';
+import noItem from '../../../data/icons/no-item3.png';
 
 const cookies = new Cookies();
 
@@ -53,46 +55,42 @@ class HopitalList extends React.Component {
     }
   };
 
-  edit = (id) => {};
-
   seeDetails = (id) => {};
-
-  render() {
-    return (
-      <div>
-        <PageTitle title="Liste des structures sanitaires" />
-
-        <div className="row">
-          {this.state.hopitals.map(
-            ({
-              denomination,
-              adresse,
-              id,
-              email,
-              description,
-              owner,
-              telephone,
-            }) => (
-              <div className="col-xs-12 col-lg-4" key={id}>
-                <HospitalItem
-                  nom={denomination}
-                  id={id}
-                  email={email}
-                  description={description}
-                  owner={owner}
-                  telephone={telephone}
-                  adresse={adresse}
-                  onDeleteClick={this.delete}
-                  onEditClick={this.edit}
-                  onSeeClick={this.seeDetails}
-                />
-              </div>
-            )
-          )}
-        </div>
-      </div>
-    );
-  }
+    edit = (id) => {
+        this.props.history.push(`/hospitals_update/${id}`);
+    }
+    render() {
+        return (
+            <div>
+                <PageTitle title="Toutes Les Structures Sanitaires" />
+                
+                <div className="row">
+                    {this.state.hopitals.map(({denomination, adresse, id, email, description, owner, telephone}) => 
+                        <div className="col-xs-12 col-lg-4" key={id}>
+                            <HospitalItem 
+                                nom={denomination} 
+                                id={id} 
+                                email={email} 
+                                description={description} 
+                                owner={owner} 
+                                telephone={telephone} 
+                                adresse={adresse}
+                                onDeleteClick={this.delete}
+                                onEditClick={this.edit}
+                                onSeeClick={this.seeDetails}
+                                 />
+                        </div>
+                    )}
+                    { this.state.hopitals.length === 0 && (
+                        <div>
+                            <img src={noItem} style={{width: 50+'%', margin: 'auto', display: 'block'}} />
+                        </div>
+                    )}
+                </div>
+                
+            </div>
+        )
+    }
 }
 
 export default HopitalList;

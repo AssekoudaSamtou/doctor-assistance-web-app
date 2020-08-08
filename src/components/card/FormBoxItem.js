@@ -133,7 +133,7 @@ class FormBoxItem extends React.Component {
           <div id={`${this.props.name}-control`} className="controls">
             <CKEditor
               editor={ClassicEditor}
-              //   config={editorConfiguration}
+                config={{toolbar:["heading","|","bold","italic","|", 'bulletedList', 'numberedList', 'blockQuote']}}
               data="<p>Veuillez Saisir</p>"
               onInit={(editor) => {
                 // You can store the "editor" and use when it is needed.
