@@ -52,7 +52,7 @@ class PatientDetails extends React.Component {
 
                     {this.state.patient.id > 0 && (
                         <div>
-                            <PageTitle title="Profil Patient" />
+                            <PageTitle title="Profil du patient" />
                             
                             <div className="clearfix"></div>
 
@@ -73,8 +73,8 @@ class PatientDetails extends React.Component {
                                                     <div className="patients-info relative">
                                                         <PatientInfoItem title="Sexe" value={this.state.patient.genre === "M" ? "Masculin" : "Féminin"} />
                                                         <PatientInfoItem title="Age" value={`${computedAge(this.state.patient.date_naissance)} Ans`} />
-                                                        <PatientInfoItem title="Patient  Height" value="176 cm" />
-                                                        <PatientInfoItem title="Patient Weight" value="67 Kg" />
+                                                        <PatientInfoItem title="Taille du patient" value="176 cm" />
+                                                        <PatientInfoItem title="Poids du patient" value="67 Kg" />
                                                     </div>
                                                 </div>
                                                 {/* <!-- end row --> */}
@@ -90,7 +90,7 @@ class PatientDetails extends React.Component {
                                                         </div>
                                                     </div>
                                                     <Link to={`/patients_update/${this.state.patient.id}`} className="btn btn-primary btn-lg gradient-blue d-block" style={{display: 'block', marginTop: '20px'}}>
-                                                        <span>Edit</span>
+                                                        <span>Modifier</span>
                                                     </Link>
                                                     <a data-toggle="modal" href="#cmpltadminModal-7" className="btn btn-primary btn-lg gradient-blue d-block" style={{display: 'block', marginTop: '20px'}}>
                                                         <span>Nouvelle consultation</span>
@@ -124,7 +124,7 @@ class PatientDetails extends React.Component {
                                     <div className="col-xs-12 col-md-7">
                                         <section className="box ">
                                             <header className="panel_header">
-                                                <h2 className="title pull-left">Blood Levels</h2>
+                                                <h2 className="title pull-left">Historique des consultations</h2>
                                                 
                                             </header>
                                             <div className="content-body">    

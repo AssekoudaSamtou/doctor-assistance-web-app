@@ -1,11 +1,8 @@
-import React, { useState } from 'react';
-import Cookies from 'universal-cookie';
-
-import AddHeader from '../../card/AddHeader';
-import FormBox from '../../card/FormBox';
-
+import React, { useState } from "react";
+import Cookies from "universal-cookie";
+import AddHeader from "../../card/AddHeader";
+import FormBox from "../../card/FormBox";
 import PatientDataService from "../../../services/patient.service";
-
 import PageTitle from '../../card/PageTitle';
 import NotFound from '../error/404';
 import loading from '../../../data/icons/loading.svg';
@@ -128,7 +125,7 @@ class EditPatient extends React.Component {
 
                 {this.state.patient.id > 0 && (
                     <div>
-                        <PageTitle title="Edit patient" />
+                        <PageTitle title="Modifier un patient" />
                         
                         <div className="col-xs-12 ">
                             <AddHeader entityName="patient" type="edit" />
@@ -146,9 +143,10 @@ class EditPatient extends React.Component {
                         </div>
                     </div>
                 )}
+
             </div>
-        )
-    }
+    );
+  }
 }
 
 export default EditPatient;

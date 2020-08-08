@@ -1,9 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import PageTitle from '../../card/PageTitle';
-import HospitalItem from './Item';
+import PageTitle from "../../card/PageTitle";
+import HospitalItem from "./Item";
 import StructureSanitaireDataService from "../../../services/structureSanitaire.service";
 import MedecinStructureSanitaireDataService from "../../../services/medecinStructureSanitaire.service";
+
 import Cookies from 'universal-cookie';
 import noItem from '../../../data/icons/no-item3.png';
 import loading from '../../../data/icons/loading.svg';
@@ -11,7 +12,6 @@ import loading from '../../../data/icons/loading.svg';
 const cookies = new Cookies();
 
 class HopitalList extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -29,42 +29,36 @@ class HopitalList extends React.Component {
         });
     }
 
-    delete = (id, owner) => {
-        let doctor_id = cookies.get("loggedUser")['id'];
+  delete = (id, owner) => {
+    let doctor_id = cookies.get("loggedUser")["id"];
 
-        if (!owner) {
-            MedecinStructureSanitaireDataService.delete(doctor_id, id, 'my_hos')
-            .then(response => {
-                window.showSuccess("Hopital Supprimé !");
-                this.setState({hopitals: response.data});
-            })
-            .catch(e => {
-                console.log(e);
-                window.showErrorMessage('Something went wrong!!!');
-            });
-        }
-        else if( owner === doctor_id ) {
-            StructureSanitaireDataService.delete(id, 'my_hos')
-            .then(response => {
-                window.showSuccess("Hopital Supprimé !");
-                this.setState({hopitals: response.data});
-            })
-            .catch(e => {
-                console.log(e);
-                window.showErrorMessage('Something went wrong!!!');
-            });
-        }
-        
+    if (!owner) {
+      MedecinStructureSanitaireDataService.delete(doctor_id, id, "my_hos")
+        .then((response) => {
+          window.showSuccess("Structure sanitaire supprimé !");
+          this.setState({ hopitals: response.data });
+        })
+        .catch((e) => {
+          console.log(e);
+          window.showErrorMessage("Something went wrong!!!");
+        });
+    } else if (owner === doctor_id) {
+      StructureSanitaireDataService.delete(id, "my_hos")
+        .then((response) => {
+          window.showSuccess("Structure sanitaire supprimée !");
+          this.setState({ hopitals: response.data });
+        })
+        .catch((e) => {
+          console.log(e);
+          window.showErrorMessage("Something went wrong!!!");
+        });
     }
+  };
 
+  seeDetails = (id) => {};
     edit = (id) => {
         this.props.history.push(`/hospitals_update/${id}`);
     }
-
-    seeDetails = (id) => {
-        
-    }
-
     render() {
         return (
             <div>

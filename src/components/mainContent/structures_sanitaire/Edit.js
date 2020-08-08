@@ -131,8 +131,7 @@ class EditHospital extends React.Component {
                     </div>
                 )}
             </div>
-        )
-    }
+        ) }
 }
 
 export default EditHospital;

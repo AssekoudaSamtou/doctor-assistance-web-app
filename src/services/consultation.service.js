@@ -20,11 +20,7 @@ class ConsultationDataService {
   }
 
   create(data) {
-    if(data.detail=="detail"){
-      return http.post(`/consultations/`, data, options);
-    }else{
-      return http.post(`/consultations/`, data, options);
-    }
+    return http.post(`/consultations/`, data, options);
   }
 
   update(id, data) {

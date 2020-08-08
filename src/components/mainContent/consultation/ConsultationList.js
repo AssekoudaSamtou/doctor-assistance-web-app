@@ -113,8 +113,7 @@ class ConsultationList extends React.Component {
                                                         <h4 class="modal-title">{this.state.selectedconsultation.motif}</h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        {this.state.edit ? <EditConsultation consultation={this.state.selectedconsultation}/> : this.state.selectedconsultation.resume}
-
+                                                        RESUME: {this.state.edit ? <EditConsultation consultation={this.state.selectedconsultation}/> : this.state.selectedconsultation.resume}
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button class="btn btn-default" onClick={()=> this.setState({edit:false}) } type="button">Afficher</button>
