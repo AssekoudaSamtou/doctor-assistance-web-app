@@ -22,8 +22,8 @@ class StructureSanitaireTabPane extends Component {
                 username: "",
             },
             filterText : "",
-            structureSanitaires: [],
-            addedStructureSanitaires: [],
+            structureSanitaires: null,
+            addedStructureSanitaires: null,
             ownedStructureSanitaires: user.structure_sanitaires,
             showModal: false,
             send_btn_text: "Enregister",
@@ -32,9 +32,7 @@ class StructureSanitaireTabPane extends Component {
 
     handleInputChange = event => {
         const { name, value } = event.target;
-        // this.setState({ [name]: value });
         this.setState({ structureSanitaire: {...this.state.structureSanitaire, [name]: value} });
-        console.log(name, value);
     }
 
     componentWillMount() {
@@ -201,7 +199,7 @@ class StructureSanitaireTabPane extends Component {
     }
 
     render() {
-        return (
+        return ( 
             <div style={{marginTop: 20+'px'}}>
                 <h4>Vous intervenez dans l'une de ces structures en tant que Médécin ? sans plus tarder, .</h4>
                 
