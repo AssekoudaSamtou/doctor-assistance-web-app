@@ -53,8 +53,12 @@ class App extends React.Component {
         this.setState({isLoginPageLoaded: true});
     }
 
-    componentWillMount() {            
-        authService.assert({token: cookies.get("token")})
+    componentWillMount() {
+        const token = cookies.get("token");
+        const user = cookies.get("loggedUser");
+        const path = window.location.pathname;
+        if ((token !== undefined && user !== undefined) && (path!=="/login" && path!=="/signup")) {
+            authService.assert({token: token})
             .then(response => {
                 cookies.set('loggedUser', response.data.user);
                 this.setState({loggedIn: true});
@@ -73,6 +77,7 @@ class App extends React.Component {
                 window.showErrorMessage("Wrong credential ! Please try to login");
                 console.log(error.config);
             });
+        }
     }
 
     render() {
