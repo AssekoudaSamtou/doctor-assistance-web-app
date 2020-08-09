@@ -3,6 +3,7 @@ import React from "react";
 import PageTitle from "../../card/PageTitle";
 import DemandeConsultationsDataService from "../../../services/demande_consultation.service";
 import DemandeItem from "./DemandeConsultationItem";
+import EditDemandeConsultation from "./EditDemandeConsultation";
 
 class DemandeConsultationList extends React.Component {
   constructor(props) {
@@ -11,7 +12,7 @@ class DemandeConsultationList extends React.Component {
       consultations: [],
       patients: [],
       demandes: [],
-      selectedDemande: { id: 1 },
+      selectedDemande: { id: null },
       edit: false,
     };
   }
@@ -113,15 +114,11 @@ class DemandeConsultationList extends React.Component {
                 </h4>
               </div>
               <div class="modal-body">
-                {/* {this.state.edit ? <EditConsultation consultation={this.state.selectedconsultation}/> : this.state.selectedconsultation.resume} */}
+                {this.state.edit ? <EditDemandeConsultation demande={this.state.selectedDemande}/> : this.state.selectedDemande.resume}
               </div>
               <div class="modal-footer">
-                <button class="btn btn-default" type="button">
-                  Afficher
-                </button>
-                <button class="btn btn-primary" type="button">
-                  Modifier
-                </button>
+                  <button class="btn btn-default" onClick={()=> this.setState({edit:false}) } type="button">Afficher</button>
+                  <button class="btn btn-primary" onClick={()=> this.setState({edit:true}) } type="button">Modifier</button>
               </div>
             </div>
           </div>

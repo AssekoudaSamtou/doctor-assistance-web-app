@@ -12,11 +12,11 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 
-class AddDemandeConsultation extends React.Component {
+class EditDemandeConsultation extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            demmande_consultation: {medecin:cookies.get("loggedUser").id,status:null,patient:null,medecin_centre_medical:null},
+            demmande_consultation: {id:this.props.demande.id,medecin:cookies.get("loggedUser").id,status:null,patient:null,centre_medical:null},
             submitted: false,
             isSubmitting: false,
             centre_medicals:[],
@@ -31,11 +31,11 @@ class AddDemandeConsultation extends React.Component {
                 ...this.state.demmande_consultation
             };
             console.log(data)
-        DemandeConsultationsDataService.create(data)
+        DemandeConsultationsDataService.update(data.id, data)
             .then(response => {
-                window.showSuccess('demande de consultation effectuee');
+                window.showSuccess('demande de consultation modifie');
                     setTimeout( () => {
-                        // this.props.history.push(`/consultations/`)
+                        // this.props.history.push(`/consultations/${this.state.demmande_consultation.id}`)
                     }, 500);
                 this.newDemandeConsultation();
             })
@@ -45,9 +45,9 @@ class AddDemandeConsultation extends React.Component {
     }
     newDemandeConsultation() {
         this.setState({demmande_consultation:{
-            status:1,
-            medecin_centre_medical:-1,
-            patient:-1,
+            status:"",
+            centre_medical:"",
+            patient:"",
         }})
     }
 
@@ -80,7 +80,7 @@ class AddDemandeConsultation extends React.Component {
         ];
         const PatientSelectOptions = [
             {id: -1, libelle: "--------Choisir le patient--------"},
-        ].concat(this.state.patients.map((patient)=>({id:patient.id,libelle:patient.nom+" "+patient.nom})));
+        ].concat(this.state.patients.map((patient)=>({id:patient.id,libelle:patient.nom+" "+patient.prenom})));
         const CenterSelectOptions = [
             {id: -1, libelle: "--------Choisir le center medical-------"},
         ].concat(this.state.centre_medicals.map((centre_medical)=>({id:centre_medical.id,libelle:centre_medical.denomination})));;
@@ -88,7 +88,7 @@ class AddDemandeConsultation extends React.Component {
             {
                 headerTitle: "Ajout Demande consultation",
                 fields: [
-                    {type: "select", name:"medecin_centre_medical", label: "Centre medical", selectOptions: CenterSelectOptions},
+                    {type: "select", name:"centre_medical", label: "Centre medical", selectOptions: CenterSelectOptions},
                     {type: "select",name:"patient", label: "Patient", selectOptions: PatientSelectOptions},
                     {type: "select",name:"status", label: "Status", selectOptions: StatusSelectOptions},
                 ]
@@ -100,13 +100,13 @@ class AddDemandeConsultation extends React.Component {
                 <PageTitle title="Ajout de la Demande de consultation" />
                 
                 <div className="col-xs-12 ">
-                    <AddHeader entityName="Demande de consultation"/>
+                    <AddHeader entityName="Modification de la Demande de consultation"/>
 
                     <div className="bg-w">
                         
                         { formBoxes.map((box) => 
                             <FormBox box={box} 
-                                box={box} fromType="add"
+                                box={box} fromType="edit"
                                 isSubmitting={this.state.isSubmitting}
                                 onInputChange={this.handleInputChange} 
                                 onSaveBtnTapped={this.saveDemandeConsultation}
@@ -120,4 +120,4 @@ class AddDemandeConsultation extends React.Component {
     }
 }
 
-export default AddDemandeConsultation;
+export default EditDemandeConsultation;

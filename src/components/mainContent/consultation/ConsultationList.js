@@ -110,14 +110,14 @@ class ConsultationList extends React.Component {
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title">{this.state.selectedconsultation.motif}</h4>
+                                                        <h4 class="modal-title"><span dangerouslySetInnerHTML={{__html: this.state.selectedconsultation.motif}}/></h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        RESUME: {this.state.edit ? <EditConsultation consultation={this.state.selectedconsultation}/> : this.state.selectedconsultation.resume}
+                                                        RESUME: {this.state.edit ? <EditConsultation consultation={this.state.selectedconsultation}/> :<div dangerouslySetInnerHTML={{__html: this.state.selectedconsultation.resume}} />}
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button class="btn btn-default" onClick={()=> this.setState({edit:false}) } type="button">Afficher</button>
-                                                        <button class="btn btn-primary" onClick={()=> this.setState({edit:true}) } type="button">Edit</button>
+                                                        <button class="btn btn-primary" onClick={()=> this.setState({edit:true}) } type="button">Modifier</button>
                                                     </div>
                                                 </div>
                                             </div>

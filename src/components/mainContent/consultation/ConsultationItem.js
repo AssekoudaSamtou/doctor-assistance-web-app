@@ -21,10 +21,10 @@ class ConsultationItem extends React.Component {
                 <small className="text-muted">{this.props.demande?.status=="1"?"accepte":"non accepte"}</small>
             </div>
         </td>
-        <td>{this.props.consultation.motif}</td>
-        <td>{this.props.consultation.interrogatoire}</td>
-        <td>{this.props.consultation.resume}</td>
-        <td>{this.props.consultation.hypothese_diagnostique}</td>
+        <td><div dangerouslySetInnerHTML={{__html: this.props.consultation.motif}} /></td>
+        <td><div dangerouslySetInnerHTML={{__html: this.props.consultation.interrogatoire}} /></td>
+        <td><div dangerouslySetInnerHTML={{__html: this.props.consultation.resume}}/></td>
+        <td><div dangerouslySetInnerHTML={{__html:this.props.consultation.hypothese_diagnostique}}/></td>
     </tr>
        );
     }
