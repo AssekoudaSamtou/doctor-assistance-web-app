@@ -2,7 +2,7 @@ import React from 'react';
 
 
 const PatientInfoItem = ({title, value}) => (
-    <div className="col-sm-6 col-xs-12">
+    <div className="col-sm-6 col-lg-6 col-xs-6">
         <div className="patient-card has-shadow2">
             <div className="doc-info-wrap">
                 <div className="patient-info">

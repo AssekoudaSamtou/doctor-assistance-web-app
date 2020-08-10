@@ -9,30 +9,32 @@ class AddHospital extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            denomination: "",
-            telephone: "",
-            adresse: "",
-            description: "",
-            email: "",
-            username: "",
+            hopital: {
+              denomination: "s",
+              telephone: "",
+              adresse: "",
+              description: "",
+              email: "",
+              username: "",
+            },
             send_btn_text: "Enregister",
         };
     }
 
     handleInputChange = event => {
         const { name, value } = event.target;
-        this.setState({ [name]: value });
+        this.setState({ hopital: {...this.state.hopital, [name]: value} });
     }
 
     add = () => {
         this.setState({send_btn_text: "En cours..."});
         let data = {
-            denomination: this.state.denomination,
-            telephone: this.state.telephone,
-            description: this.state.description,
-            adresse: this.state.adresse,
-            email: this.state.email,
-            username: this.state.denomination.replace(/\s+/g, ''),
+            denomination: this.state.hopital.denomination,
+            telephone: this.state.hopital.telephone,
+            description: this.state.hopital.description,
+            adresse: this.state.hopital.adresse,
+            email: this.state.hopital.email,
+            username: this.state.hopital.denomination.replace(/\s+/g, ''),
         };
         doctorService.addHospital(data)
         .then(response => {
@@ -62,58 +64,6 @@ class AddHospital extends React.Component {
     }
 
   render() {
-    const GenderSelectOptions = [
-      { id: null, libelle: "----Selectionnez un genre-----" },
-      { id: "M", libelle: "Masculin" },
-      { id: "F", libelle: "Féminin" },
-    ];
-    const formBoxes = [
-      {
-        headerTitle: "Informations personnelles du patient",
-        fields: [
-          {
-            type: "text",
-            label: "Nom",
-            name: "nom",
-            value: this.state.patient.nom,
-          },
-          {
-            type: "text",
-            label: "Prénom",
-            name: "prenom",
-            value: this.state.patient.prenom,
-          },
-          {
-            type: "text",
-            label: "Adresse",
-            name: "adresse",
-            value: this.state.patient.adresse,
-            description: 'e.g. "Agoe-cacaveli"',
-          },
-          {
-            type: "text",
-            label: "Téléphone",
-            name: "telephone",
-            value: this.state.patient.telephone,
-            description: 'e.g. "00228 98 76 56 87"',
-          },
-          {
-            type: "date",
-            label: "Date de naissance",
-            name: "date_naissance",
-            value: this.state.patient.date_naissance,
-          },
-          {
-            type: "select",
-            label: "Genre",
-            name: "genre",
-            value: this.state.patient.genre,
-            selectOptions: GenderSelectOptions,
-          },
-        ],
-      },
-    ];
-
         return (
             <div>
                 <PageTitle title="Nouvelle Structure Sanitaire" />
@@ -123,7 +73,7 @@ class AddHospital extends React.Component {
 
                     <div className="bg-w">
                         <StructureSanitaireForm 
-                            hospital={this.state}
+                            hospital={this.state.hopital}
                             onAddClick={this.add} 
                             onCancelClick={this.cancel} 
                             onInputChange={this.handleInputChange} 
