@@ -92,9 +92,9 @@ const TopBar = () => {
                                 </a>
                                 <ul className="dropdown-menu profile animated fadeIn">
                                     <li>
-                                        <a href="crypto-profile.html">
+                                        <Link to={`/doctors_details/${user.id}`}>
                                             <i className="fas fa-id-badge"></i> Profile
-                                        </a>
+                                        </Link>
                                     </li>
                                     <li className="">
                                         <a onClick={logout} style={{cursor : 'pointer'}}>

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import StructureSanitaire from '../../../card/StructureSanitaire';
 import Cookies from 'universal-cookie';
-import noItem from '../../../../data/icons/no-item2.png';
+import noItem from '../../../../data/icons/no-item3.png';
 import loading from '../../../../data/icons/loading.svg';
 
 const handleOnclik = (event) => {
@@ -9,7 +9,7 @@ const handleOnclik = (event) => {
 }
 
 const ListeStructureSanitaire = ({filterText, liste, onClick, owned, added}) => {
-    
+    console.log(owned);
     let filteredList = null;
 
     if (liste && added)
@@ -33,7 +33,7 @@ const ListeStructureSanitaire = ({filterText, liste, onClick, owned, added}) => 
             
             { (filteredList && filteredList.length === 0) && (
                 <div>
-                    <img src={noItem} style={{width: 10+'%', margin: 'auto', display: 'block'}} />
+                    <img src={noItem} style={{width: '200px', margin: 'auto', display: 'block'}} />
                 </div>
             )}
         </div>
