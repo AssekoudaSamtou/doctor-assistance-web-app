@@ -22,7 +22,9 @@ class PatientDataService {
   create(data) {
     return http.post("/patients/", data, options);
   }
-
+  countPatients(data) {
+    return http.post("count/patients/", data, options);
+  }
   update(id, data) {
     return http.put(`/patients/${id}/`, data, options);
   }

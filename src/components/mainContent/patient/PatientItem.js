@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 import computedAge, {GIRL_AVATAR, BOY_AVATAR} from '../../../utils';
 import PatientInfoItem from '../../card/PatientInfoItem';
 
-
 const PatientItem = ({fullname, gender, date_naissance, id, }) => {
 
     return (

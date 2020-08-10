@@ -33,14 +33,14 @@ class DoctorList extends React.Component {
             last_name,
             username,
             genre = "Masculin",
-            age = 21,
+            date_naissance = 21,
             id,
             adresse,
           }) => (
             <DoctorItem
               fullname={`${first_name} ${last_name}` && username}
               gender={genre}
-              age={age}
+              date_naissance={date_naissance}
               id={id}
               key={id}
             />

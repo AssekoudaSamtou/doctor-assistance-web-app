@@ -5,8 +5,22 @@ import {Link} from 'react-router-dom';
 import doc2 from '../../../data/hos-dash/doc2.jpg';
 import PatientInfoItem from '../../card/PatientInfoItem';
 import DoctorInfoItem from '../../card/DoctorInfoItem';
+import computedAge from '../../../utils';
+import PatientDataService from "../../../services/patient.service"
+import { data } from 'jquery';
 
-const DoctorItem = ({fullname, gender, age, id}) => (
+const DoctorItem = ({fullname, gender, date_naissance, id}) => {
+    let [patients, setPatients] = React.useState('')
+    const getPatientsNum = id => {
+        PatientDataService.countPatients({doctorpatients:id}).then((response) => {
+            setPatients(response.data)
+        })
+        .catch((e) => {
+            // console.log(e);
+        });
+        return patients
+    }
+    return (
     <div className="col-lg-4 col-md-6">
         <section className="box ">
             <div className="content-body p">
@@ -36,9 +50,9 @@ const DoctorItem = ({fullname, gender, age, id}) => (
                         </div>
                         <div className="row">
                             <div className="patients-info relative">
-                                <DoctorInfoItem title="Patient" value="3542" />
-                                <DoctorInfoItem title="Doc age" value="45 yrs" />
-                                <DoctorInfoItem title="Points" value="4563" />
+                                <DoctorInfoItem title="Patients" value={getPatientsNum(id)} />
+                                <DoctorInfoItem title=" " value=" " />
+                                <DoctorInfoItem title="Doc age" value={computedAge(date_naissance)+" Ans"}/>
                             </div>
                         </div>
                         {/* <!-- end row --> */}
@@ -53,6 +67,6 @@ const DoctorItem = ({fullname, gender, age, id}) => (
             </div>
         </section>
     </div>
-)
+)}
 
 export default DoctorItem;
