@@ -133,17 +133,17 @@ class DoctorDetailForm extends React.Component {
       { id: "F", libelle: "Féminin" },
     ];
     return (
-      <section className="box" style={{ margin: 0 }}>
+      <section className="box h-available" style={{ margin: 0 }}>
         <header className="panel_header">
           <h2 className="title pull-left">
             Nous aimerions savoir un peu plus sur vous
           </h2>
         </header>
-        <div className="content-body">
-          <div className="row">
-            <div className="col-xs-12">
-              <form id="doctorDetailForm" noValidate="novalidate">
-                <div id="pills" className="wizardpills">
+        <div className="content-body h-available">
+          <div className="row h-available">
+            <div className="col-xs-12 h-available">
+              <form id="doctorDetailForm" className="h-available" noValidate="novalidate">
+                <div id="pills" className="wizardpills h-available">
                   <ul className="form-wizard nav nav-pills">
                     <li className="">
                       <a
@@ -227,8 +227,8 @@ class DoctorDetailForm extends React.Component {
                     ></div>
                   </div>
 
-                  <div className="tab-content">
-                    <div className="tab-pane" id="pills-tab1">
+                  <div className="tab-content h-available">
+                    <div className="tab-pane h-available" id="pills-tab1">
                       <h4>Informations Personnelles</h4>
                       <br />
                       <div className="row">
@@ -275,7 +275,7 @@ class DoctorDetailForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="tab-pane" id="pills-tab2">
+                    <div className="tab-pane h-available" id="pills-tab2">
                       <h4>Contacts</h4>
                       <br />
                       <div className="row">
@@ -300,7 +300,7 @@ class DoctorDetailForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="tab-pane" id="pills-tab3">
+                    <div className="tab-pane h-available" id="pills-tab3">
                       <h4>Biographie Professionnelle</h4>
                       <br />
                       <div className="row">
@@ -316,7 +316,7 @@ class DoctorDetailForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="tab-pane " id="pills-tab4">
+                    <div className="tab-pane h-available" id="pills-tab4">
                       <h4>Quelle est votre spécialité ? </h4>
                       <br />
                       <div className="row">
@@ -334,40 +334,35 @@ class DoctorDetailForm extends React.Component {
                       </div>
                     </div>
 
-                    <div className="tab-pane" id="pills-tab5">
+                    <div className="tab-pane h-available" id="pills-tab5">
                       <StructureSanitaireTabPane
                         structureSanitaires={this.state.structureSanitaires}
-                        onStructureSanitaireClick={
-                          this.handleStructureSanitaireClick
-                        }
-                        onStructureSanitaireMount={
-                          this.handleStructureSanitaireChildMount
-                        }
+                        onStructureSanitaireClick={this.handleStructureSanitaireClick}
+                        onStructureSanitaireMount={this.handleStructureSanitaireChildMount}
                       />
+
+                      <ul className="pager wizard" style={{}}>
+                        <li className="previous first" style={{ display: "none" }}>
+                          <a href="javascript:;">First</a>
+                        </li>
+                        <li className="previous">
+                          <a href="javascript:;">Previous</a>
+                        </li>
+                        <li className="next last" style={{ display: "none" }}>
+                          <a href="javascript:;">Last</a>
+                        </li>
+                        <li className="next">
+                          <a href="javascript:;">Next</a>
+                        </li>
+                        <li className="finish">
+                          <a href="javascript:;">Finish</a>
+                        </li>
+                      </ul>
                     </div>
 
                     <div className="clearfix"></div>
 
-                    <ul className="pager wizard">
-                      <li
-                        className="previous first"
-                        style={{ display: "none" }}
-                      >
-                        <a href="javascript:;">First</a>
-                      </li>
-                      <li className="previous">
-                        <a href="javascript:;">Previous</a>
-                      </li>
-                      <li className="next last" style={{ display: "none" }}>
-                        <a href="javascript:;">Last</a>
-                      </li>
-                      <li className="next">
-                        <a href="javascript:;">Next</a>
-                      </li>
-                      <li className="finish">
-                        <a href="javascript:;">Finish</a>
-                      </li>
-                    </ul>
+                    
                   </div>
                 </div>
               </form>

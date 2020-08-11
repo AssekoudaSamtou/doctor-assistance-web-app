@@ -76,7 +76,7 @@ const TopBar = () => {
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="#">
+                                    <Link to="/consultation_new">
                                         <i className="fa fa-book"></i> Consultation
                                     </Link>
                                 </li>

@@ -12,6 +12,7 @@ class StructureSanitaireTabPane extends Component {
     constructor(props) {
         super(props);
         var user = cookies.get("loggedUser");
+        console.log("OWEND", user.structure_sanitaires);
         this.state = {
             structureSanitaire: {
                 denomination: "",
@@ -28,6 +29,7 @@ class StructureSanitaireTabPane extends Component {
             showModal: false,
             send_btn_text: "Enregister",
         };
+        console.log("OWEND", this.state.ownedStructureSanitaires);
     }
 
     handleInputChange = event => {
@@ -171,12 +173,19 @@ class StructureSanitaireTabPane extends Component {
         };
         doctorService.addHospital(data)
         .then(response => {
+            var user = cookies.get("loggedUser");
+            user.structure_sanitaires = user.structure_sanitaires.concat([response.data.id]);
+            console.log("AFTER CONCAT", user.structure_sanitaires);
+            cookies.set("loggedUser", user);
+
+            this.setState({
+                ownedStructureSanitaires: user.structure_sanitaires, 
+                structureSanitaires: response.data.structure_sanitaires,
+                send_btn_text: "Ajouter",
+                structureSanitaire: {denomination: "", telephone: "", adresse: "", description: "", email: "", username: "",}
+            });
             window.showSuccess("Structure sanitaire ajoutée");
-            this.setState({send_btn_text: "Ajouter"});
-            this.setState({structureSanitaire: {denomination: "", telephone: "", adresse: "", description: "", email: "", username: "",}});
             this.toggleModal();
-            // this.props.history.push(`/hospitals/`);
-            // this.props.history.push(`/hospitals_details/${response.data.id}`);
         })
         .catch(error => {
             if (error.response) {
@@ -200,19 +209,20 @@ class StructureSanitaireTabPane extends Component {
 
     render() {
         return ( 
-            <div style={{marginTop: 20+'px'}}>
+            <div style={{marginTop: 20+'px', minHeight: '80%'}}>
                 <h4>Vous intervenez dans l'une de ces structures en tant que Médécin ? sans plus tarder, .</h4>
                 
                 <div id="searchbarbox">
                     <div className="row">
                         <div className="col-lg-7">
-                            <div className="input-group">
-                                <input type="text" className="form-control animated fadeIn" placeholder="Search &amp; Enter" onChange={this.handleFilterTextChange}  />
+                            <div id="hospital-search-box">
+                                <input type="search" onChange={this.handleFilterTextChange} />
+                                <i class="fa fa-search"></i>
                             </div>
                         </div>
                         <div className="col-lg-4">
-                            <span className="btn btn-success btn-lg" style={{marginTop: 0+'px'}} onClick={this.toggleModal} >
-                                <i className="fas fa-plus"></i> Nouvelle structure sanitaire
+                            <span id="new-hospital-btn" className="ctrl-standard typ-subhed fx-sliderIn" onClick={this.toggleModal}>
+                                <i className="fas fa-plus"></i> nouvel hopital
                             </span>
                         </div>
                         <div className="col-lg-1">
@@ -220,13 +230,13 @@ class StructureSanitaireTabPane extends Component {
                         </div>
                     </div>
                 </div>
-
-                <ListeStructureSanitaire 
-                    owned={this.state.ownedStructureSanitaires}
-                    added={this.state.addedStructureSanitaires}
-                    filterText={this.state.filterText}
-                    liste={this.state.structureSanitaires}
-                    onClick={this.handleStructureSanitaireClick} />
+                        
+                    <ListeStructureSanitaire 
+                        owned={this.state.ownedStructureSanitaires}
+                        added={this.state.addedStructureSanitaires}
+                        filterText={this.state.filterText}
+                        liste={this.state.structureSanitaires}
+                        onClick={this.handleStructureSanitaireClick} />
 
                 <div className={`modal fade col-xs-12 ${this.state.showModal ? 'in' : ''}`} id="cmpltadminModal-10" tabindex="-1" role="dialog" aria-hidden="true" style={{display: `${this.state.showModal ? 'block' : 'none'}`, background: '#8e898982'}}>
                     <div className="modal-dialog animated fadeInDown" style={{width: '750px'}}>

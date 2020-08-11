@@ -41,9 +41,9 @@ class DoctorDashboard extends React.Component {
           role="dialog"
           aria-hidden="true"
         >
-          <div className="modal-dialog" style={{ width: 96 + "%" }}>
-            <div className="modal-content">
-              <div className="modal-body" style={{ padding: 0 }}>
+          <div className="modal-dialog h-available" style={{ width: 96+"%"}}>
+            <div className="modal-content h-available" style={{  }}>
+              <div className="modal-body h-available" style={{ padding: 0 }}>
                 <DoctorDetailForm />
               </div>
             </div>

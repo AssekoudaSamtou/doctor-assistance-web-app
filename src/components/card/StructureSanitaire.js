@@ -8,12 +8,9 @@ const handleOnclik = (event) => {
 
 }
 
-const StructureSanitaire = ({nom, adresse, onClick, id, isSelected}) => {
-    // if (isSelected) {
-        // console.log("S-S", id, isSelected);
-    // }
+const StructureSanitaire = ({nom, adresse, onClick, id, isSelected, isOwned}) => {
     return (
-        <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow">
+        <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow" style={{padding: '10px'}}>
             <input type='hidden' name='medecinStructureSanitaireID' value=''/>
             <div className="doc-info-wrap text-left">
                 <div className="doctor-img" style={{borderRadius: 0}}>
@@ -23,14 +20,20 @@ const StructureSanitaire = ({nom, adresse, onClick, id, isSelected}) => {
                     <h4 className="bold">{nom}</h4>
                     <h5>{adresse}</h5>
                     <div className="doc-rating">
-                        <span 
-                            onClick={(event) => {onClick(id);}} 
-                            className="btn" style={{
-                                                    cursor: 'pointer', 
-                                                    background: `${ isSelected ? "#26e2d6" : "" }`,
-                                                    color: `${ isSelected ? "#333333" : "" }`}}>
+                        { !isOwned && (
+                            <span 
+                                onClick={(event) => {onClick(id);}} 
+                                className="btn" 
+                                style={{
+                                    cursor: 'pointer', 
+                                    background: `${ isSelected ? "#26e2d6" : "" }`,
+                                    color: `${ isSelected ? "#333333" : "" }`
+                                }}
+                            >
                                 { isSelected ? "Retirer la demande" : "Ajouter" }
-                        </span>
+                            </span>
+                        )}
+                        
                     </div>
                 </div>
             </div>

@@ -70,7 +70,7 @@ class Schedule extends React.Component {
                     )}
                     { (this.state.consultations.length + this.state.demande_consultations.length) === 0 && (
                         <div>
-                            <img src={noItem} style={{width: 50+'%', margin: 'auto', marginTop: '25%', display: 'block'}} />
+                            <img src={noItem} style={{width: 50+'%', margin: 'auto', marginTop: '13%', display: 'block'}} />
                         </div>
                     )}
                 </div>
