@@ -7,6 +7,7 @@ import FormBox from "../../card/FormBox";
 import PatientDataService from "../../../services/patient.service";
 
 import PageTitle from "../../card/PageTitle";
+import FormBoxFooter from "../../card/FormBoxFooter";
 
 const cookies = new Cookies();
 
@@ -14,7 +15,19 @@ class AddPatient extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            patient: {id: null, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: "M"},
+            patient: {
+                id: null, 
+                nom: "", 
+                prenom: "", 
+                adresse: "", 
+                telephone: "", 
+                date_naissance: "", 
+                genre: "M",
+                groupage: "B+",
+                maladies: "Asthme,diabete",
+                allergies: "Poussiere,zzzzz",
+                habitude_alimentaires: "Végétatien",
+            },
             submitted: false,
             isSubmitting: false
         };
@@ -78,6 +91,17 @@ class AddPatient extends React.Component {
       { id: "M", libelle: "Masculin" },
       { id: "F", libelle: "Féminin" },
     ];
+    const groupageOptions = [
+        { id: null, libelle: "----Sélectionnez un groupage-----" },
+        { id: "O+", libelle: "O+" },
+        { id: "A+", libelle: "A+" },
+        { id: "B+", libelle: "B+" },
+        { id: "O-", libelle: "O-" },
+        { id: "A-", libelle: "A-" },
+        { id: "AB+", libelle: "AB+" },
+        { id: "B-", libelle: "B-" },
+        { id: "AB-", libelle: "AB-" },
+      ];
     const formBoxes = [
       {
         headerTitle: "Informations personnelles du patient",
@@ -90,6 +114,15 @@ class AddPatient extends React.Component {
           {type: "select",label: "Genre", name: "genre", value: this.state.patient.genre, selectOptions: GenderSelectOptions,},
         ],
       },
+      {
+        headerTitle: "Informations médicales du patient",
+        fields: [
+          {type: "select", label: "Groupe Sanguin", name: "groupage", value: this.state.patient.groupage, selectOptions: groupageOptions},
+          {type: "tagsinput", label: "Maladies", name: "maladies", value: this.state.patient.maladies},
+          {type: "tagsinput", label: "Allergies", name: "allergies", value: this.state.patient.allergies},
+          {type: "tagsinput", label: "Habitudes Alimentaires", name: "habitude_alimentaires", value: this.state.patient.habitude_alimentaires},
+        ],
+      },
     ];
 
     return (
@@ -100,16 +133,26 @@ class AddPatient extends React.Component {
                 <AddHeader entityName="patient" type="add" />
 
                 <div className="bg-w">
-                {formBoxes.map((box) => (
-                    <FormBox
-                        key={box.headerTitle}
-                        box={box}
-                        fromType="add"
-                        isSubmitting={this.state.isSubmitting}
-                        onInputChange={this.handleInputChange}
-                        onSaveBtnTapped={this.savePatient}
-                    />
-                ))}
+                    {formBoxes.map((box) => (
+                        <FormBox
+                            key={box.headerTitle}
+                            box={box}
+                            fromType="add"
+                            isSubmitting={this.state.isSubmitting}
+                            onInputChange={this.handleInputChange}
+                            onSaveBtnTapped={this.savePatient}
+                        />
+                    ))}
+
+                    <div className="row">
+                        <div className="col-lg-10 col-lg-offset-1 col-xs-12">
+                            <FormBoxFooter
+                                isSubmitting={this.state.isSubmitting}
+                                onSaveBtnTapped={this.savePatient}
+                                fromType="add"
+                            />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

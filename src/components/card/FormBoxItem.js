@@ -117,6 +117,20 @@ class FormBoxItem extends React.Component {
             </div>
         )}
 
+        {this.props.type === "tagsinput" && (
+            <div id={`${this.props.name}-control`} className="controls">
+                <input
+                    type="text"
+                    data-role="tagsinput"
+                    name={this.props.name}
+                    value={this.props.value}
+                    className="form-control"
+                    onChange={this.handleInputChange}
+                />
+                <span className=""></span>
+            </div>
+        )}
+
         {this.props.type === "email" && (
             <div id={`${this.props.name}-control`} className="controls">
             <input

@@ -11199,3 +11199,492 @@ table.dataTable.display tbody tr:first-child td {
     left: 0;
     width: 0;
 }
+
+
+.monshape {
+    height: 40px;
+    width: 40px;
+    background: #2EC4B6;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    display: inline-block;
+    margin: 2px;
+    -webkit-box-flex: 0;
+    -moz-box-flex: 0;
+    box-flex: 0;
+    -webkit-flex: 0 0 auto;
+    -moz-flex: 0 0 auto;
+    -ms-flex: 0 0 auto;
+    flex: 0 0 auto;
+    border: 0 solid transparent;
+    transition: .3s;
+    box-sizing: border-box;
+}
+.monshape:hover {
+    border: 4px solid rgba(255, 255, 255, 0.3);
+}
+.monshape:active {
+    top: 1px;
+}
+
+.moncircle {
+    border-radius: 50%;
+}
+
+.monshape .text {
+    user-select: none;
+    font-weight: 700;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    font-size: 17px;
+    text-align: center;
+    line-height: 1;
+    color: white;
+    text-shadow: 0 0 0 transparent, 0.25px 0.25px 0 #29afa3, 0.5px 0.5px 0 #29afa3, 0.75px 0.75px 0 #29afa3, 1px 1px 0 #29afa3, 1.25px 1.25px 0 #29afa3, 1.5px 1.5px 0 #29afa3, 1.75px 1.75px 0 #29afa3, 2px 2px 0 #29afa3, 2.25px 2.25px 0 #29afa3, 2.5px 2.5px 0 #29afa3, 2.75px 2.75px 0 #29afa3, 3px 3px 0 #29afa3, 3.25px 3.25px 0 #29afa3, 3.5px 3.5px 0 #29afa3, 3.75px 3.75px 0 #29afa3, 4px 4px 0 #29afa3, 4.25px 4.25px 0 #29afa3, 4.5px 4.5px 0 #29afa3, 4.75px 4.75px 0 #29afa3, 5px 5px 0 #29afa3, 5.25px 5.25px 0 #29afa3, 5.5px 5.5px 0 #29afa3, 5.75px 5.75px 0 #29afa3, 6px 6px 0 #29afa3, 6.25px 6.25px 0 #29afa3, 6.5px 6.5px 0 #29afa3, 6.75px 6.75px 0 #29afa3, 7px 7px 0 #29afa3, 7.25px 7.25px 0 #29afa3, 7.5px 7.5px 0 #29afa3, 7.75px 7.75px 0 #29afa3, 8px 8px 0 #29afa3, 8.25px 8.25px 0 #29afa3, 8.5px 8.5px 0 #29afa3, 8.75px 8.75px 0 #29afa3, 9px 9px 0 #29afa3, 9.25px 9.25px 0 #29afa3, 9.5px 9.5px 0 #29afa3, 9.75px 9.75px 0 #29afa3, 10px 10px 0 #29afa3, 10.25px 10.25px 0 #29afa3, 10.5px 10.5px 0 #29afa3, 10.75px 10.75px 0 #29afa3, 11px 11px 0 #29afa3, 11.25px 11.25px 0 #29afa3, 11.5px 11.5px 0 #29afa3, 11.75px 11.75px 0 #29afa3, 12px 12px 0 #29afa3, 12.25px 12.25px 0 #29afa3, 12.5px 12.5px 0 #29afa3, 12.75px 12.75px 0 #29afa3, 13px 13px 0 #29afa3, 13.25px 13.25px 0 #29afa3, 13.5px 13.5px 0 #29afa3, 13.75px 13.75px 0 #29afa3, 14px 14px 0 #29afa3, 14.25px 14.25px 0 #29afa3, 14.5px 14.5px 0 #29afa3, 14.75px 14.75px 0 #29afa3, 15px 15px 0 #29afa3, 15.25px 15.25px 0 #29afa3, 15.5px 15.5px 0 #29afa3, 15.75px 15.75px 0 #29afa3, 16px 16px 0 #29afa3, 16.25px 16.25px 0 #29afa3, 16.5px 16.5px 0 #29afa3, 16.75px 16.75px 0 #29afa3, 17px 17px 0 #29afa3, 17.25px 17.25px 0 #29afa3, 17.5px 17.5px 0 #29afa3, 17.75px 17.75px 0 #29afa3, 18px 18px 0 #29afa3, 18.25px 18.25px 0 #29afa3, 18.5px 18.5px 0 #29afa3, 18.75px 18.75px 0 #29afa3, 19px 19px 0 #29afa3, 19.25px 19.25px 0 #29afa3, 19.5px 19.5px 0 #29afa3, 19.75px 19.75px 0 #29afa3, 20px 20px 0 #29afa3, 20.25px 20.25px 0 #29afa3, 20.5px 20.5px 0 #29afa3, 20.75px 20.75px 0 #29afa3, 21px 21px 0 #29afa3, 21.25px 21.25px 0 #29afa3, 21.5px 21.5px 0 #29afa3, 21.75px 21.75px 0 #29afa3, 22px 22px 0 #29afa3, 22.25px 22.25px 0 #29afa3, 22.5px 22.5px 0 #29afa3, 22.75px 22.75px 0 #29afa3, 23px 23px 0 #29afa3, 23.25px 23.25px 0 #29afa3, 23.5px 23.5px 0 #29afa3, 23.75px 23.75px 0 #29afa3, 24px 24px 0 #29afa3, 24.25px 24.25px 0 #29afa3, 24.5px 24.5px 0 #29afa3, 24.75px 24.75px 0 #29afa3, 25px 25px 0 #29afa3, 25.25px 25.25px 0 #29afa3, 25.5px 25.5px 0 #29afa3, 25.75px 25.75px 0 #29afa3, 26px 26px 0 #29afa3, 26.25px 26.25px 0 #29afa3, 26.5px 26.5px 0 #29afa3, 26.75px 26.75px 0 #29afa3, 27px 27px 0 #29afa3, 27.25px 27.25px 0 #29afa3, 27.5px 27.5px 0 #29afa3, 27.75px 27.75px 0 #29afa3, 28px 28px 0 #29afa3, 28.25px 28.25px 0 #29afa3, 28.5px 28.5px 0 #29afa3, 28.75px 28.75px 0 #29afa3, 29px 29px 0 #29afa3, 29.25px 29.25px 0 #29afa3, 29.5px 29.5px 0 #29afa3, 29.75px 29.75px 0 #29afa3, 30px 30px 0 #29afa3, 30.25px 30.25px 0 #29afa3, 30.5px 30.5px 0 #29afa3, 30.75px 30.75px 0 #29afa3, 31px 31px 0 #29afa3, 31.25px 31.25px 0 #29afa3, 31.5px 31.5px 0 #29afa3, 31.75px 31.75px 0 #29afa3, 32px 32px 0 #29afa3, 32.25px 32.25px 0 #29afa3, 32.5px 32.5px 0 #29afa3, 32.75px 32.75px 0 #29afa3, 33px 33px 0 #29afa3, 33.25px 33.25px 0 #29afa3, 33.5px 33.5px 0 #29afa3, 33.75px 33.75px 0 #29afa3, 34px 34px 0 #29afa3, 34.25px 34.25px 0 #29afa3, 34.5px 34.5px 0 #29afa3, 34.75px 34.75px 0 #29afa3, 35px 35px 0 #29afa3, 35.25px 35.25px 0 #29afa3, 35.5px 35.5px 0 #29afa3, 35.75px 35.75px 0 #29afa3, 36px 36px 0 #29afa3, 36.25px 36.25px 0 #29afa3, 36.5px 36.5px 0 #29afa3, 36.75px 36.75px 0 #29afa3, 37px 37px 0 #29afa3, 37.25px 37.25px 0 #29afa3, 37.5px 37.5px 0 #29afa3, 37.75px 37.75px 0 #29afa3, 38px 38px 0 #29afa3, 38.25px 38.25px 0 #29afa3, 38.5px 38.5px 0 #29afa3, 38.75px 38.75px 0 #29afa3, 39px 39px 0 #29afa3, 39.25px 39.25px 0 #29afa3, 39.5px 39.5px 0 #29afa3, 39.75px 39.75px 0 #29afa3, 40px 40px 0 #29afa3, 40.25px 40.25px 0 #29afa3, 40.5px 40.5px 0 #29afa3, 40.75px 40.75px 0 #29afa3, 41px 41px 0 #29afa3, 41.25px 41.25px 0 #29afa3, 41.5px 41.5px 0 #29afa3, 41.75px 41.75px 0 #29afa3, 42px 42px 0 #29afa3, 42.25px 42.25px 0 #29afa3, 42.5px 42.5px 0 #29afa3, 42.75px 42.75px 0 #29afa3, 43px 43px 0 #29afa3, 43.25px 43.25px 0 #29afa3, 43.5px 43.5px 0 #29afa3, 43.75px 43.75px 0 #29afa3, 44px 44px 0 #29afa3, 44.25px 44.25px 0 #29afa3, 44.5px 44.5px 0 #29afa3, 44.75px 44.75px 0 #29afa3, 45px 45px 0 #29afa3, 45.25px 45.25px 0 #29afa3, 45.5px 45.5px 0 #29afa3, 45.75px 45.75px 0 #29afa3, 46px 46px 0 #29afa3, 46.25px 46.25px 0 #29afa3, 46.5px 46.5px 0 #29afa3, 46.75px 46.75px 0 #29afa3, 47px 47px 0 #29afa3, 47.25px 47.25px 0 #29afa3, 47.5px 47.5px 0 #29afa3, 47.75px 47.75px 0 #29afa3, 48px 48px 0 #29afa3, 48.25px 48.25px 0 #29afa3, 48.5px 48.5px 0 #29afa3, 48.75px 48.75px 0 #29afa3, 49px 49px 0 #29afa3, 49.25px 49.25px 0 #29afa3, 49.5px 49.5px 0 #29afa3, 49.75px 49.75px 0 #29afa3, 50px 50px 0 #29afa3, 50.25px 50.25px 0 #29afa3, 50.5px 50.5px 0 #29afa3, 50.75px 50.75px 0 #29afa3, 51px 51px 0 #29afa3, 51.25px 51.25px 0 #29afa3, 51.5px 51.5px 0 #29afa3, 51.75px 51.75px 0 #29afa3, 52px 52px 0 #29afa3, 52.25px 52.25px 0 #29afa3, 52.5px 52.5px 0 #29afa3, 52.75px 52.75px 0 #29afa3, 53px 53px 0 #29afa3, 53.25px 53.25px 0 #29afa3, 53.5px 53.5px 0 #29afa3, 53.75px 53.75px 0 #29afa3, 54px 54px 0 #29afa3, 54.25px 54.25px 0 #29afa3, 54.5px 54.5px 0 #29afa3, 54.75px 54.75px 0 #29afa3, 55px 55px 0 #29afa3, 55.25px 55.25px 0 #29afa3, 55.5px 55.5px 0 #29afa3, 55.75px 55.75px 0 #29afa3, 56px 56px 0 #29afa3, 56.25px 56.25px 0 #29afa3, 56.5px 56.5px 0 #29afa3, 56.75px 56.75px 0 #29afa3, 57px 57px 0 #29afa3, 57.25px 57.25px 0 #29afa3, 57.5px 57.5px 0 #29afa3, 57.75px 57.75px 0 #29afa3, 58px 58px 0 #29afa3, 58.25px 58.25px 0 #29afa3, 58.5px 58.5px 0 #29afa3, 58.75px 58.75px 0 #29afa3, 59px 59px 0 #29afa3, 59.25px 59.25px 0 #29afa3, 59.5px 59.5px 0 #29afa3, 59.75px 59.75px 0 #29afa3, 60px 60px 0 #29afa3;
+}
+
+
+ /*START CUSTOM SELECT BOX */
+ /*START CUSTOM SELECT BOX */
+ /*START CUSTOM SELECT BOX */
+ /*START CUSTOM SELECT BOX */
+ /*START CUSTOM SELECT BOX */
+ /*START CUSTOM SELECT BOX */
+
+ .freefrontend-custom-select-box *
+ {
+     user-select: none;
+ }
+ 
+ .freefrontend-custom-select-box *:focus
+ {
+     outline: none;
+ }
+ 
+ .freefrontend-custom-select-box .brd
+ {
+     border: 1px solid #e2eded;
+     border-color: #eaf1f1 #e4eded #dbe7e7 #e4eded;
+ }
+ 
+ .freefrontend-custom-select-box
+ {
+     position: absolute;
+     top: 0;
+     right: 0;
+     left: 0;
+     width: 300px;
+     height: 42px;
+     margin: 100px auto 0 auto;
+ }
+ 
+ .freefrontend-custom-select-box .select-button
+ {
+     position: relative;
+     height: 16px;
+     padding: 12px 14px;
+     background-color: #fff;
+     border-radius: 4px;
+     cursor: pointer;
+ }
+ 
+ .freefrontend-custom-select-box .options-view-button
+ {
+     position: absolute;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     margin: 0;
+     opacity: 0;
+     cursor: pointer;
+     z-index: 3;
+ }
+ 
+ .freefrontend-custom-select-box .selected-value
+ {
+     font-size: 16px;
+     line-height: 1;
+     margin-right: 26px;
+ }
+ 
+ .freefrontend-custom-select-box .option i
+ {
+     width: 16px;
+     height: 16px;
+ }
+ 
+ .freefrontend-custom-select-box .option, .label
+ {
+     color: #2d3667;
+     font-size: 16px;
+ }
+ 
+ .freefrontend-custom-select-box .chevrons
+ {
+     position: absolute;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     width: 12px;
+     padding: 9px 14px;
+ }
+ 
+ .freefrontend-custom-select-box .chevrons i
+ {
+     display: block;
+     height: 50%;
+     color: #d1dede;
+     font-size: 12px;
+     text-align: right;
+ }
+ 
+ .freefrontend-custom-select-box .options-view-button:checked + .select-button .chevrons i
+ {
+     color: #2d3667;
+ }
+ 
+ /*.options
+ {
+     position: absolute;
+     left: 0;
+     width: 250px;
+ }*/
+ 
+ .freefrontend-custom-select-box .options
+ {
+     position: absolute;
+     top: 42px;
+     right: 0;
+     left: 0;
+     width: 298px;
+     margin: 0 auto;
+     background-color: #fff;
+     border-radius: 4px;
+ }
+ 
+ .freefrontend-custom-select-box .options-view-button:checked ~ .options
+ {
+     border: 1px solid #e2eded;
+     border-color: #eaf1f1 #e4eded #dbe7e7 #e4eded;
+ }
+ 
+ .freefrontend-custom-select-box .option
+ {
+     position: relative;
+     line-height: 1;
+     transition: 0.3s ease all;
+     z-index: 2;
+ }
+ 
+ .freefrontend-custom-select-box .option i
+ {
+     position: absolute;
+     left: 14px;
+     padding: 0;
+     display: none;
+ }
+ 
+ .freefrontend-custom-select-box .options-view-button:checked ~ .options .option i
+ {
+     display: block;
+     padding: 12px 0;
+ }
+ 
+ .freefrontend-custom-select-box .label
+ {
+     display: none;
+     padding: 0;
+     margin-left: 27px;
+ }
+ 
+ .freefrontend-custom-select-box .options-view-button:checked ~ .options .label
+ {
+     display: block;
+     padding: 12px 14px;    
+ }
+ 
+ .freefrontend-custom-select-box .s-c
+ {
+     position: absolute;
+     left: 0;
+     width: 100%;
+     height: 50%;
+ }
+ 
+ .freefrontend-custom-select-box .s-c.top
+ {
+     top: 0;
+ }
+ 
+ .freefrontend-custom-select-box .s-c.bottom
+ {
+     bottom: 0;
+ }
+ 
+ .freefrontend-custom-select-box input[type="radio"]
+ {
+     position: absolute;
+     right: 0;
+     left: 0;
+     width: 100%;
+     height: 50%;
+     margin: 0;
+     opacity: 0;
+     cursor: pointer;
+ }
+ 
+ .freefrontend-custom-select-box .s-c:hover ~ i
+ {
+     color: #fff;
+     opacity: 0;
+ }
+ 
+ .freefrontend-custom-select-box .s-c:hover
+ {
+     height: 100%;
+     z-index: 1;
+ }
+ 
+ .freefrontend-custom-select-box .s-c.bottom:hover + i
+ {
+     bottom: -25px;
+     animation: moveup 0.3s ease 0.1s forwards;
+ }
+ 
+ .freefrontend-custom-select-box .s-c.top:hover ~ i
+ {
+     top: -25px;
+     animation: movedown 0.3s ease 0.1s forwards;
+ }
+ 
+ @keyframes moveup
+ {
+     0%{ bottom: -25px; opacity: 0;}
+     100%{ bottom: 0; opacity: 1;}
+ }
+ 
+ @keyframes movedown
+ {
+     0%{ top: -25px; opacity: 0;}
+     100%{ top: 0; opacity: 1;}
+ }
+ 
+ .freefrontend-custom-select-box .label
+ {
+     transition: 0.3s ease all;
+ }
+ 
+ .freefrontend-custom-select-box .opt-val
+ {
+     position: absolute;
+     left: 14px;
+     width: 217px;
+     height: 21px;
+     opacity: 0;
+     background-color: #fff;
+     transform: scale(0);
+ }
+ 
+ .freefrontend-custom-select-box .option input[type="radio"]:checked ~ .opt-val
+ {
+     opacity: 1;
+     transform: scale(1);
+ }
+ 
+ .freefrontend-custom-select-box .option input[type="radio"]:checked ~ i
+ {
+     top: 0;
+     bottom: auto;
+     opacity: 1;
+     animation: unset;
+ }
+ 
+ .freefrontend-custom-select-box .option input[type="radio"]:checked ~ i, .option input[type="radio"]:checked ~ .label
+ {
+     color:#fff;
+ }
+ 
+ .freefrontend-custom-select-box .option input[type="radio"]:checked ~ .label:before
+ {
+     content: '';
+     position: absolute;
+     top: 0;
+     right: 0;
+     bottom: 0;
+     left: 0;
+     z-index: -1;
+ }
+ 
+ .freefrontend-custom-select-box .options-view-button:not(:checked) ~ .options .option input[type="radio"]:checked ~ .opt-val
+ {
+     top: -30px;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(1) input[type="radio"]:checked ~ .label:before
+ {
+     background-color: #000;
+     border-radius: 4px 4px 0 0;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(1) input[type="radio"]:checked ~ .opt-val
+ {
+     top: -31px;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(2) input[type="radio"]:checked ~ .label:before
+ {
+     background-color: #ea4c89;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(2) input[type="radio"]:checked ~ .opt-val
+ {
+     top: -71px;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(3) input[type="radio"]:checked ~ .label:before
+ {
+     background-color: #0057ff;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(3) input[type="radio"]:checked ~ .opt-val
+ {
+     top: -111px;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(4) input[type="radio"]:checked ~ .label:before
+ {
+     background-color: #32c766;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(4) input[type="radio"]:checked ~ .opt-val
+ {
+     top: -151px;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(5) input[type="radio"]:checked ~ .label:before
+ {
+     background-color: #f48024;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(5) input[type="radio"]:checked ~ .opt-val
+ {
+     top: -191px;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(6) input[type="radio"]:checked ~ .label:before
+ {
+     background-color: #006400;
+     border-radius: 0 0 4px 4px;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(6) input[type="radio"]:checked ~ .opt-val
+ {
+     top: -231px;
+ }
+ 
+ .freefrontend-custom-select-box .option .fa-codepen
+ {
+     color: #000;
+ }
+ 
+ .freefrontend-custom-select-box .option .fa-dribbble
+ {
+     color: #ea4c89;
+ }
+ 
+ .freefrontend-custom-select-box .option .fa-behance
+ {
+     color: #0057ff;
+ }
+ 
+ .freefrontend-custom-select-box .option .fa-hackerrank
+ {
+     color: #32c766;
+ }
+ 
+ .freefrontend-custom-select-box .option .fa-stack-overflow
+ {
+     color: #f48024;
+ }
+ 
+ .freefrontend-custom-select-box .option .fa-free-code-camp
+ {
+     color: #006400;
+ }
+ 
+ .freefrontend-custom-select-box .option-bg
+ {
+     position: absolute;
+     top: 0;
+     right: 0;
+     left: 0;
+     height: 40px;
+     transition: 0.3s ease all;
+     z-index: 1;
+     display: none;
+ }
+ 
+ .freefrontend-custom-select-box .options-view-button:checked ~ .options .option-bg
+ {
+     display: block;
+ }
+ 
+ .freefrontend-custom-select-box .option:hover .label
+ {
+     color: #fff;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(1):hover ~ .option-bg
+ {
+     top: 0;
+     background-color: #000;
+     border-radius: 4px 4px 0 0;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(2):hover ~ .option-bg
+ {
+     top: 40px;
+     background-color: #ea4c89;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(3):hover ~ .option-bg
+ {
+     top: 80px;
+     background-color: #0057ff;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(4):hover ~ .option-bg
+ {
+     top: 120px;
+     background-color: #32c766;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(5):hover ~ .option-bg
+ {
+     top: 160px;
+     background-color: #f48024;
+ }
+ 
+ .freefrontend-custom-select-box .option:nth-child(6):hover ~ .option-bg
+ {
+     top: 200px;
+     background-color: #006400;
+     border-radius: 0 0 4px 4px;
+ }
+
+/*END CUSTOM SELECT BOX */
+/*END CUSTOM SELECT BOX */
+/*END CUSTOM SELECT BOX */
+/*END CUSTOM SELECT BOX */
+/*END CUSTOM SELECT BOX */
+/*END CUSTOM SELECT BOX */

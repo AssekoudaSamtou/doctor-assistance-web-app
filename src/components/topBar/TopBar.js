@@ -59,10 +59,14 @@ const TopBar = () => {
                 </div>
                 <div className="pull-right">
                     <ul className="info-menu right-links list-inline list-unstyled">
+
                         <li className="notify-toggle-wrapper spec showopacity" style={{marginRight: '40px'}}>
-                            <a href="#" data-toggle="dropdown" className="toggle">
+                            <div className="toggle moncircle monshape" data-toggle="dropdown" style={{top: '13px', height: '30px', width: '30px'}}>
+                                <i className="text fa fa-plus"></i>
+                            </div>
+                            {/* <a href="#" data-toggle="dropdown" className="toggle">
                                 <i className="fa fa-plus"></i>
-                            </a>
+                            </a> */}
                             <ul className="dropdown-menu profile animated fadeIn" style={{ left:-20+'px'}}>
                                 
                                 <li>
