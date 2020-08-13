@@ -6,16 +6,34 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 // import Select from 'react-select';
 class FormBoxItem extends React.Component {
     constructor(props) {
-    super(props);
-    this.handleInputChange = this.handleInputChange.bind(this);
+        super(props);
+        this.handleInputChange = this.handleInputChange.bind(this);
+    }
+
+    componentDidMount() {
+        if (this.props.type === "tagsinput") {
+            window.$(document).ready( () => {
+                window.$("input[data-role='tagsinput'], select[multiple][data-role='tagsinput']").tagsinput();
+                var taginput = window.$(`#${this.props.name}-control`).find(".bootstrap-tagsinput").find("input").first();
+                console.log(taginput);
+                taginput.keyup(() => {
+                    this.handleTagsInputChange(this.props.name, window.$(`#${this.props.name}-control`).find('input[data-role="tagsinput"]').first().val());
+                });
+            })
+        }
     }
 
     handleInputChange(e) {
-    this.props.onInputChange(e);
+        const { name, value } = e.target;
+        this.props.onInputChange(name, value);
     }
 
+    handleTagsInputChange = (name, value) => {
+        this.props.onInputChange(name, value);
+    };
+
     handleCKEditorChange = (name, data) => {
-    this.props.onCKEditorChange(name, data);
+        this.props.onCKEditorChange(name, data);
     };
 
     render() {
@@ -78,14 +96,14 @@ class FormBoxItem extends React.Component {
 
         {this.props.type === "file" && (
             <div id={`${this.props.name}-control`} className="controls">
-            <input
-                type="file"
-                name={this.props.name}
-                value={this.props.value}
-                className="form-control"
-                onChange={this.handleInputChange}
-            />
-            <span className=""></span>
+                <input
+                    type="file"
+                    name={this.props.name}
+                    value={this.props.value}
+                    className="form-control"
+                    onChange={this.handleInputChange}
+                />
+                <span className=""></span>
             </div>
         )}
 

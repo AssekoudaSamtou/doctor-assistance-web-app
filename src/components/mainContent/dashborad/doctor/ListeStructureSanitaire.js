@@ -53,7 +53,7 @@ const ListeStructureSanitaire = ({filterText, liste, onClick, owned, added}) => 
                 <div className="list-hospital-title"></div>
                 <div className="row">
                     { ownedList && ownedList.map(({denomination, adresse, id}) => (
-                        <div className="col-lg-4 col-xs-12" key={id} style={{marginTop: '20px'}}>
+                        <div className="col-lg-6 col-xs-12" key={id} style={{marginTop: '20px'}}>
                             <StructureSanitaire nom={denomination} adresse={adresse} id={id} onClick={onClick} isOwned={true} />
                         </div>
                     ))}

@@ -146,30 +146,16 @@ class DoctorDetailForm extends React.Component {
                 <div id="pills" className="wizardpills h-available">
                   <ul className="form-wizard nav nav-pills">
                     <li className="">
-                      <a
-                        href="#pills-tab1"
-                        data-toggle="tab"
-                        aria-expanded="true"
-                      >
+                      <a href="#pills-tab1" data-toggle="tab" aria-expanded="true" >
                         <span>
-                          <i
-                            class="fas fa-user-edit fa-3x"
-                            title="Etat Civil"
-                          ></i>
+                          <i className="fas fa-user-edit fa-3x" title="Etat Civil"></i>
                         </span>
                       </a>
                     </li>
                     <li className="">
-                      <a
-                        href="#pills-tab2"
-                        data-toggle="tab"
-                        aria-expanded="false"
-                      >
+                      <a href="#pills-tab2" data-toggle="tab" aria-expanded="false">
                         <span>
-                          <i
-                            class="fas fa-address-card fa-3x"
-                            title="Adresse"
-                          ></i>
+                          <i className="fas fa-address-card fa-3x" title="Adresse" ></i>
                         </span>
                       </a>
                     </li>
@@ -181,7 +167,7 @@ class DoctorDetailForm extends React.Component {
                       >
                         <span>
                           <i
-                            class="fas fa-info-circle fa-3x"
+                            className="fas fa-info-circle fa-3x"
                             title="Biographie"
                           ></i>
                         </span>
@@ -195,7 +181,7 @@ class DoctorDetailForm extends React.Component {
                       >
                         <span>
                           <i
-                            class="fas fa-briefcase-medical fa-3x"
+                            className="fas fa-briefcase-medical fa-3x"
                             title="Spécialité"
                           ></i>
                         </span>
@@ -209,7 +195,7 @@ class DoctorDetailForm extends React.Component {
                       >
                         <span>
                           <i
-                            class="fas fa-hospital fa-3x"
+                            className="fas fa-hospital fa-3x"
                             title="Structures Sanitaires"
                           ></i>
                         </span>
