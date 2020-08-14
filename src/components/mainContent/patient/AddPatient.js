@@ -25,7 +25,7 @@ class AddPatient extends React.Component {
                 genre: "M",
                 groupage: "B+",
                 maladies: "Asthme,diabete",
-                allergies: "Poussiere,zzzzz",
+                allergies: "Poussiere",
                 habitude_alimentaires: "Végétatien",
             },
             submitted: false,
@@ -33,12 +33,12 @@ class AddPatient extends React.Component {
         };
         this.handleInputChange = this.handleInputChange.bind(this)
         this.savePatient = this.savePatient.bind(this)
-        this.newPatient = this.newPatient.bind(this)
+        this.cleanup = this.cleanup.bind(this)
     }
-    handleInputChange(event) {
-    const { name, value } = event.target;
-    this.setState({ patient: { ...this.state.patient, [name]: value } });
-    console.log("CHANGING... ", name, value);
+    handleInputChange(name, value) {
+        // const { name, value } = event.target;
+        this.setState({ patient: { ...this.state.patient, [name]: value } });
+        console.log("CHANGING... ", name, value);
     }
 
     savePatient() {
@@ -54,12 +54,16 @@ class AddPatient extends React.Component {
             telephone: this.state.patient.telephone,
             date_naissance: this.state.patient.date_naissance,
             genre: this.state.patient.genre,
+            groupage: this.state.patient.groupage,
+            maladies: this.state.patient.maladies,
+            allergies: this.state.patient.allergies,
+            habitude_alimentaires: this.state.patient.habitude_alimentaires,
         };
         console.log(data); 
 
         PatientDataService.create(data)
         .then(response => {
-            this.newPatient();
+            this.cleanup();
             console.log(response.data, this.state.submitted);
             window.showSuccess('Votre patient a été enrégistrer avec succès');
             this.props.history.push(`/patients_details/${response.data.id}`);
@@ -70,7 +74,7 @@ class AddPatient extends React.Component {
         });
     }
 
-    newPatient() {
+    cleanup() {
     this.setState({
         patient: {
         id: null,
@@ -82,14 +86,14 @@ class AddPatient extends React.Component {
         genre: null,
         },
     });
-    this.setState({ submitted: true });
+    // this.setState({ submitted: true });
     }
 
   render() {
     const GenderSelectOptions = [
-      { id: null, libelle: "----Sélectionnez un genre-----" },
-      { id: "M", libelle: "Masculin" },
-      { id: "F", libelle: "Féminin" },
+        { id: null, libelle: "----Sélectionnez un genre-----" },
+        { id: "M", libelle: "Masculin" },
+        { id: "F", libelle: "Féminin" },
     ];
     const groupageOptions = [
         { id: null, libelle: "----Sélectionnez un groupage-----" },
@@ -101,28 +105,28 @@ class AddPatient extends React.Component {
         { id: "AB+", libelle: "AB+" },
         { id: "B-", libelle: "B-" },
         { id: "AB-", libelle: "AB-" },
-      ];
+    ];
     const formBoxes = [
-      {
+        {
         headerTitle: "Informations personnelles du patient",
         fields: [
-          {type: "text", label: "Nom", name: "nom", value: this.state.patient.nom,},
-          {type: "text", label: "Prénom",name: "prenom", value: this.state.patient.prenom,},
-          {type: "text", label: "Adresse", name: "adresse", value: this.state.patient.adresse, description: 'e.g. "Agoe-cacaveli"',},
-          {type: "text", label: "Téléphone", name: "telephone",value: this.state.patient.telephone,description: 'e.g. "00228 98 76 56 87"',},
-          {type: "date", label: "Date de naissance", name: "date_naissance", value: this.state.patient.date_naissance,},
-          {type: "select",label: "Genre", name: "genre", value: this.state.patient.genre, selectOptions: GenderSelectOptions,},
+            {type: "text", label: "Nom", name: "nom", value: this.state.patient.nom,},
+            {type: "text", label: "Prénom",name: "prenom", value: this.state.patient.prenom,},
+            {type: "text", label: "Adresse", name: "adresse", value: this.state.patient.adresse, description: 'e.g. "Agoe-cacaveli"',},
+            {type: "text", label: "Téléphone", name: "telephone",value: this.state.patient.telephone,description: 'e.g. "00228 98 76 56 87"',},
+            {type: "date", label: "Date de naissance", name: "date_naissance", value: this.state.patient.date_naissance,},
+            {type: "select",label: "Genre", name: "genre", value: this.state.patient.genre, selectOptions: GenderSelectOptions,},
         ],
-      },
-      {
+        },
+        {
         headerTitle: "Informations médicales du patient",
         fields: [
-          {type: "select", label: "Groupe Sanguin", name: "groupage", value: this.state.patient.groupage, selectOptions: groupageOptions},
-          {type: "tagsinput", label: "Maladies", name: "maladies", value: this.state.patient.maladies},
-          {type: "tagsinput", label: "Allergies", name: "allergies", value: this.state.patient.allergies},
-          {type: "tagsinput", label: "Habitudes Alimentaires", name: "habitude_alimentaires", value: this.state.patient.habitude_alimentaires},
+            {type: "select", label: "Groupe Sanguin", name: "groupage", value: this.state.patient.groupage, selectOptions: groupageOptions},
+            {type: "tagsinput", label: "Maladies", name: "maladies", value: this.state.patient.maladies},
+            {type: "tagsinput", label: "Allergies", name: "allergies", value: this.state.patient.allergies},
+            {type: "tagsinput", label: "Habitudes Alimentaires", name: "habitude_alimentaires", value: this.state.patient.habitude_alimentaires},
         ],
-      },
+        },
     ];
 
     return (

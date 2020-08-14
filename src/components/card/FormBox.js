@@ -14,8 +14,8 @@ class FormBox extends React.Component {
     this.handleDeleteBtnTapped = this.handleDeleteBtnTapped.bind(this);
   }
 
-  handleInputChange(e) {
-    this.props.onInputChange(e);
+  handleInputChange(name, value) {
+    this.props.onInputChange(name, value);
   }
   handleCKEditorChange(name, data) {
     this.props.onCKEditorChange(name, data);

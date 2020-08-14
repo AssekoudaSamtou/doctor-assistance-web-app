@@ -12,6 +12,7 @@ import TopNavSearchForm from './topnavSearchForm/TopNavSearchForm';
 import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
 import {GIRL_AVATAR, BOY_AVATAR} from '../../utils';
+import { Avatar } from 'avataaars';
 
 const cookies = new Cookies();
 
@@ -92,6 +93,7 @@ const TopBar = () => {
                         <li className="profile showopacity">
                                 <a href="#" data-toggle="dropdown" className="toggle">
                                     <img className="img-circle img-inline" src={user.genre === "M" ? BOY_AVATAR : GIRL_AVATAR}/>
+                                    
                                     <span>@{user.username} <i className="fa fa-angle-down"></i></span>
                                 </a>
                                 <ul className="dropdown-menu profile animated fadeIn">
