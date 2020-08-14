@@ -19,7 +19,6 @@ class PatientList extends React.Component {
     componentWillMount() {
         PatientDataService.getAll()
         .then(response => {
-            console.log(response.data.results);
             this.setState({patients: response.data.results});
         }).catch(e => {
             console.log(e);

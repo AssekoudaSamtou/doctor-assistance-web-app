@@ -37,8 +37,8 @@ class EditHospital extends React.Component {
         });
     }
 
-    handleInputChange = event => {
-        const { name, value } = event.target;
+    handleInputChange = (name, value) => {
+        // const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 

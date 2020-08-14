@@ -22,8 +22,8 @@ class AddHospital extends React.Component {
         };
     }
 
-    handleInputChange = event => {
-        const { name, value } = event.target;
+    handleInputChange = (name, value) => {
+        // const { name, value } = event.target;
         this.setState({ hopital: {...this.state.hopital, [name]: value} });
     }
 

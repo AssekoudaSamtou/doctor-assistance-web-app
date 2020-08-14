@@ -1,18 +1,20 @@
 import React, { useEffect } from 'react';
 
+import {BOY_AVATAR} from '../../utils';
 
-const AvatarPreview = ({avatar}) => {
+const AvatarPreview = ({avatar, id}) => {
 
     useEffect(() => {
-        console.log('mounted or updated');
-        window.$('#imagePreview').hide();
-        window.$('#imagePreview').fadeIn(500);
+        window.$(document).ready( () => {
+            window.$(`#imagePreview-${id ? id : 1}`).hide();
+            window.$(`#imagePreview-${id ? id : 1}`).fadeIn(500);
+        })
     });
 
     return (
         <div className="avatar-upload">
             <div className="avatar-preview">
-                <div id="imagePreview" style={{background: `url(${avatar})`}}></div>
+                <div id={`imagePreview-${id ? id : 1}`} style={{background: `url(${avatar ? avatar : BOY_AVATAR})`}}></div>
             </div>
         </div>
     )
