@@ -11782,3 +11782,25 @@ table.dataTable.display tbody tr:first-child td {
     border-radius: 20px;
     margin-right: 5px;
 }
+.detail-consultation *:first-child{
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 200px;
+    margin: 0;
+}
+@media screen and (max-width: 600px) {
+    .detail-consultation *:first-child {
+        margin: 0;
+        font-size: 10px;
+    }
+    .detail-consultation-title {
+        font-size: 12px !important;
+    }
+    .avatar-upload .avatar-preview {
+        width: 100px;
+        height: 100px;
+        margin: auto;
+    }
+  }

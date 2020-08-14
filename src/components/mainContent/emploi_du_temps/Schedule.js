@@ -58,9 +58,9 @@ class Schedule extends React.Component {
                         </div>
                     )}
                     {this.state.demande_consultations.map((demande_consultation) => (
-                        <div>
+                        <div key={demande_consultation.id}>
                             { this.isAcceptable(demande_consultation) && (
-                                <div className="col-xs-12 col-lg-6" key={demande_consultation.id}>
+                                <div className="col-xs-12 col-lg-6">
                                     <RDVItem
                                         id={demande_consultation.id} />
                                 </div>
