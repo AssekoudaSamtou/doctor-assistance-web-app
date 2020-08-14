@@ -31,12 +31,13 @@ class PatientList extends React.Component {
             <div>
                 <PageTitle title="Tous Mes Patients" />
                 
-                { this.state.patients !== null && this.state.patients.map(({nom, prenom, genre, id, adresse, telephone, date_naissance}) => 
+                { this.state.patients !== null && this.state.patients.map(({nom, prenom, genre, id, adresse, telephone, date_naissance, photo}) => 
                     <PatientItem 
                         fullname={`${nom} ${prenom}`} 
                         gender={genre} 
                         adresse={adresse}
                         telephone={telephone}
+                        photo={photo}
                         date_naissance={date_naissance}
                         id={id}
                         key={id}/>
