@@ -65,6 +65,11 @@ class FormBox extends React.Component {
               </div>
             </div>
           </div>
+          <FormBoxFooter onSaveBtnTapped={this.props.onSaveBtnTapped}
+                          onDeleteBtnTapped={this.props.onDeleteBtnTapped}
+                          isSubmitting={this.props.isSubmitting}
+                          fromType={this.props.fromType}
+                          />
         </section>
       </div>
     );

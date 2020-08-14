@@ -35,6 +35,8 @@ class EditConsultation extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.saveConsultation = this.saveConsultation.bind(this)
         this.deleteConsultation = this.deleteConsultation.bind(this)
+        this.handleCKEInputChange = this.handleCKEInputChange.bind(this)
+        this.newConsultation = this.newConsultation.bind(this)
     }
 
     componentWillMount() {
@@ -65,10 +67,16 @@ class EditConsultation extends React.Component {
         this.setState({ consultation: { ...this.state.consultation, [name]: value } });
         console.log("CHANGING... ", name, value);
     }
+    handleCKEInputChange(name, data) {
+        console.log(name, data);
+        this.setState({
+          consultation: { ...this.state.consultation, [name]: data },
+        });
+    }
 
     saveConsultation() {
         var data = this.state.consultation;
-        console.log(data); 
+        console.log("====Edite processing==="); 
     
         ConsultationDataService.update(this.state.consultation.id,data)
             .then(response => {
@@ -86,11 +94,11 @@ class EditConsultation extends React.Component {
     }
     newConsultation(){
         this.setState({consultation:  {
-            demande_consultation:null,
-            motif: null,
-            interrogatoire:null,
-            resume:null,
-            hypothese_diagnostique:null,
+            demande_consultation:"",
+            motif: "",
+            interrogatoire:"",
+            resume:"",
+            hypothese_diagnostique:"",
         }})
     }
 
@@ -150,6 +158,7 @@ class EditConsultation extends React.Component {
                         isSubmitting={this.state.isSubmitting}
                         onInputChange={this.handleInputChange} 
                         onSaveBtnTapped={this.saveConsultation}
+                        onCKEditorChange={this.handleCKEInputChange}
                         onDeleteBtnTapped={this.deleteConsultation}
                         />
                 )}
