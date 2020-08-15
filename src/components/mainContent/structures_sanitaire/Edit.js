@@ -5,6 +5,7 @@ import structureSanitaireService from '../../../services/structureSanitaire.serv
 import PageTitle from '../../card/PageTitle';
 import AddHeader from '../../card/AddHeader';
 import loading from '../../../data/icons/loading.svg';
+import building from '../../../data/profile/building.jpg'
 import NotFound from '../error/404';
 
 class EditHospital extends React.Component {
@@ -36,8 +37,8 @@ class EditHospital extends React.Component {
         });
     }
 
-    handleInputChange = event => {
-        const { name, value } = event.target;
+    handleInputChange = (name, value) => {
+        // const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 
@@ -116,7 +117,7 @@ class EditHospital extends React.Component {
                         <PageTitle title="Modifier Structure Sanitaire" />
                     
                         <div className="col-xs-12 ">
-                            <AddHeader entityName="structure sanitaire" type="edit" />
+                            <AddHeader entityName="structure sanitaire" type="edit" photoPreview={building} />
 
                             <div className="bg-w">
                                 <StructureSanitaireForm 

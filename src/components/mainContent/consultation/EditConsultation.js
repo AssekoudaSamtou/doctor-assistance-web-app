@@ -9,6 +9,7 @@ import PatientDataService from "../../../services/patient.service"
 
 import PageTitle from '../../card/PageTitle';
 import NotFound from '../error/404';
+import FormBoxFooter from '../../card/FormBoxFooter';
 
 
 class EditConsultation extends React.Component {
@@ -62,8 +63,8 @@ class EditConsultation extends React.Component {
         });
     }
 
-    handleInputChange(event) {
-        const { name, value } = event.target;
+    handleInputChange(name, value) {
+        // const { name, value } = event.target;
         this.setState({ consultation: { ...this.state.consultation, [name]: value } });
         console.log("CHANGING... ", name, value);
     }
@@ -162,6 +163,17 @@ class EditConsultation extends React.Component {
                         onDeleteBtnTapped={this.deleteConsultation}
                         />
                 )}
+
+                <div className="row">
+                    <div className="col-lg-10 col-lg-offset-1 col-xs-12">
+                        <FormBoxFooter
+                            isSubmitting={this.state.isSubmitting}
+                            onSaveBtnTapped={this.saveConsultation}
+                            onDeleteBtnTapped={this.deleteConsultation}
+                            fromType="edit"
+                        />
+                    </div>
+                </div>
             </div>
         )
     }

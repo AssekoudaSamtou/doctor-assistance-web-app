@@ -13,7 +13,7 @@ class FormBoxItem extends React.Component {
     componentDidMount() {
         if (this.props.type === "tagsinput") {
             window.$(document).ready( () => {
-                window.$("input[data-role='tagsinput'], select[multiple][data-role='tagsinput']").tagsinput();
+                window.$(`#${this.props.name}-control`).find('input[data-role="tagsinput"]').first().tagsinput();
                 var taginput = window.$(`#${this.props.name}-control`).find(".bootstrap-tagsinput").find("input").first();
                 console.log(taginput);
                 taginput.keyup(() => {
@@ -32,6 +32,15 @@ class FormBoxItem extends React.Component {
         this.props.onInputChange(name, value);
     };
 
+    handleFileInputChange = (e) => {
+        const input = e.target;
+        const { name, files } = input;
+
+        if (input.files && input.files[0]) {
+            this.props.onInputChange(name, files[0]);
+        }
+    };
+
     handleCKEditorChange = (name, data) => {
         this.props.onCKEditorChange(name, data);
     };
@@ -39,7 +48,7 @@ class FormBoxItem extends React.Component {
     render() {
     return (
         <div className="form-group">
-        <label className="form-label">{this.props.label}</label>
+        <label className="form-label" style={{fontWeight: "bolder"}}>{this.props.label}</label>
         <span className="desc">{this.props.description} </span>
 
         {this.props.type === "select" && (
@@ -98,10 +107,10 @@ class FormBoxItem extends React.Component {
             <div id={`${this.props.name}-control`} className="controls">
                 <input
                     type="file"
+                    accept={this.props.accept}
                     name={this.props.name}
-                    value={this.props.value}
                     className="form-control"
-                    onChange={this.handleInputChange}
+                    onChange={this.handleFileInputChange}
                 />
                 <span className=""></span>
             </div>
@@ -166,7 +175,7 @@ class FormBoxItem extends React.Component {
             <CKEditor
                 editor={ClassicEditor}
                 config={{toolbar:["heading","|","bold","italic","|", 'bulletedList', 'numberedList', 'blockQuote']}}
-                data="<p>Veuillez Saisir</p>"
+                data={this.props.value}
                 onInit={(editor) => {
                 // You can store the "editor" and use when it is needed.
                 console.log("Editor is ready to use!", editor);

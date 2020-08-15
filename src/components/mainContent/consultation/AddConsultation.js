@@ -10,6 +10,7 @@ import StructureSanitaireDataService from "../../../services/structureSanitaire.
 import PageTitle from "../../card/PageTitle";
 import StructureSanitaire from "../../card/StructureSanitaire";
 import Cookies from "universal-cookie";
+import FormBoxFooter from "../../card/FormBoxFooter";
 
 const cookies = new Cookies();
 class AddConsultation extends React.Component {
@@ -39,8 +40,8 @@ class AddConsultation extends React.Component {
     this.handleCKEInputChange = this.handleCKEInputChange.bind(this);
   }
 
-  handleInputChange(event) {
-    const { name, value } = event.target;
+  handleInputChange(name, value) {
+    // const { name, value } = event.target;
     this.setState({
       consultation: { ...this.state.consultation, [name]: value },
     });
@@ -198,6 +199,7 @@ class AddConsultation extends React.Component {
             {formBoxes.map((box) => (
               <FormBox
                 box={box}
+                key={box.headerTitle}
                 fromType="add"
                 isSubmitting={this.state.isSubmitting}
                 onInputChange={this.handleInputChange}
@@ -205,6 +207,16 @@ class AddConsultation extends React.Component {
                 onSaveBtnTapped={this.saveConsultation}
               />
             ))}
+
+            <div className="row">
+                <div className="col-lg-10 col-lg-offset-1 col-xs-12">
+                    <FormBoxFooter
+                        isSubmitting={this.state.isSubmitting}
+                        onSaveBtnTapped={this.saveConsultation}
+                        fromType="add"
+                    />
+                </div>
+            </div>
           </div>
         </div>
       </div>
