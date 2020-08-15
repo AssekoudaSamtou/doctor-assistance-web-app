@@ -3,6 +3,7 @@ import StructureSanitaireForm from '../dashborad/doctor/StructureSanitaireForm';
 import doctorService from '../../../services/doctor.service';
 import PageTitle from '../../card/PageTitle';
 import AddHeader from '../../card/AddHeader';
+import building from '../../../data/profile/building.jpg'
 
 class AddHospital extends React.Component {
 
@@ -21,8 +22,8 @@ class AddHospital extends React.Component {
         };
     }
 
-    handleInputChange = event => {
-        const { name, value } = event.target;
+    handleInputChange = (name, value) => {
+        // const { name, value } = event.target;
         this.setState({ hopital: {...this.state.hopital, [name]: value} });
     }
 
@@ -69,7 +70,7 @@ class AddHospital extends React.Component {
                 <PageTitle title="Nouvelle Structure Sanitaire" />
                 
                 <div className="col-xs-12 ">
-                    <AddHeader entityName="structure sanitaire" type="add" />
+                    <AddHeader entityName="structure sanitaire" type="add" photoPreview={building} />
 
                     <div className="bg-w">
                         <StructureSanitaireForm 

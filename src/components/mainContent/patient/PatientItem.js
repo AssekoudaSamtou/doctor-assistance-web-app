@@ -2,8 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import computedAge, {GIRL_AVATAR, BOY_AVATAR} from '../../../utils';
 import PatientInfoItem from '../../card/PatientInfoItem';
+import AvatarPreview from '../../card/AvatarPreview';
 
-const PatientItem = ({fullname, gender, date_naissance, id, }) => {
+const PatientItem = ({fullname, gender, date_naissance, id, photo}) => {
 
     return (
         <div className="col-lg-4 col-md-6">
@@ -12,12 +13,13 @@ const PatientItem = ({fullname, gender, date_naissance, id, }) => {
                     <div className="row">
                         <div className="doctors-list patient relative">
                             <div className="doctors-head relative text-center">
-                                <div className="patient-img img-circle">
-                                    {/* <img src={avatar1} className="rad-50 center-block" alt=""/> */}
-                                    <img className="rad-50 center-block" src={gender === "M" ? BOY_AVATAR : GIRL_AVATAR}/>
+
+                                <AvatarPreview avatar={ photo ? photo : (gender === "M" ? BOY_AVATAR : GIRL_AVATAR) } id={id} />
+                                {/* <div className="patient-img img-circle">
+                                    <img className="rad-50 center-block" src={ photo ? photo : (gender === "M" ? BOY_AVATAR : GIRL_AVATAR) }/>
 
                                     <div className="stutas recent"></div>
-                                </div>
+                                </div> */}
                                 <h3 className="header w-text relative bold">{fullname} </h3>
                                 
                             </div>

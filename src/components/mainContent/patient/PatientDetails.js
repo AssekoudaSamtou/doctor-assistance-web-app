@@ -1,25 +1,38 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import PageTitle from '../../card/PageTitle';
 import PatientDataService from "../../../services/patient.service";
 import NotFound from "../error/404";
 import computedAge, {GIRL_AVATAR, BOY_AVATAR} from '../../../utils';
-
-import profile from "../../../data/profile/profile.jpg"
-import clock from "../../../data/hos-dash/clock.png"
 import PatientInfoItem from '../../card/PatientInfoItem';
-import { Link } from 'react-router-dom';
 import AddConsultation from '../consultation/AddConsultation';
 import loading from '../../../data/icons/loading.svg';
+import AvatarPreview from '../../card/AvatarPreview';
+import TagList from '../../card/TagList';
 
 class PatientDetails extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            patient: {id: null, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""},
+            patient: {id: null, 
+                nom: "", 
+                prenom: "", 
+                adresse: "", 
+                telephone: "", 
+                date_naissance: "", 
+                genre: "",
+                groupage: "",
+                maladies: "",
+                allergies: "",
+                habitude_alimentaires: "",
+                photo: "",
+            },
         }
     }
+
+    
 
     componentWillMount() {
         const { match: { params } } = this.props;
@@ -28,13 +41,9 @@ class PatientDetails extends React.Component {
         .then(response => {
             this.setState({patient: {...response.data}});
         }).catch(e => {
-            this.setState({patient: {id: 0, nom: "", prenom: "", adresse: "", telephone: "", date_naissance: "", genre: ""}});
+            this.setState({patient: {...this.state.patient, id: 0}});
             console.log(e);
         });
-    }
-
-    componentDidMount() {
-        
     }
 
     render() {
@@ -62,10 +71,13 @@ class PatientDetails extends React.Component {
                                         <div className="row">
                                             <div className="doctors-list patient relative">
                                                 <div className="doctors-head relative text-center">
-                                                    <div className="patient-img img-circle">
-                                                    <img className="rad-50 center-block" src={this.state.patient.genre === "M" ? BOY_AVATAR : GIRL_AVATAR}/>
-                                                        <div className="stutas"></div>
-                                                    </div>
+                                                    
+                                                    { this.state.patient.photo ? (
+                                                        <AvatarPreview avatar={this.state.patient.photo} />
+                                                    ) : (
+                                                        <AvatarPreview avatar={this.state.patient.genre === "M" ? BOY_AVATAR : GIRL_AVATAR} />
+                                                    )}
+
                                                     <h3 className="header w-text relative bold">Nom : {this.state.patient.nom} {this.state.patient.prenom}</h3>
                                                     {/* <p className="desc g-text relative">Lorem ipsum dolor sit amet, Earum nes ciunt fugiat enim. Sequi quos labore.</p> */}
                                                 </div>
@@ -80,15 +92,6 @@ class PatientDetails extends React.Component {
                                                 {/* <!-- end row --> */}
                                                 
                                                 <div className="col-xs-12 mb-30">
-                                                    {/* <div className="reminder-wrapper has-shadow2">
-                                                        <div className="reminder-icon">
-                                                            <img src={clock} width="60" alt=""/>
-                                                        </div>
-                                                        <div className="reminder-content">
-                                                            <h4 className="w-text bold">Reminder Alarm</h4>
-                                                            <h5 className="g-text">ask about medicine</h5>
-                                                        </div>
-                                                    </div> */}
                                                     <Link to={`/patients_update/${this.state.patient.id}`} className="btn btn-primary btn-lg gradient-blue d-block" style={{display: 'block', marginTop: '20px'}}>
                                                         <span>Modifier</span>
                                                     </Link>
@@ -97,21 +100,21 @@ class PatientDetails extends React.Component {
                                                     </a>
                                                 </div>
                                                 <div class="modal fade col-xs-12" id="cmpltadminModal-7" tabindex="-1" role="dialog" aria-hidden="true">
-                                            <div class="modal-dialog" style={{width:"80%"}}>
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                        <h4 class="modal-title">{this.state.patient.nom} {this.state.patient.prenom}</h4>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <AddConsultation detail={"detail"} patientId={this.state.patient.id} />
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                                                    <div class="modal-dialog" style={{width:"80%"}}>
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h4 class="modal-title">{this.state.patient.nom} {this.state.patient.prenom}</h4>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <AddConsultation detail={"detail"} patientId={this.state.patient.id} />
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
                                             </div>
                                         
                                         </div>
@@ -231,6 +234,7 @@ class PatientDetails extends React.Component {
                                                 {/* <!-- End .row --> */}
                                             </div>
                                         </section>
+                                    
                                     </div>
                                 </div>
                                 <div className="row">
@@ -238,15 +242,22 @@ class PatientDetails extends React.Component {
                                         <section className="box gradient-blue" style={{padding:20+'px'}}>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Groupe sanguin :</h4>
-                                                <p className="mb-0 g-text">AB+</p>
+                                                <p className="mb-0 g-text">{this.state.patient.groupage}</p>
                                             </div>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Allergies :</h4>
-                                                <p className="mb-0 g-text">Penicilin, peanuts</p>
+                                                <TagList list={this.state.patient.allergies ? this.state.patient.allergies.split(',') : []} />
+                                                {/* <p className="mb-0 g-text">{this.state.patient.allergies}</p> */}
                                             </div>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Maladies :</h4>
-                                                <p className="mb-0 g-text">Diabetes</p>
+                                                <TagList list={this.state.patient.maladies ? this.state.patient.maladies.split(',') : []} />
+                                                {/* <p className="mb-0 g-text">{this.state.patient.maladies}</p> */}
+                                            </div>
+                                            <div className="patient-personal mb-0">
+                                                <h4 className="w-text">Habitudes Alimentaires :</h4>
+                                                <TagList list={this.state.patient.habitude_alimentaires ? this.state.patient.habitude_alimentaires.split(',') : []} />
+                                                {/* <p className="mb-0 g-text">{this.state.patient.habitude_alimentaires}</p> */}
                                             </div>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Pression artérielle :</h4>

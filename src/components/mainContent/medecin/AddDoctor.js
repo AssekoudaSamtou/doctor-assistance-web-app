@@ -6,6 +6,7 @@ import DoctorDataService from "../../../services/doctor.service";
 import SpecialiteDataService from "../../../services/specialite.service";
 
 import PageTitle from "../../card/PageTitle";
+import FormBoxFooter from "../../card/FormBoxFooter";
 
 class AddDoctor extends React.Component {
   constructor(props) {
@@ -34,8 +35,8 @@ class AddDoctor extends React.Component {
     this.newDoctor = this.newDoctor.bind(this);
   }
 
-  handleInputChange(event) {
-    const { name, value } = event.target;
+  handleInputChange(name, value) {
+    // const { name, value } = event.target;
     this.setState({ doctor: { ...this.state.doctor, [name]: value } });
     console.log("CHANGING... ", name, value);
   }
@@ -61,9 +62,7 @@ class AddDoctor extends React.Component {
         this.newDoctor();
         console.log(response.data, this.state.submitted);
         window.showSuccess("Le médecin a été enrégistré avec succès");
-        setTimeout(() => {
-          this.props.history.push(`/medecins_details/${response.data.id}`);
-        }, 500);
+        this.props.history.push(`/doctors_details/${response.data.id}`);
       })
       .catch((e) => {
         console.log(e.message);
@@ -150,7 +149,7 @@ class AddDoctor extends React.Component {
           },
           {
             type: "textarea",
-            label: "Votre expérience",
+            label: "Biographie",
             name: "bio",
             value: this.state.doctor.bio,
             description: 'e.g. "Biologie"',
@@ -178,25 +177,6 @@ class AddDoctor extends React.Component {
           // {type: "text", label: "Brief", description: 'e.g. "Enter any size of text description here"'},
         ],
       },
-
-      // {
-      //     headerTitle: "Patient Account Info",
-      //     fields: [
-      //         {type: "text", label: "Email"},
-      //         {type: "text", label: "Phone", description: 'e.g. "(534) 253-5353"'},
-      //         {type: "password", label: "Password"},
-      //         {type: "password", label: "Confirm Password"},
-      //     ]
-      // },
-
-      // {
-      //     headerTitle: "Patient Social Media Info",
-      //     fields: [
-      //         {type: "text", label: "Facebook URL"},
-      //         {type: "text", label: "Twitter URL"},
-      //         {type: "text", label: "Google Plus URL"},
-      //     ]
-      // },
     ];
 
     return (
@@ -216,6 +196,16 @@ class AddDoctor extends React.Component {
                 onSaveBtnTapped={this.saveDoctor}
               />
             ))}
+
+            <div className="row">
+                <div className="col-lg-10 col-lg-offset-1 col-xs-12">
+                    <FormBoxFooter
+                        isSubmitting={this.state.isSubmitting}
+                        onSaveBtnTapped={this.saveDoctor}
+                        fromType="add"
+                    />
+                </div>
+            </div>
           </div>
         </div>
       </div>

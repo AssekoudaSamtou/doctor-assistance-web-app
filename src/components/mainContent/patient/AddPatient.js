@@ -8,6 +8,7 @@ import PatientDataService from "../../../services/patient.service";
 
 import PageTitle from "../../card/PageTitle";
 import FormBoxFooter from "../../card/FormBoxFooter";
+import {BOY_AVATAR, GIRL_AVATAR} from '../../../utils';
 
 const cookies = new Cookies();
 
@@ -23,11 +24,13 @@ class AddPatient extends React.Component {
                 telephone: "", 
                 date_naissance: "", 
                 genre: "M",
-                groupage: "B+",
-                maladies: "Asthme,diabete",
-                allergies: "Poussiere",
-                habitude_alimentaires: "Végétatien",
+                groupage: "",
+                maladies: "",
+                allergies: "",
+                habitude_alimentaires: "",
+                photo: "",
             },
+            photo_preview: BOY_AVATAR,
             submitted: false,
             isSubmitting: false
         };
@@ -37,15 +40,33 @@ class AddPatient extends React.Component {
     }
     handleInputChange(name, value) {
         // const { name, value } = event.target;
+        if (name === "photo") {
+            this.loadImagePreview(value);
+        }
+        if (name === "genre"  && (this.state.photo_preview === BOY_AVATAR || this.state.photo_preview === GIRL_AVATAR)) {
+            if (value === "M") 
+                this.setState({ photo_preview: BOY_AVATAR });
+            else if (value === "F") 
+                this.setState({ photo_preview: GIRL_AVATAR });
+        }
         this.setState({ patient: { ...this.state.patient, [name]: value } });
-        console.log("CHANGING... ", name, value);
+        console.log("CHANGING... ", name, value.name);
     }
+
+    loadImagePreview = (file) => {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+            this.setState({ photo_preview: e.target.result });
+        }
+        reader.readAsDataURL(file);
+    };
 
     savePatient() {
         let loggedDoctor = null;
         if (cookies.get("userType") === "medecin"){
             loggedDoctor = cookies.get("loggedUser");
         }
+        var formData = new FormData();
         var data = {
             doctor: loggedDoctor.id,
             nom: this.state.patient.nom,
@@ -58,10 +79,14 @@ class AddPatient extends React.Component {
             maladies: this.state.patient.maladies,
             allergies: this.state.patient.allergies,
             habitude_alimentaires: this.state.patient.habitude_alimentaires,
+            photo: this.state.patient.photo,
         };
-        console.log(data); 
 
-        PatientDataService.create(data)
+        for ( var key in data ) {
+            formData.append(key, data[key]);
+        }
+
+        PatientDataService.create(formData)
         .then(response => {
             this.cleanup();
             console.log(response.data, this.state.submitted);
@@ -96,7 +121,7 @@ class AddPatient extends React.Component {
         { id: "F", libelle: "Féminin" },
     ];
     const groupageOptions = [
-        { id: null, libelle: "----Sélectionnez un groupage-----" },
+        { id: 'null', libelle: "----Sélectionnez un groupage-----" },
         { id: "O+", libelle: "O+" },
         { id: "A+", libelle: "A+" },
         { id: "B+", libelle: "B+" },
@@ -108,24 +133,30 @@ class AddPatient extends React.Component {
     ];
     const formBoxes = [
         {
-        headerTitle: "Informations personnelles du patient",
-        fields: [
-            {type: "text", label: "Nom", name: "nom", value: this.state.patient.nom,},
-            {type: "text", label: "Prénom",name: "prenom", value: this.state.patient.prenom,},
-            {type: "text", label: "Adresse", name: "adresse", value: this.state.patient.adresse, description: 'e.g. "Agoe-cacaveli"',},
-            {type: "text", label: "Téléphone", name: "telephone",value: this.state.patient.telephone,description: 'e.g. "00228 98 76 56 87"',},
-            {type: "date", label: "Date de naissance", name: "date_naissance", value: this.state.patient.date_naissance,},
-            {type: "select",label: "Genre", name: "genre", value: this.state.patient.genre, selectOptions: GenderSelectOptions,},
-        ],
+            headerTitle: "Informations personnelles du patient",
+            fields: [
+                {type: "text", label: "Nom", name: "nom", value: this.state.patient.nom,},
+                {type: "text", label: "Prénom",name: "prenom", value: this.state.patient.prenom,},
+                {type: "text", label: "Adresse", name: "adresse", value: this.state.patient.adresse, description: 'e.g. "Agoe-cacaveli"',},
+                {type: "text", label: "Téléphone", name: "telephone",value: this.state.patient.telephone,description: 'e.g. "00228 98 76 56 87"',},
+                {type: "date", label: "Date de naissance", name: "date_naissance", value: this.state.patient.date_naissance,},
+                {type: "select",label: "Genre", name: "genre", value: this.state.patient.genre, selectOptions: GenderSelectOptions,},
+            ],
         },
         {
-        headerTitle: "Informations médicales du patient",
-        fields: [
-            {type: "select", label: "Groupe Sanguin", name: "groupage", value: this.state.patient.groupage, selectOptions: groupageOptions},
-            {type: "tagsinput", label: "Maladies", name: "maladies", value: this.state.patient.maladies},
-            {type: "tagsinput", label: "Allergies", name: "allergies", value: this.state.patient.allergies},
-            {type: "tagsinput", label: "Habitudes Alimentaires", name: "habitude_alimentaires", value: this.state.patient.habitude_alimentaires},
-        ],
+            headerTitle: "Profil",
+            fields: [
+                {type: "file", label: "Photo de Profil du Patient", name: "photo", value: this.state.patient.photo, accept: ".png, .jpg, .jpeg"},
+            ],
+        },
+        {
+            headerTitle: "Informations médicales du patient",
+            fields: [
+                {type: "select", label: "Groupe Sanguin", name: "groupage", value: this.state.patient.groupage, selectOptions: groupageOptions},
+                {type: "tagsinput", label: "Maladies", name: "maladies", value: this.state.patient.maladies},
+                {type: "tagsinput", label: "Allergies", name: "allergies", value: this.state.patient.allergies},
+                {type: "tagsinput", label: "Habitudes Alimentaires", name: "habitude_alimentaires", value: this.state.patient.habitude_alimentaires},
+            ],
         },
     ];
 
@@ -134,7 +165,7 @@ class AddPatient extends React.Component {
             <PageTitle title="Ajout de patient" />
 
             <div className="col-xs-12 ">
-                <AddHeader entityName="patient" type="add" />
+                <AddHeader entityName="patient" type="add" photoPreview={this.state.photo_preview} />
 
                 <div className="bg-w">
                     {formBoxes.map((box) => (

@@ -8,6 +8,7 @@ import DemandeConsultationsDataService from "../../../services/demande_consultat
 import PatientDataService from "../../../services/patient.service";
 import StructureSanitaireDataService from "../../../services/structureSanitaire.service";
 import Cookies from "universal-cookie";
+import FormBoxFooter from "../../card/FormBoxFooter";
 
 const cookies = new Cookies();
 
@@ -75,8 +76,8 @@ class AddDemandeConsultation extends React.Component {
       });
   }
 
-  handleInputChange(event) {
-    const { name, value } = event.target;
+  handleInputChange(name, value) {
+    // const { name, value } = event.target;
     this.setState({
       demmande_consultation: {
         ...this.state.demmande_consultation,
@@ -151,6 +152,16 @@ class AddDemandeConsultation extends React.Component {
                 onSaveBtnTapped={this.saveDemandeConsultation}
               />
             ))}
+
+            <div className="row">
+                <div className="col-lg-10 col-lg-offset-1 col-xs-12">
+                    <FormBoxFooter
+                        isSubmitting={this.state.isSubmitting}
+                        onSaveBtnTapped={this.saveDemandeConsultation}
+                        fromType="add"
+                    />
+                </div>
+            </div>
           </div>
         </div>
       </div>

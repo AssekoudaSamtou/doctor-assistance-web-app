@@ -7,6 +7,7 @@ let token = "Token " + cookies.get("token");
 let options = {
   headers: {
     'Authorization': token,
+    "Content-type": "multipart/form-data; boundary=63c5979328c44e2c869349443a94200e"
   }
 };
 

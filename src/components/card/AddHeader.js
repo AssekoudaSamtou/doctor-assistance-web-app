@@ -1,10 +1,12 @@
 import React from 'react';
+import AvatarPreview from './AvatarPreview';
 
-const AddHeader = ({entityName,  type}) => (
+const AddHeader = ({entityName,  type, photoPreview}) => (
     <div className="add-header-wrapper gradient-blue curved-section text-center">
         <h2 className="uppercase bold w-text">  {entityName}</h2>
-        <div className="before-text"> {entityName}</div>
-        {/* <p className="g-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto magni consequatur excepturi ab veritatis id facere facilis tempora sit amet, consectetur adipisicing elit. Iusto magni.</p> */}
+        <div className="before-text"> {entityName}</div>        
+
+        <AvatarPreview avatar={photoPreview} />
     </div>
 )
 

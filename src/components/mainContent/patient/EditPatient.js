@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 import Cookies from "universal-cookie";
 import AddHeader from "../../card/AddHeader";
 import FormBox from "../../card/FormBox";
@@ -7,6 +8,7 @@ import PageTitle from '../../card/PageTitle';
 import NotFound from '../error/404';
 import loading from '../../../data/icons/loading.svg';
 import FormBoxFooter from "../../card/FormBoxFooter";
+import { BOY_AVATAR, GIRL_AVATAR } from "../../../utils";
 
 const cookies = new Cookies();
 
@@ -27,7 +29,9 @@ class EditPatient extends React.Component {
                 maladies: "",
                 allergies: "",
                 habitude_alimentaires: "",
+                photo: "",
             },
+            photo_preview: BOY_AVATAR,
             submitted: false,
             isSubmitting: false
         };
@@ -43,7 +47,8 @@ class EditPatient extends React.Component {
         PatientDataService.get(params.id)
         .then(response => {
             console.log(response.data);
-            this.setState({patient: {...response.data}});
+            this.setState({patient: {...response.data}, photo_preview: response.data.photo ? response.data.photo : (response.data.genre === "M" ? BOY_AVATAR : GIRL_AVATAR)});
+            this.loadImageFromURL(response.data.photo);
         }).catch(e => {
             this.setState({patient: {...this.state.patient, id: 0}});
             console.log(e);
@@ -52,15 +57,41 @@ class EditPatient extends React.Component {
 
     handleInputChange(name, value) {
         // const { name, value } = event.target;
+        if (name === "photo") {
+            this.loadImagePreview(value);
+        }
+        if (name === "genre"  && (this.state.photo_preview === BOY_AVATAR || this.state.photo_preview === GIRL_AVATAR)) {
+            if (value === "M") 
+                this.setState({ photo_preview: BOY_AVATAR });
+            else if (value === "F") 
+                this.setState({ photo_preview: GIRL_AVATAR });
+        }
         this.setState({ patient: { ...this.state.patient, [name]: value } });
         console.log("CHANGING... ", name, value);
     }
+
+    loadImagePreview = (file) => {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+            this.setState({ photo_preview: e.target.result });
+        }
+        reader.readAsDataURL(file);
+    };
+
+    loadImageFromURL = (url) => {
+        axios({ method: 'get', url: url, responseType: 'blob'})
+            .then((response) => {
+                console.log(response.data);
+                // this.setState({patient: {...response.data, photo: response.data} });
+            })
+    };
 
     savePatient() {
         let loggedDoctor = null;
         if (cookies.get("userType") === "medecin"){
             loggedDoctor = cookies.get("loggedUser")
         }
+        var formData = new FormData();
         var data = {
             doctor: loggedDoctor.id,
             nom: this.state.patient.nom,
@@ -72,10 +103,20 @@ class EditPatient extends React.Component {
             groupage: this.state.patient.groupage,
             maladies: this.state.patient.maladies,
             allergies: this.state.patient.allergies,
-            habitude_alimentaires: this.state.patient.habitude_alimentaires,            
-        }; 
+            habitude_alimentaires: this.state.patient.habitude_alimentaires,
+            photo: this.state.patient.photo,
+        };
+        
+        // if (typeof this.state.patient.photo === "string") {
+        //     console.log("STRING");
+        //     data["photo"] = null;
+        // }
+
+        for ( var key in data ) {
+            formData.append(key, data[key]);
+        }
     
-        PatientDataService.update(this.state.patient.id, data)
+        PatientDataService.update(this.state.patient.id, formData)
             .then(response => {
                 this.setState({ patient: { ...response.data } });
                 console.log(response.data);
@@ -138,6 +179,12 @@ class EditPatient extends React.Component {
                 ]
             },
             {
+                headerTitle: "Profil",
+                fields: [
+                    {type: "file", label: "Photo de Profil du Patient", name: "photo", value: this.state.patient.photo, accept: ".png, .jpg, .jpeg"},
+                ],
+            },
+            {
                 headerTitle: "Informations médicales du patient",
                 fields: [
                   {type: "select", label: "Groupe Sanguin", name: "groupage", value: this.state.patient.groupage, selectOptions: groupageOptions},
@@ -165,7 +212,7 @@ class EditPatient extends React.Component {
                         <PageTitle title="Modifier un patient" />
                         
                         <div className="col-xs-12 ">
-                            <AddHeader entityName="patient" type="edit" />
+                            <AddHeader entityName="patient" type="edit"  photoPreview={ this.state.photo_preview } />
 
                             <div className="bg-w">
                                 { formBoxes.map((box) => 
