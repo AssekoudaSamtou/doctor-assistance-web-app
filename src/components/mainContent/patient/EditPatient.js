@@ -217,6 +217,7 @@ class EditPatient extends React.Component {
                             <div className="bg-w">
                                 { formBoxes.map((box) => 
                                     <FormBox 
+                                        key={box.headerTitle}
                                         box={box} fromType="edit"
                                         isSubmitting={this.state.isSubmitting}
                                         onInputChange={this.handleInputChange} 

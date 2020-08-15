@@ -102,9 +102,11 @@ class AddDoctor extends React.Component {
       { id: "M", libelle: "Masculin" },
       { id: "F", libelle: "Féminin" },
     ];
+    
     const specialiteSelectOptions = [
       { id: null, libelle: "----Selectionnez une specialite-----" },
     ].concat(this.state.specialites);
+    
     const formBoxes = [
       {
         headerTitle: "Information personnelle du medecin",
@@ -119,62 +121,60 @@ class AddDoctor extends React.Component {
             type: "text",
             label: "Email",
             name: "email",
-            value: this.state.doctor.email,
+            value: this.state.doctor.email ? this.state.doctor.email : "",
           },
           {
             type: "text",
             label: "Nom",
             name: "nom",
-            value: this.state.doctor.nom,
+            value: this.state.doctor.nom ? this.state.doctor.nom : "",
           },
           {
             type: "text",
             label: "Prénom",
             name: "prenom",
-            value: this.state.doctor.prenom,
+            value: this.state.doctor.prenom ? this.state.doctor.prenom : "",
           },
           {
             type: "text",
             label: "Adresse",
             name: "adresse",
-            value: this.state.doctor.adresse,
+            value: this.state.doctor.adresse ? this.state.doctor.adresse : "",
             description: 'e.g. "Agoe-cacaveli"',
           },
           {
             type: "select",
             label: "Spécialité",
             name: "specialite",
-            value: this.state.doctor.specialite,
+            value: this.state.doctor.specialite ? this.state.doctor.specialite : 0,
             selectOptions: specialiteSelectOptions,
           },
           {
             type: "textarea",
             label: "Biographie",
             name: "bio",
-            value: this.state.doctor.bio,
+            value: this.state.doctor.bio ? this.state.doctor.bio : "",
             description: 'e.g. "Biologie"',
           },
           {
             type: "date",
             label: "Date de naissance",
             name: "date_naissance",
-            value: this.state.doctor.date_naissance,
+            value: this.state.doctor.date_naissance ? this.state.doctor.date_naissance : "",
           },
           {
             type: "text",
             label: "Téléphone",
             name: "telephone",
-            value: this.state.doctor.telephone,
+            value: this.state.doctor.telephone ? this.state.doctor.telephone : "",
           },
           {
             type: "select",
             label: "Genre",
             name: "genre",
-            value: this.state.doctor.genre,
+            value: this.state.doctor.genre ? this.state.doctor.genre : "N",
             selectOptions: GenderSelectOptions,
           },
-          // {type: "text", label: "Profile Image"},
-          // {type: "text", label: "Brief", description: 'e.g. "Enter any size of text description here"'},
         ],
       },
     ];
@@ -190,6 +190,7 @@ class AddDoctor extends React.Component {
             {formBoxes.map((box) => (
               <FormBox
                 box={box}
+                key={box.headerTitle}
                 fromType="add"
                 isSubmitting={this.state.isSubmitting}
                 onInputChange={this.handleInputChange}

@@ -6,26 +6,26 @@ import FormBoxFooter from "./FormBoxFooter";
 import { data } from "jquery";
 
 class FormBox extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleCKEditorChange = this.handleCKEditorChange.bind(this);
-    this.handleSaveBtnTapped = this.handleSaveBtnTapped.bind(this);
-    this.handleDeleteBtnTapped = this.handleDeleteBtnTapped.bind(this);
-  }
+    constructor(props) {
+        super(props);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleCKEditorChange = this.handleCKEditorChange.bind(this);
+        this.handleSaveBtnTapped = this.handleSaveBtnTapped.bind(this);
+        this.handleDeleteBtnTapped = this.handleDeleteBtnTapped.bind(this);
+    }
 
-  handleInputChange(name, value) {
-    this.props.onInputChange(name, value);
-  }
-  handleCKEditorChange(name, data) {
-    this.props.onCKEditorChange(name, data);
-  }
-  handleSaveBtnTapped() {
-    this.props.onSaveBtnTapped();
-  }
-  handleDeleteBtnTapped() {
-    this.props.onDeleteBtnTapped();
-  }
+    handleInputChange(name, value) {
+        this.props.onInputChange(name, value);
+    }
+    handleCKEditorChange(name, data) {
+        this.props.onCKEditorChange(name, data);
+    }
+    handleSaveBtnTapped() {
+        this.props.onSaveBtnTapped();
+    }
+    handleDeleteBtnTapped() {
+        this.props.onDeleteBtnTapped();
+    }
 
   render() {
     return (

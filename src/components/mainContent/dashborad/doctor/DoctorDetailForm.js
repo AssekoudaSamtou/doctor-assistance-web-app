@@ -17,14 +17,14 @@ class DoctorDetailForm extends React.Component {
     var user = cookies.get("loggedUser");
     // console.log(user);
     this.state = {
-      nom: user.first_name,
-      prenom: user.last_name,
-      date_naissance: user.date_naissance,
-      genre: user.genre,
-      adresse: user.adresse,
+      nom: user.first_name ? user.first_name : "",
+      prenom: user.last_name ? user.last_name: "",
+      date_naissance: user.date_naissance ? user.date_naissance : "",
+      genre: user.genre ? user.genre : "M",
+      adresse: user.adresse ? user.adresse : "",
       specialite: user.specialite,
-      telephone: user.telephone,
-      bio: user.bio,
+      telephone: user.telephone ? user.telephone : "",
+      bio: user.bio ? user.bio : "",
       specialites: [],
     };
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -132,7 +132,8 @@ class DoctorDetailForm extends React.Component {
       { id: "M", libelle: "Masculin" },
       { id: "F", libelle: "Féminin" },
     ];
-    return (
+	
+	return (
       <section className="box h-available" style={{ margin: 0 }}>
         <header className="panel_header">
           <h2 className="title pull-left">
@@ -329,19 +330,19 @@ class DoctorDetailForm extends React.Component {
 
                       <ul className="pager wizard" style={{}}>
                         <li className="previous first" style={{ display: "none" }}>
-                          <a href="javascript:;">First</a>
+                          <a style={{cursor: "pointer"}}>First</a>
                         </li>
                         <li className="previous">
-                          <a href="javascript:;">Previous</a>
+                          <a style={{cursor: "pointer"}}>Previous</a>
                         </li>
                         <li className="next last" style={{ display: "none" }}>
-                          <a href="javascript:;">Last</a>
+                          <a style={{cursor: "pointer"}}>Last</a>
                         </li>
                         <li className="next">
-                          <a href="javascript:;">Next</a>
+                          <a style={{cursor: "pointer"}}>Next</a>
                         </li>
                         <li className="finish">
-                          <a href="javascript:;">Finish</a>
+                          <a style={{cursor: "pointer"}}>Finish</a>
                         </li>
                       </ul>
                     </div>

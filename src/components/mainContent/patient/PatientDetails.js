@@ -32,8 +32,6 @@ class PatientDetails extends React.Component {
         }
     }
 
-    
-
     componentWillMount() {
         const { match: { params } } = this.props;
         
@@ -44,6 +42,13 @@ class PatientDetails extends React.Component {
             this.setState({patient: {...this.state.patient, id: 0}});
             console.log(e);
         });
+    }
+
+    componentDidMount() {
+        // window.$(document).ready( () => {
+        //     window.$('body').hide();
+        //     window.$('body').fadeIn(1000);
+        // })
     }
 
     render() {
@@ -99,18 +104,19 @@ class PatientDetails extends React.Component {
                                                         <span>Nouvelle consultation</span>
                                                     </a>
                                                 </div>
-                                                <div class="modal fade col-xs-12" id="cmpltadminModal-7" tabindex="-1" role="dialog" aria-hidden="true">
-                                                    <div class="modal-dialog" style={{width:"80%"}}>
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                                                <h4 class="modal-title">{this.state.patient.nom} {this.state.patient.prenom}</h4>
+                                                
+                                                <div className="modal fade col-xs-12" id="cmpltadminModal-7" tabIndex="-1" role="dialog" aria-hidden="true">
+                                                    <div className="modal-dialog" style={{width:"80%"}}>
+                                                        <div className="modal-content">
+                                                            <div className="modal-header">
+                                                                <button type="button" className="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                                <h4 className="modal-title">{this.state.patient.nom} {this.state.patient.prenom}</h4>
                                                             </div>
-                                                            <div class="modal-body">
+                                                            <div className="modal-body">
                                                                 <AddConsultation detail={"detail"} patientId={this.state.patient.id} />
                                                             </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                                                            <div className="modal-footer">
+                                                                <button type="button" className="btn btn-info" data-dismiss="modal">Close</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -151,83 +157,23 @@ class PatientDetails extends React.Component {
                                                 <div className="row">
                                                     <div className="col-xs-12">
                                                         <ul className="project-activity list-unstyled mb-0">
-                                                            <li className="activity-list warning">
-                                                                <div className="detail-info">
-                                                                    <div className="visit-doc">
-                                                                        <small className="text-muted">
-                                                                            I feel better Now :)
-                                                                        </small>
-                                                                        <p className="message">
-                                                                            Meditation
-                                                                        </p>
-                                                                        
+                                                            
+                                                            { this.state.patient.consultations.map((consultation) => (
+                                                                <li className="activity-list warning">
+                                                                    <div className="detail-info">
+                                                                        <div className="visit-doc">
+                                                                            <small className="text-muted detail-consultation-overwiew" dangerouslySetInnerHTML={{__html: consultation.resume}}></small>
+                                                                            <p className="message detail-consultation-overwiew" dangerouslySetInnerHTML={{__html: consultation.motif}}></p>
+                                                                            
+                                                                        </div>
+                                                                        <div className="visit-date visit-stat pull-right">
+                                                                            {/* <span></span> */}
+                                                                            <p className="mb-0">OPEN</p>
+                                                                        </div>
                                                                     </div>
-                                                                    <div className="visit-date visit-stat pull-right">
-                                                                        <p className="mb-0">OPENED</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li className="clearfix"></li>
-                                                            <li className="activity-list info">
-                                                                <div className="detail-info">
-                                                                    <div className="visit-doc">
-                                                                        <small className="text-muted">
-                                                                            Treatment was good!
-                                                                        </small>
-                                                                        <p className="message">
-                                                                            Thyroid Test
-                                                                        </p>
-                                                                    </div>
-                                                                    <div className="visit-date visit-stat pull-right">
-                                                                        <p className="mb-0 uppercase">closed</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li className="activity-list success">
-                                                                <div className="detail-info">
-                                                                    <div className="visit-doc">
-                                                                        <small className="text-muted">
-                                                                            My hair is gone!
-                                                                        </small>
-                                                                        <p className="message">
-                                                                            Unhappy
-                                                                        </p>
-                                                                    </div>
-                                                                    <div className="visit-date visit-stat pull-right">
-                                                                        <p className="mb-0 uppercase">OPENED</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li className="activity-list warning">
-                                                                <div className="detail-info">
-                                                                    <div className="visit-doc">
-                                                                        <small className="text-muted">
-                                                                            My hair is gone!
-                                                                        </small>
-                                                                        <p className="message">
-                                                                            Unhappy
-                                                                        </p>
-                                                                    </div>
-                                                                    <div className="visit-date visit-stat pull-right">
-                                                                        <p className="mb-0 uppercase">closed</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li className="activity-list danger">
-                                                                <div className="detail-info pb0">
-                                                                    <div className="visit-doc">
-                                                                        <small className="text-muted">
-                                                                            Great Mediacal Care 
-                                                                        </small>
-                                                                        <p className="message">
-                                                                            Join Pain
-                                                                        </p>
-                                                                    </div>
-                                                                    <div className="visit-date visit-stat pull-right">
-                                                                        <p className="mb-0 uppercase">OPENED</p>
-                                                                    </div>
-                                                                </div>
-                                                            </li>
+                                                                </li>
+                                                            )) }
+                                                            
                                                         </ul>
                                                     </div>      
                                                 </div> 
@@ -237,35 +183,33 @@ class PatientDetails extends React.Component {
                                     
                                     </div>
                                 </div>
+                                
                                 <div className="row">
                                     <div className="col-md-12 col-sm-12">
                                         <section className="box gradient-blue" style={{padding:20+'px'}}>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Groupe sanguin :</h4>
-                                                <p className="mb-0 g-text">{this.state.patient.groupage}</p>
+                                                <p className="mb-0 g-text info-medicales">{this.state.patient.groupage}</p>
                                             </div>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Allergies :</h4>
                                                 <TagList list={this.state.patient.allergies ? this.state.patient.allergies.split(',') : []} />
-                                                {/* <p className="mb-0 g-text">{this.state.patient.allergies}</p> */}
                                             </div>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Maladies :</h4>
                                                 <TagList list={this.state.patient.maladies ? this.state.patient.maladies.split(',') : []} />
-                                                {/* <p className="mb-0 g-text">{this.state.patient.maladies}</p> */}
                                             </div>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Habitudes Alimentaires :</h4>
                                                 <TagList list={this.state.patient.habitude_alimentaires ? this.state.patient.habitude_alimentaires.split(',') : []} />
-                                                {/* <p className="mb-0 g-text">{this.state.patient.habitude_alimentaires}</p> */}
                                             </div>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Pression artérielle :</h4>
-                                                <p className="mb-0 g-text">130/80 mmHG</p>
+                                                <p className="mb-0 g-text info-medicales">130/80 mmHG</p>
                                             </div>
                                             <div className="patient-personal mb-0">
                                                 <h4 className="w-text">Température :</h4>
-                                                <p className="mb-0 g-text">36.8 Degree</p>
+                                                <p className="mb-0 g-text info-medicales">36.8 Degree</p>
                                             </div>
                                         </section>
                                     </div>
