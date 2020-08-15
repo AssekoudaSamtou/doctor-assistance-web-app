@@ -24,7 +24,7 @@ const HospitalItem = ({nom, adresse, id, email, description, owner, onDeleteClic
                 <div className="doc-info">
                     <span className="bold text-uppercase h3" style={{color: '#777'}}>
                         <i className="fas fa-signature" style={{color:'bisque'}}></i> 
-                        <span>{'\u00A0'}{'\u00A0'}{nom}</span>
+                        <span className="structure-sanitaire-name">{'\u00A0'}{'\u00A0'}{nom}</span>
                     </span>
                     <h5>
                         <i className="fas fa-map-marker-alt"></i>

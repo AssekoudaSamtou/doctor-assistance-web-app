@@ -138,7 +138,7 @@ class AddPatient extends React.Component {
                 {type: "text", label: "Nom", name: "nom", value: this.state.patient.nom,},
                 {type: "text", label: "Prénom",name: "prenom", value: this.state.patient.prenom,},
                 {type: "text", label: "Adresse", name: "adresse", value: this.state.patient.adresse, description: 'e.g. "Agoe-cacaveli"',},
-                {type: "text", label: "Téléphone", name: "telephone",value: this.state.patient.telephone,description: 'e.g. "00228 98 76 56 87"',},
+                {type: "text", label: "Téléphone", name: "telephone",value: this.state.patient.telephone,description: 'e.g. "+22898765687"',},
                 {type: "date", label: "Date de naissance", name: "date_naissance", value: this.state.patient.date_naissance,},
                 {type: "select",label: "Genre", name: "genre", value: this.state.patient.genre, selectOptions: GenderSelectOptions,},
             ],

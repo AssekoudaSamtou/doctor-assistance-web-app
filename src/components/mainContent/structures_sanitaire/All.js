@@ -29,33 +29,34 @@ class HopitalList extends React.Component {
         });
     }
 
-  delete = (id, owner) => {
+    delete = (id, owner) => {
     let doctor_id = cookies.get("loggedUser")["id"];
 
     if (!owner) {
-      MedecinStructureSanitaireDataService.delete(doctor_id, id, "my_hos")
+        MedecinStructureSanitaireDataService.delete(doctor_id, id, "my_hos")
         .then((response) => {
-          window.showSuccess("Structure sanitaire supprimé !");
-          this.setState({ hopitals: response.data });
+            window.showSuccess("Structure sanitaire supprimé !");
+            this.setState({ hopitals: response.data });
         })
         .catch((e) => {
-          console.log(e);
-          window.showErrorMessage("Something went wrong!!!");
+            console.log(e);
+            window.showErrorMessage("Something went wrong!!!");
         });
     } else if (owner === doctor_id) {
-      StructureSanitaireDataService.delete(id, "my_hos")
+        StructureSanitaireDataService.delete(id, "my_hos")
         .then((response) => {
-          window.showSuccess("Structure sanitaire supprimée !");
-          this.setState({ hopitals: response.data });
+            window.showSuccess("Structure sanitaire supprimée !");
+            this.setState({ hopitals: response.data });
         })
         .catch((e) => {
-          console.log(e);
-          window.showErrorMessage("Something went wrong!!!");
+            console.log(e);
+            window.showErrorMessage("Something went wrong!!!");
         });
     }
-  };
+    };
 
-  seeDetails = (id) => {};
+    seeDetails = (id) => {};
+
     edit = (id) => {
         this.props.history.push(`/hospitals_update/${id}`);
     }
@@ -66,7 +67,7 @@ class HopitalList extends React.Component {
                 
                 <div className="row">
                     { this.state.hopitals !== null && this.state.hopitals.map(({denomination, adresse, id, email, description, owner, telephone}) => 
-                        <div className="col-xs-12 col-lg-6" key={id}>
+                        <div className="col-xs-12 col-lg-6 structure-sanitaire-column" key={id}>
                             <HospitalItem 
                                 nom={denomination} 
                                 id={id} 
@@ -78,7 +79,7 @@ class HopitalList extends React.Component {
                                 onDeleteClick={this.delete}
                                 onEditClick={this.edit}
                                 onSeeClick={this.seeDetails}
-                                 />
+                            />
                         </div>
                     )}
 
@@ -93,12 +94,6 @@ class HopitalList extends React.Component {
                             <img src={noItem} style={{width: 50+'%', margin: 'auto', display: 'block'}} />
                         </div>
                     )}
-
-                    {/* { this.state.hopitals.length === 0 && (
-                        <div>
-                            <img src={noItem} style={{width: 50+'%', margin: 'auto', display: 'block'}} />
-                        </div>
-                    )} */}
                 </div>
                 
             </div>

@@ -199,6 +199,7 @@ class AddConsultation extends React.Component {
             {formBoxes.map((box) => (
               <FormBox
                 box={box}
+                key={box.headerTitle}
                 fromType="add"
                 isSubmitting={this.state.isSubmitting}
                 onInputChange={this.handleInputChange}

@@ -12,7 +12,7 @@ class StructureSanitaireTabPane extends Component {
     constructor(props) {
         super(props);
         var user = cookies.get("loggedUser");
-        console.log("OWEND", user.structure_sanitaires);
+        // console.log("OWEND", user.structure_sanitaires);
         this.state = {
             structureSanitaire: {
                 denomination: "",
@@ -78,8 +78,8 @@ class StructureSanitaireTabPane extends Component {
     }
 
     componentDidMount() {
-        window.$('#pills ul li a[href="#pills-tab5"]').parent().addClass("active");
-        window.$('#pills-tab5').addClass("active");
+        window.$('#pills ul li a[href="#pills-tab1"]').parent().addClass("active");
+        window.$('#pills-tab1').addClass("active");
         // this.toggleModal();
     }
 
@@ -136,7 +136,7 @@ class StructureSanitaireTabPane extends Component {
         else {
             window.$(selector + id).find(".doc-info span").addClass("disabled").text("En cours...");            
             var user = cookies.get("loggedUser");
-            MedecinStructureSanitaireDataService.delete(user.id, id)
+            MedecinStructureSanitaireDataService.delete(user.id, id, "my_hos")
             .then(response => {
                 // cookies.set("loggedUser", response.data);
                 window.showSuccess("Demande supprimée");
@@ -217,7 +217,7 @@ class StructureSanitaireTabPane extends Component {
                         <div className="col-lg-7">
                             <div id="hospital-search-box">
                                 <input type="search" onChange={this.handleFilterTextChange} />
-                                <i class="fa fa-search"></i>
+                                <i className="fa fa-search"></i>
                             </div>
                         </div>
                         <div className="col-lg-4">
@@ -238,7 +238,7 @@ class StructureSanitaireTabPane extends Component {
                         liste={this.state.structureSanitaires}
                         onClick={this.handleStructureSanitaireClick} />
 
-                <div className={`modal fade col-xs-12 ${this.state.showModal ? 'in' : ''}`} id="cmpltadminModal-10" tabindex="-1" role="dialog" aria-hidden="true" style={{display: `${this.state.showModal ? 'block' : 'none'}`, background: '#8e898982'}}>
+                <div className={`modal fade col-xs-12 ${this.state.showModal ? 'in' : ''}`} id="cmpltadminModal-10" tabIndex="-1" role="dialog" aria-hidden="true" style={{display: `${this.state.showModal ? 'block' : 'none'}`, background: '#8e898982'}}>
                     <div className="modal-dialog animated fadeInDown" style={{width: '750px'}}>
                         <div className="modal-content">
                             <div className="modal-header">
