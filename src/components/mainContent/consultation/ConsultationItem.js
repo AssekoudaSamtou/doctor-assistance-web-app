@@ -9,7 +9,7 @@ let v = true
 class ConsultationItem extends React.Component {
     render() {
         const date = new Date(this.props.demande?.date_consultation)
-        const mdate = ("0"+date.getDay()).slice(-2, 3)+"/"+("0"+date.getMonth()).slice(-2,3)+"/"+date.getFullYear()+" "+("0"+date.getHours()).slice(-2,3)+":"+("0"+date.getMinutes()).slice(-2,3)+":"+("0"+date.getSeconds()).slice(-2,3)
+        const mdate = ("0"+date.getDate()).slice(-2, 3)+"/"+("0"+date.getMonth()).slice(-2,3)+"/"+date.getFullYear()+" "+("0"+date.getHours()).slice(-2,3)+":"+("0"+date.getMinutes()).slice(-2,3)+":"+("0"+date.getSeconds()).slice(-2,3)
        return (
         <tr onClick={this.props.updateConsultation} data-toggle="modal" href={`#cmpltadminModal-${this.props.consultation.id}`} style={{cursor:'pointer'}}>
         <td>

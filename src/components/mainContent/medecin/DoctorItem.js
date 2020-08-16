@@ -12,12 +12,14 @@ import { data } from 'jquery';
 const DoctorItem = ({fullname, gender, date_naissance, id}) => {
     let [patients, setPatients] = React.useState('')
     const getPatientsNum = id => {
+        // console.log()
         PatientDataService.countPatients({doctorpatients:id}).then((response) => {
             setPatients(response.data)
         })
         .catch((e) => {
             // console.log(e);
         });
+        console.log(patients)
         return patients
     }
     return (

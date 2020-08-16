@@ -40,7 +40,7 @@ class AddDemandeConsultation extends React.Component {
       .then((response) => {
         window.showSuccess("demande de consultation effectuee");
         setTimeout(() => {
-          // this.props.history.push(`/consultations/`)
+          this.props.history.push(`/demande_consultations/`)
         }, 500);
         this.newDemandeConsultation();
       })
@@ -97,7 +97,7 @@ class AddDemandeConsultation extends React.Component {
     ].concat(
       this.state.patients.map((patient) => ({
         id: patient.id,
-        libelle: patient.nom + " " + patient.nom,
+        libelle: patient.nom + " " + patient.prenom,
       }))
     );
     const CenterSelectOptions = [

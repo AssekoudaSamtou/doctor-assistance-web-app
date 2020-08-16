@@ -84,7 +84,7 @@ class DoctorDetailForm extends React.Component {
       });
   };
 
-  handleSpecialiteChildMount = (specialite_id) => {
+  SpecialiteChildMount = (specialite_id) => {
     const selector = `#pills-tab4 .r4_counter_.db_box`;
     if (specialite_id === this.state.specialite) {
       window
@@ -96,7 +96,6 @@ class DoctorDetailForm extends React.Component {
         .css("color", "white");
     }
   };
-
   componentDidMount() {
     if (!this.mustComplete()) {
       window.$("#doctorDetailsModal").modal("toggle");

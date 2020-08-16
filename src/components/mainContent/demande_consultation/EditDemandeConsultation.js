@@ -26,6 +26,7 @@ class EditDemandeConsultation extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.saveDemandeConsultation = this.saveDemandeConsultation.bind(this)
         this.newDemandeConsultation = this.newDemandeConsultation.bind(this)
+        this.deleteDemandeConsultation = this.deleteDemandeConsultation.bind(this)
     }
     saveDemandeConsultation() {
         var data = {
@@ -39,6 +40,7 @@ class EditDemandeConsultation extends React.Component {
                         // this.props.history.push(`/consultations/${this.state.demmande_consultation.id}`)
                     }, 500);
                 this.newDemandeConsultation();
+                window.$("#closeBtnDemandeConsultation").click()
             })
             .catch(e => {
                 console.log(e.response);
@@ -51,6 +53,26 @@ class EditDemandeConsultation extends React.Component {
             patient:"",
         }})
     }
+
+    deleteDemandeConsultation() {
+        DemandeConsultationsDataService.delete(this.state.demmande_consultation.id)
+          .then((response) => {
+            console.log(response.status);
+            window.$("#deleteConfirmationModal").modal("toggle");
+            window.showSuccess("Demande supprimée avec succès");
+            setTimeout(() => {
+                if(this.props.history){
+                    this.props.history.push("/demmande_consultations/");
+                }else{
+                    window.$("#closeBtnDemandeConsultation").click()
+                }
+            }, 500);
+          })
+          .catch((e) => {
+            console.log(e.response);
+            window.showErrorMessage("Something went wrong!!!");
+          });
+      }
 
     componentWillMount() {
         StructureSanitaireDataService.getAll()
@@ -111,6 +133,7 @@ class EditDemandeConsultation extends React.Component {
                                 isSubmitting={this.state.isSubmitting}
                                 onInputChange={this.handleInputChange} 
                                 onSaveBtnTapped={this.saveDemandeConsultation}
+                                onDeleteBtnTapped = {this.deleteDemandeConsultation}
                             />
                         )}
                         
@@ -121,6 +144,7 @@ class EditDemandeConsultation extends React.Component {
                             <FormBoxFooter
                                 isSubmitting={this.state.isSubmitting}
                                 onSaveBtnTapped={this.saveDemandeConsultation}
+                                onDeleteBtnTapped = {this.deleteDemandeConsultation}
                                 fromType="edit"
                             />
                         </div>

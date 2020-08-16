@@ -41,12 +41,6 @@ class EditConsultation extends React.Component {
     }
 
     componentWillMount() {
-        DemandeConsultationsDataService.get(this.props.consultation.id)
-        .then(response => {
-            this.setState({consultation: {...response.data}});            
-        }).catch(e => {
-            console.log(e);
-        });
         DemandeConsultationsDataService.getAll()
         .then(response => {
             this.setState({demandes: response.data.results});
@@ -61,11 +55,18 @@ class EditConsultation extends React.Component {
         }).catch(e => {
             console.log(e);
         });
+        ConsultationDataService.get(this.props.consultation.id)
+        .then(response => {
+            this.setState({consultation: response.data});
+        }).catch(e => {
+            console.log(e);
+        });
     }
 
     handleInputChange(name, value) {
         // const { name, value } = event.target;
         this.setState({ consultation: { ...this.state.consultation, [name]: value } });
+        // data-dismiss="modal"
         console.log("CHANGING... ", name, value);
     }
     handleCKEInputChange(name, data) {
@@ -83,9 +84,11 @@ class EditConsultation extends React.Component {
             .then(response => {
                 console.log(response.data, this.state.submitted);
                 window.showSuccess('the consultation has been saved successfuly');
-                // setTimeout( () => {
-                //     this.props.history.push(`/consultations_details/${response.data.id}`)
-                // }, 500);
+                if(this.props.history){
+                    this.props.history.push("/consultations/");
+                }else{
+                    window.$("#closeBtnConsultation").click()
+                }
                 this.newConsultation();
                 console.log(this.state.consultation)
             })
@@ -109,9 +112,11 @@ class EditConsultation extends React.Component {
                 console.log(response.status);
                 window.$('#deleteConfirmationModal').modal('toggle');
                 window.showSuccess('Consultation deleted successfuly');
-                setTimeout( () => {
-                    this.props.history.push("/consultations")
-                }, 500)
+                if(this.props.history){
+                    this.props.history.push("/consultations/");
+                }else{
+                    window.$("#closeBtnConsultation").click()
+                }
             })
             .catch(e => {
                 console.log(e);
@@ -164,7 +169,7 @@ class EditConsultation extends React.Component {
                         />
                 )}
 
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-lg-10 col-lg-offset-1 col-xs-12">
                         <FormBoxFooter
                             isSubmitting={this.state.isSubmitting}
@@ -173,7 +178,7 @@ class EditConsultation extends React.Component {
                             fromType="edit"
                         />
                     </div>
-                </div>
+                </div> */}
             </div>
         )
     }

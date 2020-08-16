@@ -103,6 +103,7 @@ class DemandeConsultationList extends React.Component {
                   class="close"
                   data-dismiss="modal"
                   aria-hidden="true"
+                  id = "closeBtnDemandeConsultation"
                 >
                   &times;
                 </button>
