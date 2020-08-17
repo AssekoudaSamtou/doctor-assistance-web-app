@@ -12,77 +12,90 @@ import StructureSanitaireForm from "./StructureSanitaireForm";
 const cookies = new Cookies();
 
 class DoctorDetailForm extends React.Component {
-  constructor(props) {
-    super(props);
-    var user = cookies.get("loggedUser");
-    // console.log(user);
-    this.state = {
-      nom: user.first_name ? user.first_name : "",
-      prenom: user.last_name ? user.last_name: "",
-      date_naissance: user.date_naissance ? user.date_naissance : "",
-      genre: user.genre ? user.genre : "M",
-      adresse: user.adresse ? user.adresse : "",
-      specialite: user.specialite,
-      telephone: user.telephone ? user.telephone : "",
-      bio: user.bio ? user.bio : "",
-      specialites: [],
+    constructor(props) {
+        super(props);
+        var user = cookies.get("loggedUser");
+        // console.log(user);
+        this.state = {
+            nom: user.first_name ? user.first_name : "",
+            prenom: user.last_name ? user.last_name: "",
+            date_naissance: user.date_naissance ? user.date_naissance : "",
+            genre: user.genre ? user.genre : "M",
+            adresse: user.adresse ? user.adresse : "",
+            specialite: user.specialite,
+            telephone: user.telephone ? user.telephone : "",
+            bio: user.bio ? user.bio : "",
+            specialites: [],
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleSpecialiteClik = this.handleSpecialiteClik.bind(this);
+    }
+
+    handleInputChange(name, value) {
+        // const { name, value } = event.target;
+        this.setState({ [name]: value });
+    }
+
+    componentWillMount() {
+        SpecialiteDataService.getAll()
+            .then((response) => {
+            this.setState({ specialites: response.data.results });
+            })
+            .catch((error) => {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+            });
+    }
+
+    updateDoctorInfo = () => {
+        let data = cookies.get("loggedUser");
+        data = Object.assign({}, data, this.state);
+        data["first_name"] = this.state.nom;
+        data["last_name"] = this.state.prenom;
+
+        window.$("#pills .finish").text("sending....").addClass("disabled");
+        // window.setTimeout(()=>{console.log("waiting")}, 1000000);
+        DoctorDataService.update(data["id"], data)
+            .then((response) => {
+            cookies.set("loggedUser", response.data);
+            this.setState({ ...response.data });
+            window.$("#pills .finish").text("Finish").removeClass("disabled");
+            window.$("#doctorDetailsModal").modal("toggle");
+            })
+            .catch((error) => {
+            if (error.response) {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+            });
     };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSpecialiteClik = this.handleSpecialiteClik.bind(this);
-  }
 
-  handleInputChange(event) {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  }
-
-  componentWillMount() {
-    SpecialiteDataService.getAll()
-      .then((response) => {
-        this.setState({ specialites: response.data.results });
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log("Error", error.message);
+    handleSpecialiteChildMount = (specialite_id) => {
+        const selector = `#pills-tab4 .r4_counter_.db_box`;
+        if (specialite_id === this.state.specialite) {
+            window
+            .$(selector + `#specialite-${specialite_id}`)
+            .css("background", "linear-gradient(-12deg,#2a57d7 0,#9eeeff 100%)");
+            window
+            .$(selector + `#specialite-${specialite_id}`)
+            .find("h3")
+            .css("color", "white");
         }
-        console.log(error.config);
-      });
-  }
-
-  updateDoctorInfo = () => {
-    let data = cookies.get("loggedUser");
-    data = Object.assign({}, data, this.state);
-    data["first_name"] = this.state.nom;
-    data["last_name"] = this.state.prenom;
-
-    window.$("#pills .finish").text("sending....").addClass("disabled");
-    // window.setTimeout(()=>{console.log("waiting")}, 1000000);
-    DoctorDataService.update(data["id"], data)
-      .then((response) => {
-        cookies.set("loggedUser", response.data);
-        this.setState({ ...response.data });
-        window.$("#pills .finish").text("Finish").removeClass("disabled");
-        window.$("#doctorDetailsModal").modal("toggle");
-      })
-      .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          console.log(error.request);
-        } else {
-          console.log("Error", error.message);
-        }
-        console.log(error.config);
-      });
-  };
+    };
 
   SpecialiteChildMount = (specialite_id) => {
     const selector = `#pills-tab4 .r4_counter_.db_box`;
@@ -99,31 +112,30 @@ class DoctorDetailForm extends React.Component {
   componentDidMount() {
     if (!this.mustComplete()) {
       window.$("#doctorDetailsModal").modal("toggle");
+        }
+        window.$("#pills .finish").click(this.updateDoctorInfo);
     }
-    window.$("#pills .finish").click(this.updateDoctorInfo);
-  }
 
-  mustComplete() {
-    // return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
-    return false;
-  }
+    mustComplete() {
+        // return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
+        return false;
+    }
+    handleSpecialiteClik(id) {
+        const selector = `#pills-tab4 .r4_counter_.db_box`;
+        window.$(selector).css("background", "white");
+        window.$(selector).find("h3").css("color", "#505458");
 
-  handleSpecialiteClik(id) {
-    const selector = `#pills-tab4 .r4_counter_.db_box`;
-    window.$(selector).css("background", "white");
-    window.$(selector).find("h3").css("color", "#505458");
+        window
+            .$(selector + `#specialite-${id}`)
+            .css("background", "linear-gradient(-12deg,#2a57d7 0,#9eeeff 100%)");
+        window
+            .$(selector + `#specialite-${id}`)
+            .find("h3")
+            .css("color", "white");
 
-    window
-      .$(selector + `#specialite-${id}`)
-      .css("background", "linear-gradient(-12deg,#2a57d7 0,#9eeeff 100%)");
-    window
-      .$(selector + `#specialite-${id}`)
-      .find("h3")
-      .css("color", "white");
-
-    this.state.specialite = id;
-    console.log(this.state.specialite);
-  }
+        this.state.specialite = id;
+        console.log(this.state.specialite);
+    }
 
   render() {
     const GenderSelectOptions = [
@@ -144,18 +156,19 @@ class DoctorDetailForm extends React.Component {
             <div className="col-xs-12 h-available">
               <form id="doctorDetailForm" className="h-available" noValidate="novalidate">
                 <div id="pills" className="wizardpills h-available">
+                  
                   <ul className="form-wizard nav nav-pills">
                     <li className="">
                       <a href="#pills-tab1" data-toggle="tab" aria-expanded="true" >
                         <span>
-                          <i className="fas fa-user-edit fa-3x" title="Etat Civil"></i>
+                          <i className="fas fa-user-edit fa-3x form-wizard-nav-icon" title="Etat Civil"></i>
                         </span>
                       </a>
                     </li>
                     <li className="">
                       <a href="#pills-tab2" data-toggle="tab" aria-expanded="false">
                         <span>
-                          <i className="fas fa-address-card fa-3x" title="Adresse" ></i>
+                          <i className="fas fa-address-card fa-3x form-wizard-nav-icon" title="Adresse" ></i>
                         </span>
                       </a>
                     </li>
@@ -167,7 +180,7 @@ class DoctorDetailForm extends React.Component {
                       >
                         <span>
                           <i
-                            className="fas fa-info-circle fa-3x"
+                            className="fas fa-info-circle fa-3x form-wizard-nav-icon"
                             title="Biographie"
                           ></i>
                         </span>
@@ -181,7 +194,7 @@ class DoctorDetailForm extends React.Component {
                       >
                         <span>
                           <i
-                            className="fas fa-briefcase-medical fa-3x"
+                            className="fas fa-briefcase-medical fa-3x form-wizard-nav-icon"
                             title="Spécialité"
                           ></i>
                         </span>
@@ -195,7 +208,7 @@ class DoctorDetailForm extends React.Component {
                       >
                         <span>
                           <i
-                            className="fas fa-hospital fa-3x"
+                            className="fas fa-hospital fa-3x form-wizard-nav-icon"
                             title="Structures Sanitaires"
                           ></i>
                         </span>
@@ -215,7 +228,7 @@ class DoctorDetailForm extends React.Component {
 
                   <div className="tab-content h-available">
                     <div className="tab-pane h-available" id="pills-tab1">
-                      <h4>Informations Personnelles</h4>
+                      <h4  className="font-fondamento-bold">Informations Personnelles</h4>
                       <br />
                       <div className="row">
                         <div className="col-lg-6 col-xs-12">
@@ -262,92 +275,86 @@ class DoctorDetailForm extends React.Component {
                     </div>
 
                     <div className="tab-pane h-available" id="pills-tab2">
-                      <h4>Contacts</h4>
-                      <br />
-                      <div className="row">
-                        <div className="col-lg-6 col-xs-12">
-                          <FormBoxItem
-                            type="text"
-                            label="Quartier de Résidence"
-                            onInputChange={this.handleInputChange}
-                            name="adresse"
-                            value={this.state.adresse}
-                          />
+                        <h4 className="font-fondamento-bold">Contacts</h4>
+                        <br />
+                        <div className="row">
+
+                            <div className="col-lg-6 col-xs-12">
+                                <FormBoxItem
+                                type="text"
+                                label="Quartier de Résidence"
+                                onInputChange={this.handleInputChange}
+                                name="adresse"
+                                value={this.state.adresse}
+                                />
+                            </div>
+                            
+                            <div className="col-lg-6 col-xs-12">
+                                <FormBoxItem
+                                type="text"
+                                label="Numéro de Téléphone"
+                                onInputChange={this.handleInputChange}
+                                name="telephone"
+                                value={this.state.telephone}
+                                />
+                            </div>
+
                         </div>
-                        <div className="col-lg-6 col-xs-12">
-                          <FormBoxItem
-                            type="text"
-                            label="Numéro de Téléphone"
-                            onInputChange={this.handleInputChange}
-                            name="telephone"
-                            value={this.state.telephone}
-                          />
-                        </div>
-                      </div>
                     </div>
 
                     <div className="tab-pane h-available" id="pills-tab3">
-                      <h4>Biographie Professionnelle</h4>
+                      <h4 className="font-fondamento-bold">Biographie Professionnelle</h4>
                       <br />
                       <div className="row">
-                        <div className="col-lg-12 col-xs-12">
-                          <FormBoxItem
-                            type="textarea"
-                            label="Bio"
-                            onInputChange={this.handleInputChange}
-                            name="bio"
-                            value={this.state.bio}
-                          />
+                        <div className="col-lg-6 col-xs-12">
+                            <FormBoxItem
+                                type="textarea"
+                                label="Bio"
+                                onInputChange={this.handleInputChange}
+                                name="bio"
+                                value={this.state.bio}
+                            />
                         </div>
                       </div>
                     </div>
 
                     <div className="tab-pane h-available" id="pills-tab4">
-                      <h4>Quelle est votre spécialité ? </h4>
-                      <br />
-                      <div className="row">
-                        {this.state.specialites.map(({ libelle, icon, id }) => (
-                          <div className="col-lg-3 col-xs-6" key={id}>
-                            <Specialite
-                              libelle={libelle}
-                              icon={icon}
-                              id={id}
-                              onClick={this.handleSpecialiteClik}
-                              onMount={this.handleSpecialiteChildMount}
-                            />
-                          </div>
-                        ))}
-                      </div>
+                        <h4 className="font-fondamento-bold">Quelle est votre spécialité ? </h4>
+                        <br />
+                        <div className="row">
+                            {this.state.specialites.map(({ libelle, icon, id }) => (
+                                <div className="col-lg-3 col-xs-12" key={id}>
+                                    <Specialite
+                                        libelle={libelle}
+                                        icon={icon}
+                                        id={id}
+                                        onClick={this.handleSpecialiteClik}
+                                        onMount={this.handleSpecialiteChildMount}
+                                    />
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="tab-pane h-available" id="pills-tab5">
-                      <StructureSanitaireTabPane
-                        structureSanitaires={this.state.structureSanitaires}
-                        onStructureSanitaireClick={this.handleStructureSanitaireClick}
-                        onStructureSanitaireMount={this.handleStructureSanitaireChildMount}
-                      />
-
-                      <ul className="pager wizard" style={{}}>
-                        <li className="previous first" style={{ display: "none" }}>
-                          <a style={{cursor: "pointer"}}>First</a>
-                        </li>
-                        <li className="previous">
-                          <a style={{cursor: "pointer"}}>Previous</a>
-                        </li>
-                        <li className="next last" style={{ display: "none" }}>
-                          <a style={{cursor: "pointer"}}>Last</a>
-                        </li>
-                        <li className="next">
-                          <a style={{cursor: "pointer"}}>Next</a>
-                        </li>
-                        <li className="finish">
-                          <a style={{cursor: "pointer"}}>Finish</a>
-                        </li>
-                      </ul>
+                        
+                        <StructureSanitaireTabPane
+                            structureSanitaires={this.state.structureSanitaires}
+                            onStructureSanitaireClick={this.handleStructureSanitaireClick}
+                            onStructureSanitaireMount={this.handleStructureSanitaireChildMount}
+                        />
+                    
                     </div>
 
-                    <div className="clearfix"></div>
+                    <ul className="pager wizard" style={{}}>
+                        <li className="previous first" style={{ display: "none" }}><a style={{cursor: "pointer"}}>First</a></li>
+                        <li className="previous"><a style={{cursor: "pointer"}}>Previous</a></li>
+                        <li className="next last" style={{ display: "none" }}><a style={{cursor: "pointer"}}>Last</a></li>
+                        <li className="next"><a style={{cursor: "pointer"}}>Next</a></li>
+                        <li className="finish"><a style={{cursor: "pointer"}}>Finish</a></li>
+                    </ul>
 
+                    <div className="clearfix"></div>
                     
                   </div>
                 </div>

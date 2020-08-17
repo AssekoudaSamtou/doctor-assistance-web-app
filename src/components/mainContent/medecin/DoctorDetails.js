@@ -1,35 +1,41 @@
 import React from 'react';
 
+
 import PageTitle from '../../card/PageTitle';
 import DoctorDataService from "../../../services/doctor.service";
 import NotFound from "../error/404";
 
 import badge from "../../../data/hos-dash/badge.png"
 import avatar2 from "../../../data/profile/avatar-2.png"
-import doc1 from "../../../data/hos-dash/doc1.jpg"
+import { BOY_AVATAR, GIRL_AVATAR} from "../../../utils"
 import doc3 from "../../../data/hos-dash/doc3.jpg"
 import { Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 class DoctorDetails extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            doctor: {id: null, first_name: "", last_name: "", username: ""},
+            doctor: cookies.get('loggedUser'),
         }
     }
 
     componentWillMount() {
         const { match: { params } } = this.props;
-        
-        DoctorDataService.get(params.id)
-        .then(response => {
-            console.log(response.data);
-            this.setState({doctor: {...response.data}});
-        }).catch(e => {
-            console.log(e);
-            console.log(this.state.doctor.id === null);
-        });
+
+        if (params.id) {
+            DoctorDataService.get(params.id)
+            .then(response => {
+                console.log(response.data);
+                this.setState({doctor: {...response.data}});
+            }).catch(e => {
+                console.log(e);
+                console.log(this.state.doctor.id === null);
+            });
+        }
     }
 
     componentDidMount() {
@@ -50,10 +56,10 @@ class DoctorDetails extends React.Component {
                                             <div className="doctors-list v2  relative">
                                                 <div className="doctors-head relative text-left mb-0">
                                                     <div className="doc-img img-circle">
-                                                        <img src={doc1} className="img-thumbnail center-block" alt=""/>
+                                                        <img src={ this.state.doctor.genre === "M" ? BOY_AVATAR : GIRL_AVATAR } className="img-thumbnail center-block" alt=""/>
                                                         <div className="stutas"></div>
                                                     </div>
-                                                    <h3 className="header relative bold">Dr : Smith Wright</h3>
+                                                    <h3 className="header relative bold">Dr : {this.state.doctor.first_name} {this.state.doctor.last_name}</h3>
                                                     <h5 className="boldy">Hair Repair and Loss Expert</h5>
                                                     <p className="desc relative mb-15">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti eveniet sit digni ssimos dolores reiciendis voluptate at quae deleniti voluptatibus molestias.</p>
                                                     <div className="doc-rating mb-30">

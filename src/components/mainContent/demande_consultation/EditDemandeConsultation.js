@@ -109,7 +109,7 @@ class EditDemandeConsultation extends React.Component {
         ].concat(this.state.centre_medicals.map((centre_medical)=>({id:centre_medical.id,libelle:centre_medical.denomination})));;
         const formBoxes = [
             {
-                headerTitle: "Ajout Demande consultation",
+                headerTitle: "Modification Demande consultation",
                 fields: [
                     {type: "select", name:"centre_medical", label: "Centre medical", selectOptions: CenterSelectOptions},
                     {type: "select",name:"patient", label: "Patient", selectOptions: PatientSelectOptions},
@@ -120,7 +120,7 @@ class EditDemandeConsultation extends React.Component {
 
         return (
             <div>
-                <PageTitle title="Ajout de la Demande de consultation" />
+                <PageTitle title="Modification de la Demande de consultation" />
                 
                 <div className="col-xs-12 ">
                     <AddHeader entityName="Modification de la Demande de consultation"/>

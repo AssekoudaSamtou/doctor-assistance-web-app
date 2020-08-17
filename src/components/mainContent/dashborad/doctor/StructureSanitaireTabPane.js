@@ -33,8 +33,8 @@ class StructureSanitaireTabPane extends Component {
         this.handleInputChange = this.handleInputChange.bind(this)
     }
 
-    handleInputChange = event => {
-        const { name, value } = event.target;
+    handleInputChange = (name, value ) => {
+        // const { name, value } = event.target;
         this.setState({ structureSanitaire: {...this.state.structureSanitaire, [name]: value} });
     }
 
@@ -211,7 +211,7 @@ class StructureSanitaireTabPane extends Component {
     render() {
         return ( 
             <div style={{marginTop: 20+'px', minHeight: '80%'}}>
-                <h4>Vous intervenez dans l'une de ces structures en tant que Médécin ? sans plus tarder, .</h4>
+                <h4 className="font-fondamento-bold">Ajouter des hopitaux existants à votre compte ou céer-en vous même.</h4>
                 
                 <div id="searchbarbox">
                     <div className="row">
@@ -239,7 +239,7 @@ class StructureSanitaireTabPane extends Component {
                         liste={this.state.structureSanitaires}
                         onClick={this.handleStructureSanitaireClick} />
 
-                <div className={`modal fade col-xs-12 ${this.state.showModal ? 'in' : ''}`} id="cmpltadminModal-10" tabIndex="-1" role="dialog" aria-hidden="true" style={{display: `${this.state.showModal ? 'block' : 'none'}`, background: '#8e898982'}}>
+                <div className={`modal fade col-xs-12 ${this.state.showModal ? 'in' : ''}`} id="ajout-hopital-modal" tabIndex="-1" role="dialog" aria-hidden="true" style={{display: `${this.state.showModal ? 'block' : 'none'}`, background: '#8e898982'}}>
                     <div className="modal-dialog animated fadeInDown" style={{width: '750px'}}>
                         <div className="modal-content">
                             <div className="modal-header">

@@ -94,11 +94,11 @@ const TopBar = () => {
                                 <a href="#" data-toggle="dropdown" className="toggle">
                                     <img className="img-circle img-inline" src={user.genre === "M" ? BOY_AVATAR : GIRL_AVATAR}/>
                                     
-                                    <span>@{user.username} <i className="fa fa-angle-down"></i></span>
+                                    <span>Dr {user.username} <i className="fa fa-angle-down"></i></span>
                                 </a>
                                 <ul className="dropdown-menu profile animated fadeIn">
                                     <li>
-                                        <Link to={`/doctors_details/${user.id}`}>
+                                        <Link to={`/profile`}>
                                             <i className="fas fa-id-badge"></i> Profile
                                         </Link>
                                     </li>

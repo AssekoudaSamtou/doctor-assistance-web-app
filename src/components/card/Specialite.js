@@ -24,15 +24,22 @@ const Specialite = ({libelle, icon, onClick, id, onMount}) => {
     });
     
     return (
-        <div className="r4_counter_ db_box" id={`specialite-${id}`} 
-             
-            onClick={(event) => {onClick(id);}}>
-            <i className="pull-left ico-icon icon-md icon-primary mt-10">
-                <Image src={`${BASE_URL}/static/specialite/${icon}`} className="ico-icon-o" />
-            </i>
-            <div className="stats" style={{marginTop: 30+'px'}}>
-                <h3 className="mb-5 text-center">{libelle}</h3>
+        <div className="r4_counter_ db_box" id={`specialite-${id}`} onClick={(event) => {onClick(id);}}>
+            <div className="row">
+                <div className="col-lg-4">
+                    <i className="pull-left ico-icon icon-md icon-primary mt-10">
+                        <Image src={`${BASE_URL}/static/specialite/${icon}`} className="ico-icon-o" />
+                    </i>
+                </div>
+                
+                <div className="col-lg-8">
+                    <div className="stats" style={{marginTop: 30+'px'}}>
+                        <h3 className="mb-5 text-center">{libelle}</h3>
+                    </div>
+                </div>
             </div>
+            
+            
         </div>
     )
 }

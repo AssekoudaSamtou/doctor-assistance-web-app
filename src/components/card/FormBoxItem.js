@@ -82,7 +82,7 @@ class FormBoxItem extends React.Component {
                 overflow: "hidden",
                 overflowWrap: "break-word",
                 resize: "horizontal",
-                height: 54 + "px",
+                height: 100 + "px",
                 }}
                 onChange={this.handleInputChange}
             ></textarea>

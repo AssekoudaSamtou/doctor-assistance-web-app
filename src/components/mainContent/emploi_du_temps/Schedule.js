@@ -1,10 +1,11 @@
 import React from 'react';
+
 import scheduleService from '../../../services/schedule.service';
 import HospitalItem from '../structures_sanitaire/Item';
-// import Calendar from 'tui-calendar';
 import noItem from '../../../data/icons/no-item3.png';
 import ConsultationItem from './ConsultationItem';
 import RDVItem from './RDVItem';
+import loading from '../../../data/icons/loading.svg';
 
 
 class Schedule extends React.Component {
@@ -12,9 +13,9 @@ class Schedule extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            consultations: [],
-            demande_consultations: [],
-            structure_sanitaires: [],
+            consultations: null,
+            demande_consultations: null,
+            structure_sanitaires: null,
         };
     }
 
@@ -45,19 +46,28 @@ class Schedule extends React.Component {
         return demande_consultation;
     }
 
+    hasItem = () => {
+        return  this.state.consultations 
+                    && 
+                this.state.demande_consultations 
+                    && 
+                (this.state.consultations.length + this.state.demande_consultations.length >= 0);
+    };
+
     render() {
         
         return (
             <div>
                 <div className="row">
-                    {this.state.consultations.map((consultation) => 
+                    { this.hasItem() && this.state.consultations.map((consultation) => 
                         <div className="col-xs-12 col-lg-6" key={consultation.id}>
                             <ConsultationItem
                                 consultation={consultation}
                                 demande_consultation={this.findDemandeConsultationByConsultation(consultation)} />
                         </div>
                     )}
-                    {this.state.demande_consultations.map((demande_consultation) => (
+
+                    { this.hasItem() && this.state.demande_consultations.map((demande_consultation) => (
                         <div key={demande_consultation.id}>
                             { this.isAcceptable(demande_consultation) && (
                                 <div className="col-xs-12 col-lg-6">
@@ -68,7 +78,14 @@ class Schedule extends React.Component {
                         </div> 
                         )
                     )}
-                    { (this.state.consultations.length + this.state.demande_consultations.length) === 0 && (
+
+                    { (this.state.consultations === null) && (this.state.demande_consultations === null) && (
+                        <div>
+                            <img src={loading} style={{width: '300px', margin: 'auto', display: 'block'}} />
+                        </div>
+                    )}
+
+                    { (this.state.consultations !== null) && (this.state.demande_consultations !== null) && (this.state.consultations.length+this.state.demande_consultations.length === 0) && (
                         <div>
                             <img src={noItem} style={{width: 50+'%', margin: 'auto', marginTop: '13%', display: 'block'}} />
                         </div>

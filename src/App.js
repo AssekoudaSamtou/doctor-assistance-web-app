@@ -156,6 +156,12 @@ class App extends React.Component {
                                             ) } />
 
                                         <Route 
+                                            path={`/profile`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <DoctorDetails {...props} /> : <Redirect to="/login" />
+                                            ) } />
+
+                                        <Route 
                                             path={`/doctors_update/:id`} 
                                             render={ props => (
                                                 this.state.loggedIn ? <EditDoctor {...props} /> : <Redirect to="/login" />
