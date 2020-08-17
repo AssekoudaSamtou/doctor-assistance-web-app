@@ -11,6 +11,7 @@ import PageTitle from "../../card/PageTitle";
 import StructureSanitaire from "../../card/StructureSanitaire";
 import Cookies from "universal-cookie";
 import FormBoxFooter from "../../card/FormBoxFooter";
+import DemandeConsultationHeader from "../demande_consultation/DemandeConsultationHeader";
 
 const cookies = new Cookies();
 class AddConsultation extends React.Component {
@@ -33,6 +34,7 @@ class AddConsultation extends React.Component {
       structure: {},
       consultationMessage: String,
       demandeConsultation: { status: 1, patient: this.props.patientId },
+      selectedPatient: null
     };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.saveConsultation = this.saveConsultation.bind(this);
@@ -40,12 +42,25 @@ class AddConsultation extends React.Component {
     this.handleCKEInputChange = this.handleCKEInputChange.bind(this);
   }
 
+    changePatientPhoto = (demande_id) => {
+        for (let demande in this.state.demandes) {
+            if (this.state.demandes[demande].id == demande_id) {
+                
+                for (let patient in this.state.patients) {
+                    if(this.state.demandes[demande].patient == this.state.patients[patient].id)
+                        this.setState({selectedPatient: this.state.patients[patient]});
+                }
+            }
+        }
+    }
+
   handleInputChange(name, value) {
-    // const { name, value } = event.target;
-    this.setState({
-      consultation: { ...this.state.consultation, [name]: value },
-    });
-    this.setState({ structure: { ...this.state.structure, [name]: value } });
+    if (name === "demande_consultation") {
+        console.log("CHANGING... ", value);
+        this.changePatientPhoto(value);
+    }
+
+    this.setState({ structure: { ...this.state.structure, [name]: value }, consultation: { ...this.state.consultation, [name]: value } });
     console.log("CHANGING... ", name, value);
   }
 
@@ -194,7 +209,11 @@ class AddConsultation extends React.Component {
         <PageTitle title="Ajout d'une nouvelle consultation" />
 
         <div className="col-xs-12 ">
-          <AddHeader entityName="consultation" type="add" />
+            <DemandeConsultationHeader 
+                entityName="Demande de consultation" 
+                patientPhoto={this.state.consultation.demande_consultation ? this.state.selectedPatient.photo : null} 
+                hospitalPhoto={null} />
+          {/* <AddHeader entityName="consultation" type="add" /> */}
           <div className="bg-w">
             {formBoxes.map((box) => (
               <FormBox

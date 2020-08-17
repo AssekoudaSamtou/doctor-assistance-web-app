@@ -1440,7 +1440,7 @@ section.box .actions a:hover {
     background: transparent !important
 }
 .doctor-img{
-    max-width: 85px;
+    max-width: 77px;
     border-radius: 10px;
     overflow: hidden;
     top: 50%;
@@ -11156,17 +11156,17 @@ table.dataTable.display tbody tr:first-child td {
     margin-top: 0;
     text-transform: uppercase;
     width: auto;
-    vertical-align: middle;
     font: inherit;
     text-align: center;
     background: none;
     white-space: nowrap;
     user-select: none;
-    display: inline-block;
-    margin: 0;
     cursor: pointer;
     text-decoration: none;
     list-style: none;
+    margin: auto;
+    display: block;
+    width: 56%;
 }
 #new-hospital-btn:hover {
     transition: color 0.5s ease-in-out;
@@ -11784,6 +11784,12 @@ table.dataTable.display tbody tr:first-child td {
     margin-bottom: 5px;
     user-select: none;
 }
+.dot-dot {
+    user-select: none;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
 .detail-consultation *{
     user-select: none;
     text-overflow: ellipsis !important;
@@ -11808,6 +11814,7 @@ table.dataTable.display tbody tr:first-child td {
     text-transform: uppercase;
 }
 .structure-sanitaire-name {
+    width: 174px;
     display: inline-block;
     text-overflow: ellipsis !important;
     overflow: hidden;
@@ -11835,6 +11842,76 @@ table.dataTable.display tbody tr:first-child td {
 .info-medicales::-webkit-scrollbar-thumb
 {
 	background-color: #000000;
+}
+.font-fondamento-bold {
+    font-family: 'Fondamento';
+    font-weight: 700;
+}
+.font-fondamento {
+    font-family: 'Fondamento';
+}
+
+#owned-hospital {
+    background-color: #E5E5E5;
+    height: 250px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+#other-hospital {
+    background-color: #E5E5E5;
+    height: 250px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+.show-other-hospital {
+    display: block;
+    animation: show-other-hospital-animation .3s linear;
+}
+.show-owned-hospital {
+    display: block;
+    animation: show-owned-hospital-animation .3s linear;
+}
+.hide-owned-hospital {
+    display: none;
+}
+.hide-other-hospital {
+    display: none;
+}
+
+@keyframes show-other-hospital-animation {
+    from {width: 0; }
+    to { width: 100%; }
+}
+@keyframes show-owned-hospital-animation {
+    from { left: 100%; }
+    to { left: 0; }
+}
+
+
+#owned-hospital-toggler {
+    width: 63px;
+    height: 42px;
+    cursor: pointer;
+    border-radius: 45% 0 0 45%;
+    position: absolute;
+    left: 98%;
+    top: 55%;
+    animation: owned-hospital-toggler-border 2s infinite;
+}
+#owned-hospital-toggler i {
+    margin: 9px 0 5px 16px;
+    /* animation: owned-hospital-toggler-bip 2s infinite; */
+}
+/* @keyframes owned-hospital-toggler-bip {
+    from {margin: 8px 0 5px 16px; }
+    to {margin: 8px 0 5px 5px;}
+} */
+@keyframes owned-hospital-toggler-border {
+    from { box-shadow: 1px 0px 3px 4px #7b3db778; }
+    to { box-shadow: -2px 0px 3px 4px #7b3db7; }
 }
 
 @media screen and (max-width: 600px) {
@@ -11865,4 +11942,14 @@ table.dataTable.display tbody tr:first-child td {
     .info-medicales{
         width: 200px;
     }
-  }
+    .form-wizard-nav-icon{
+        font-size: 2em;
+        margin: 4px 0 0 8px;
+    }
+    #ajout-hopital-modal .modal-dialog {
+        width: 100% !important;
+    }
+    .structure-sanitaire-name {
+        width: 170px;
+    }
+}

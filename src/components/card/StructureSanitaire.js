@@ -10,15 +10,15 @@ const handleOnclik = (event) => {
 
 const StructureSanitaire = ({nom, adresse, onClick, id, isSelected, isOwned}) => {
     return (
-        <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow" style={{padding: '10px'}}>
+        <div id={`structureSanitaire-${id}`} className="doctor-card has-shadow">
             <input type='hidden' name='medecinStructureSanitaireID' value=''/>
             <div className="doc-info-wrap text-left">
                 <div className="doctor-img" style={{borderRadius: 0}}>
                     <img src={hospitalBuilding} alt=""/>
                 </div>
                 <div className="doc-info">
-                    <h4 className="bold">{nom}</h4>
-                    <h5>{adresse}</h5>
+                    <h4 className="bold dot-dot">{nom}</h4>
+                    <h5 className="dot-dot">{adresse}</h5>
                     <div className="doc-rating">
                         { !isOwned && (
                             <span 

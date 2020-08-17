@@ -67,7 +67,7 @@ class HopitalList extends React.Component {
                 
                 <div className="row">
                     { this.state.hopitals !== null && this.state.hopitals.map(({denomination, adresse, id, email, description, owner, telephone}) => 
-                        <div className="col-xs-12 col-lg-6 structure-sanitaire-column" key={id}>
+                        <div className="col-xs-12 col-lg-3 structure-sanitaire-column" key={id}>
                             <HospitalItem 
                                 nom={denomination} 
                                 id={id} 

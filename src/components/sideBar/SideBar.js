@@ -45,7 +45,7 @@ const SideBar = () => {
                     <i className="img">
                         <img src={hospitalIcon} alt="" className="width-20" />
                     </i>
-                    <span className="title">Hopitaux</span>
+                    <span className="title">Hopital</span>
                     <span className="arrow "></span>
                 </a>
                 <ul className="sub-menu" wfd-invisible="true">
@@ -80,7 +80,7 @@ const SideBar = () => {
                     <i className="img">
                         <img src={icon3} alt="" className="width-20" />
                     </i>
-                    <span className="title">Consultations</span>
+                    <span className="title">Consultation</span>
                     <span className="arrow "></span>
                 </a>
 
@@ -94,12 +94,12 @@ const SideBar = () => {
                 </ul>
             </li>
 
-            <li className="">
+            {/* <li className="">
                 <a style={{cursor: "pointer"}}>
                     <i className="img">
                         <img src={icon2} alt="" className="width-20" />
                     </i>
-                    <span className="title">Médecins</span>
+                    <span className="title">Médecin</span>
                     <span className="arrow "></span>
                 </a>
                 <ul className="sub-menu" wfd-invisible="true">
@@ -118,7 +118,7 @@ const SideBar = () => {
                     <Link to={"/doctors_new"}>Ajouter un Médecin</Link>
                     </li>
                 </ul>
-            </li>
+            </li> */}
         </ul>
 
         <div className="ps-scrollbar-x-rail" style={{ left: 0 + "px", bottom: 3 + "px" }} wfd-invisible="true">

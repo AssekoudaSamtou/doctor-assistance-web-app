@@ -9,82 +9,96 @@ import PatientDataService from "../../../services/patient.service";
 import StructureSanitaireDataService from "../../../services/structureSanitaire.service";
 import Cookies from "universal-cookie";
 import FormBoxFooter from "../../card/FormBoxFooter";
+import DemandeConsultationHeader from "./DemandeConsultationHeader";
 
 const cookies = new Cookies();
 
 class AddDemandeConsultation extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      demmande_consultation: {
-        medecin: cookies.get("loggedUser").id,
-        status: null,
-        patient: null,
-        medecin_centre_medical: null,
-      },
-      submitted: false,
-      isSubmitting: false,
-      centre_medicals: [],
-      patients: [],
-    };
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.saveDemandeConsultation = this.saveDemandeConsultation.bind(this);
-    this.newDemandeConsultation = this.newDemandeConsultation.bind(this);
-  }
-  saveDemandeConsultation() {
+    constructor(props) {
+        super(props);
+        this.state = {
+            demmande_consultation: {
+            medecin: cookies.get("loggedUser").id,
+            status: null,
+            patient: null,
+            medecin_centre_medical: null,
+            },
+            submitted: false,
+            isSubmitting: false,
+            centre_medicals: [],
+            patients: [],
+            selectedPatient: null,
+            selectedHospital: null,
+        };
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.saveDemandeConsultation = this.saveDemandeConsultation.bind(this);
+        this.newDemandeConsultation = this.newDemandeConsultation.bind(this);
+    }
+    saveDemandeConsultation() {
     var data = {
-      ...this.state.demmande_consultation,
+        ...this.state.demmande_consultation,
     };
     console.log(data);
     DemandeConsultationsDataService.create(data)
-      .then((response) => {
+        .then((response) => {
         window.showSuccess("demande de consultation effectuee");
-        setTimeout(() => {
-          // this.props.history.push(`/consultations/`)
-        }, 500);
+        this.props.history.push(`/demande_consultations/`);
         this.newDemandeConsultation();
-      })
-      .catch((e) => {
+        })
+        .catch((e) => {
         console.log(e.response);
-      });
-  }
-  newDemandeConsultation() {
+        });
+    }
+    newDemandeConsultation() {
     this.setState({
-      demmande_consultation: {
+        demmande_consultation: {
         status: 1,
         medecin_centre_medical: -1,
         patient: -1,
-      },
+        },
     });
-  }
+    }
 
-  componentWillMount() {
-    StructureSanitaireDataService.getAll()
-      .then((response) => {
+    componentWillMount() {
+    StructureSanitaireDataService.getMine()
+        .then((response) => {
         this.setState({ centre_medicals: response.data.results });
-      })
-      .catch((e) => {
+        })
+        .catch((e) => {
         console.log(e);
-      });
+        });
 
     PatientDataService.getAll()
-      .then((response) => {
+        .then((response) => {
         this.setState({ patients: response.data.results });
-      })
-      .catch((e) => {
+        })
+        .catch((e) => {
         console.log(e);
-      });
-  }
+        });
+    }
+
+    changePatientPhoto = (id) => {
+        let patient = null;
+        for (patient in this.state.patients) {
+            console.log(patient);
+            if (this.state.patients[patient].id == id) {
+                console.log(id);
+                this.setState({selectedPatient: this.state.patients[patient]});
+            }
+        }
+    }
+
+    changeHospitalPhoto = (id) => {
+        
+    }
 
   handleInputChange(name, value) {
-    // const { name, value } = event.target;
-    this.setState({
-      demmande_consultation: {
-        ...this.state.demmande_consultation,
-        [name]: value,
-      },
-    });
-    console.log("CHANGING... ", name, value);
+    if (name === "patient") {
+        console.log("CHANGING... ", value);
+        this.changePatientPhoto(value);
+    }
+    this.setState({ demmande_consultation: { ...this.state.demmande_consultation, [name]: value, }, });
+    // console.log("CHANGING... ", name, value);
   }
   render() {
     const patient = {};
@@ -97,7 +111,7 @@ class AddDemandeConsultation extends React.Component {
     ].concat(
       this.state.patients.map((patient) => ({
         id: patient.id,
-        libelle: patient.nom + " " + patient.nom,
+        libelle: patient.nom + " " + patient.prenom,
       }))
     );
     const CenterSelectOptions = [
@@ -139,18 +153,21 @@ class AddDemandeConsultation extends React.Component {
         <PageTitle title="Ajouter une demande de consultation" />
 
         <div className="col-xs-12 ">
-          <AddHeader entityName="Demande de consultation" />
+        <DemandeConsultationHeader 
+            entityName="Demande de consultation" 
+            patientPhoto={this.state.selectedPatient ? this.state.selectedPatient.photo : null} 
+            hospitalPhoto={null} />
 
           <div className="bg-w">
             {formBoxes.map((box) => (
-              <FormBox
-                box={box}
-                box={box}
-                fromType="add"
-                isSubmitting={this.state.isSubmitting}
-                onInputChange={this.handleInputChange}
-                onSaveBtnTapped={this.saveDemandeConsultation}
-              />
+                <FormBox
+                    key={box.headerTitle}
+                    box={box}
+                    fromType="add"
+                    isSubmitting={this.state.isSubmitting}
+                    onInputChange={this.handleInputChange}
+                    onSaveBtnTapped={this.saveDemandeConsultation}
+                />
             ))}
 
             <div className="row">
