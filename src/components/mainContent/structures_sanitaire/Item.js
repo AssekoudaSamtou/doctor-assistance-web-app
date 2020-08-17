@@ -23,12 +23,12 @@ const HospitalItem = ({nom, adresse, id, email, description, owner, onDeleteClic
                 </div>
                 <div className="doc-info">
                     <span className="bold text-uppercase h3" style={{color: '#777'}}>
-                        <i className="fas fa-signature" style={{color:'bisque'}}></i> 
-                        <span className="structure-sanitaire-name">{'\u00A0'}{'\u00A0'}{nom}</span>
+                        <i className="fas fa-signature" style={{color:'bisque'}}></i>
+                        <span className="structure-sanitaire-name dot-dot">{nom}</span>
                     </span>
                     <h5>
                         <i className="fas fa-map-marker-alt"></i>
-                        <span>{'\u00A0'}{'\u00A0'}{'\u00A0'}{adresse}</span> 
+                        <span className="dot-dot">{'\u00A0'}{'\u00A0'}{'\u00A0'}{adresse}</span> 
                     </h5>
                     <div className="">
                         <span className="dot" style={{cursor: 'pointer', marginRight:15+'px', marginLeft:15+'px'}} onClick={handleDeleteClick}>

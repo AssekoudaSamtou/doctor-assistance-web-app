@@ -7,7 +7,7 @@ import AvatarPreview from '../../card/AvatarPreview';
 const PatientItem = ({fullname, gender, date_naissance, id, photo}) => {
 
     return (
-        <div className="col-lg-4 col-md-6">
+        <div className="col-lg-3 col-md-6">
             <section className="box ">
                 <div className="content-body p">
                     <div className="row">
