@@ -78,8 +78,8 @@ class StructureSanitaireTabPane extends Component {
     }
 
     componentDidMount() {
-        window.$('#pills ul li a[href="#pills-tab5"]').parent().addClass("active");
-        window.$('#pills-tab5').addClass("active");
+        window.$('#pills ul li a[href="#pills-tab1"]').parent().addClass("active");
+        window.$('#pills-tab1').addClass("active");
         // this.toggleModal();
     }
 
