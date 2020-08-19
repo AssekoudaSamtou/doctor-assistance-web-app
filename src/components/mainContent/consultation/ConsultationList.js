@@ -55,7 +55,7 @@ class ConsultationList extends React.Component {
     }
     render() {
         function getDemande(demandes,id){
-            var dmd = demandes.find(d => d.id == id);
+            var dmd = demandes.find(d => d.id === id);
             console.log(dmd+"==========="+id);
             return dmd
         }
@@ -67,9 +67,9 @@ class ConsultationList extends React.Component {
                         <header className="panel_header">
                             <h2 className="title pull-left">Toute les consultations</h2>
                             <div className="actions panel_actions pull-right">
-                                <a className="box_toggle fa fa-chevron-down"></a>
-                                <a className="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a>
-                                <a className="box_close fa fa-times"></a>
+                                {/* <a className="box_toggle fa fa-chevron-down"></a> */}
+                                {/* <a className="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a> */}
+                                {/* <a className="box_close fa fa-times"></a> */}
                             </div>
                         </header>
                         <div className="content-body">
@@ -93,6 +93,7 @@ class ConsultationList extends React.Component {
                                                         updateConsultation={()=>(this.setState({selectedconsultation:consultation}))}
                                                         key={consultation.id}
                                                         demande={getDemande(this.state.demandes,consultation.demande_consultation)}
+                                                        patients = {this.state.patients}
                                                         edit={this.state.edit}
                                                         consultation={consultation}
                                                     />
@@ -122,6 +123,7 @@ class ConsultationList extends React.Component {
                                                 </div>
                                             </div>
                                             </div>
+                                            {/* <div class="clearfix"></div> */}
             </div>
         )
     }

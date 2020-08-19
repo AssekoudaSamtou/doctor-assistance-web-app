@@ -210,7 +210,7 @@ class AddConsultation extends React.Component {
 
         <div className="col-xs-12 ">
             <DemandeConsultationHeader 
-                entityName="Demande de consultation" 
+                entityName="Nouvelle consultation" 
                 patientPhoto={this.state.consultation.demande_consultation ? this.state.selectedPatient.photo : null} 
                 hospitalPhoto={null} />
           {/* <AddHeader entityName="consultation" type="add" /> */}
@@ -226,16 +226,6 @@ class AddConsultation extends React.Component {
                 onSaveBtnTapped={this.saveConsultation}
               />
             ))}
-
-            <div className="row">
-                <div className="col-lg-10 col-lg-offset-1 col-xs-12">
-                    <FormBoxFooter
-                        isSubmitting={this.state.isSubmitting}
-                        onSaveBtnTapped={this.saveConsultation}
-                        fromType="add"
-                    />
-                </div>
-            </div>
           </div>
         </div>
       </div>
