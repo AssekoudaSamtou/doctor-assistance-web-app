@@ -291,7 +291,7 @@ class AddConsultation extends React.Component {
         <div className="col-xs-12 ">
             
             <DemandeConsultationHeader 
-                entityName="Demande de consultation" 
+                entityName="Nouvelle consultation" 
                 patientPhoto={this.state.consultation.demande_consultation ? this.state.selectedPatient.photo : null} 
                 hospitalPhoto={null} />
           

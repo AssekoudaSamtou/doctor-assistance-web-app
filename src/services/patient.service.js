@@ -24,6 +24,7 @@ class PatientDataService {
     return http.post("/patients/", data, options);
   }
   countPatients(data) {
+    console.log(data)
     return http.post("count/patients/", data, options);
   }
   update(id, data) {

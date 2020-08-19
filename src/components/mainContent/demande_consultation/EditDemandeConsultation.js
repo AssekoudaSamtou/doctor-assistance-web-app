@@ -17,7 +17,7 @@ class EditDemandeConsultation extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            demmande_consultation: {id:this.props.demande.id,medecin:cookies.get("loggedUser").id,status:null,patient:null,centre_medical:null},
+            demmande_consultation: {id:this.props.demande?.id,medecin:cookies.get("loggedUser").id,status:null,patient:null,centre_medical:null},
             submitted: false,
             isSubmitting: false,
             centre_medicals:[],
@@ -26,6 +26,7 @@ class EditDemandeConsultation extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.saveDemandeConsultation = this.saveDemandeConsultation.bind(this)
         this.newDemandeConsultation = this.newDemandeConsultation.bind(this)
+        this.deleteDemandeConsultation = this.deleteDemandeConsultation.bind(this)
     }
     saveDemandeConsultation() {
         var data = {
@@ -39,6 +40,7 @@ class EditDemandeConsultation extends React.Component {
                         // this.props.history.push(`/consultations/${this.state.demmande_consultation.id}`)
                     }, 500);
                 this.newDemandeConsultation();
+                window.$("#closeBtnDemandeConsultation").click()
             })
             .catch(e => {
                 console.log(e.response);
@@ -51,6 +53,26 @@ class EditDemandeConsultation extends React.Component {
             patient:"",
         }})
     }
+
+    deleteDemandeConsultation() {
+        DemandeConsultationsDataService.delete(this.state.demmande_consultation.id)
+          .then((response) => {
+            console.log(response.status);
+            window.$("#deleteConfirmationModal").modal("toggle");
+            window.showSuccess("Demande supprimée avec succès");
+            setTimeout(() => {
+                if(this.props.history){
+                    this.props.history.push("/demmande_consultations/");
+                }else{
+                    window.$("#closeBtnDemandeConsultation").click()
+                }
+            }, 500);
+          })
+          .catch((e) => {
+            console.log(e.response);
+            window.showErrorMessage("Something went wrong!!!");
+          });
+      }
 
     componentWillMount() {
         StructureSanitaireDataService.getAll()
@@ -87,7 +109,7 @@ class EditDemandeConsultation extends React.Component {
         ].concat(this.state.centre_medicals.map((centre_medical)=>({id:centre_medical.id,libelle:centre_medical.denomination})));;
         const formBoxes = [
             {
-                headerTitle: "Ajout Demande consultation",
+                headerTitle: "Modification Demande consultation",
                 fields: [
                     {type: "select", name:"centre_medical", label: "Centre medical", selectOptions: CenterSelectOptions},
                     {type: "select",name:"patient", label: "Patient", selectOptions: PatientSelectOptions},
@@ -98,7 +120,7 @@ class EditDemandeConsultation extends React.Component {
 
         return (
             <div>
-                <PageTitle title="Ajout de la Demande de consultation" />
+                <PageTitle title="Modification de la Demande de consultation" />
                 
                 <div className="col-xs-12 ">
                     <AddHeader entityName="Modification de la Demande de consultation"/>
@@ -111,19 +133,10 @@ class EditDemandeConsultation extends React.Component {
                                 isSubmitting={this.state.isSubmitting}
                                 onInputChange={this.handleInputChange} 
                                 onSaveBtnTapped={this.saveDemandeConsultation}
+                                onDeleteBtnTapped = {this.deleteDemandeConsultation}
                             />
                         )}
                         
-                    </div>
-
-                    <div className="row">
-                        <div className="col-lg-10 col-lg-offset-1 col-xs-12">
-                            <FormBoxFooter
-                                isSubmitting={this.state.isSubmitting}
-                                onSaveBtnTapped={this.saveDemandeConsultation}
-                                fromType="edit"
-                            />
-                        </div>
                     </div>
                 </div>
             </div>

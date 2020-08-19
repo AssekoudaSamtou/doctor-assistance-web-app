@@ -8,7 +8,7 @@ const FormBoxFooter = ({onSaveBtnTapped, onDeleteBtnTapped, isSubmitting, fromTy
                 <div className="modal-content">
                     <div className="modal-header">
                         <button type="button" className="close" data-dismiss="modal" aria-hidden="true">×</button>
-                        <h4 className="modal-title">Modal Tittle</h4>
+                        <h4 className="modal-title">Attention</h4>
                     </div>
                     <div className="modal-body">
 

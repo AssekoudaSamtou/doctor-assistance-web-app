@@ -10,6 +10,7 @@ import PatientDataService from "../../../services/patient.service"
 import PageTitle from '../../card/PageTitle';
 import NotFound from '../error/404';
 import FormBoxFooter from '../../card/FormBoxFooter';
+import DemandeConsultationHeader from '../demande_consultation/DemandeConsultationHeader';
 
 
 class EditConsultation extends React.Component {
@@ -36,15 +37,14 @@ class EditConsultation extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this)
         this.saveConsultation = this.saveConsultation.bind(this)
         this.deleteConsultation = this.deleteConsultation.bind(this)
+        this.handleCKEInputChange = this.handleCKEInputChange.bind(this)
+        this.newConsultation = this.newConsultation.bind(this)
     }
 
+    
+    
     componentWillMount() {
-        DemandeConsultationsDataService.get(this.props.consultation.id)
-        .then(response => {
-            this.setState({consultation: {...response.data}});            
-        }).catch(e => {
-            console.log(e);
-        });
+        const params = this.props.match?.params
         DemandeConsultationsDataService.getAll()
         .then(response => {
             this.setState({demandes: response.data.results});
@@ -59,25 +59,40 @@ class EditConsultation extends React.Component {
         }).catch(e => {
             console.log(e);
         });
+        ConsultationDataService.get(this.props.consultation?.id||params?.id)
+        .then(response => {
+            this.setState({consultation: response.data});
+        }).catch(e => {
+            console.log(e);
+        });
     }
 
     handleInputChange(name, value) {
         // const { name, value } = event.target;
         this.setState({ consultation: { ...this.state.consultation, [name]: value } });
+        // data-dismiss="modal"
         console.log("CHANGING... ", name, value);
+    }
+    handleCKEInputChange(name, data) {
+        console.log(name, data);
+        this.setState({
+          consultation: { ...this.state.consultation, [name]: data },
+        });
     }
 
     saveConsultation() {
         var data = this.state.consultation;
-        console.log(data); 
+        console.log("====Edite processing==="); 
     
         ConsultationDataService.update(this.state.consultation.id,data)
             .then(response => {
                 console.log(response.data, this.state.submitted);
                 window.showSuccess('the consultation has been saved successfuly');
-                // setTimeout( () => {
-                //     this.props.history.push(`/consultations_details/${response.data.id}`)
-                // }, 500);
+                if(this.props.history){
+                    this.props.history.push("/consultations/");
+                }else{
+                    window.$("#closeBtnConsultation").click()
+                }
                 this.newConsultation();
                 console.log(this.state.consultation)
             })
@@ -87,11 +102,11 @@ class EditConsultation extends React.Component {
     }
     newConsultation(){
         this.setState({consultation:  {
-            demande_consultation:null,
-            motif: null,
-            interrogatoire:null,
-            resume:null,
-            hypothese_diagnostique:null,
+            demande_consultation:"",
+            motif: "",
+            interrogatoire:"",
+            resume:"",
+            hypothese_diagnostique:"",
         }})
     }
 
@@ -101,9 +116,11 @@ class EditConsultation extends React.Component {
                 console.log(response.status);
                 window.$('#deleteConfirmationModal').modal('toggle');
                 window.showSuccess('Consultation deleted successfuly');
-                setTimeout( () => {
-                    this.props.history.push("/consultations")
-                }, 500)
+                if(this.props.history){
+                    this.props.history.push("/consultations/");
+                }else{
+                    window.$("#closeBtnConsultation").click()
+                }
             })
             .catch(e => {
                 console.log(e);
@@ -145,25 +162,24 @@ class EditConsultation extends React.Component {
 
         return (
             <div>
+                <PageTitle title="mise a jour de la consultation" />
+                <div className="col-xs-12 ">
+                    <DemandeConsultationHeader
+                    entityName="mise a jour de la consultation" 
+                    patientPhoto={this.state.consultation.demande_consultation ? this.state.selectedPatient?.photo : null} 
+                    hospitalPhoto={null} />
+                  <div className="bg-w">
                 { formBoxes.map((box) => 
                     <FormBox 
                         box={box} fromType="edit"
                         isSubmitting={this.state.isSubmitting}
                         onInputChange={this.handleInputChange} 
                         onSaveBtnTapped={this.saveConsultation}
+                        onCKEditorChange={this.handleCKEInputChange}
                         onDeleteBtnTapped={this.deleteConsultation}
                         />
                 )}
-
-                <div className="row">
-                    <div className="col-lg-10 col-lg-offset-1 col-xs-12">
-                        <FormBoxFooter
-                            isSubmitting={this.state.isSubmitting}
-                            onSaveBtnTapped={this.saveConsultation}
-                            onDeleteBtnTapped={this.deleteConsultation}
-                            fromType="edit"
-                        />
-                    </div>
+                </div>
                 </div>
             </div>
         )

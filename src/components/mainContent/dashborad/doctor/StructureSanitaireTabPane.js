@@ -30,6 +30,7 @@ class StructureSanitaireTabPane extends Component {
             send_btn_text: "Enregister",
         };
         console.log("OWEND", this.state.ownedStructureSanitaires);
+        this.handleInputChange = this.handleInputChange.bind(this)
     }
 
     handleInputChange = (name, value ) => {

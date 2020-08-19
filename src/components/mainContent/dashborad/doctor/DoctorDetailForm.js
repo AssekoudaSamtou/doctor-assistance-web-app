@@ -97,9 +97,21 @@ class DoctorDetailForm extends React.Component {
         }
     };
 
-    componentDidMount() {
-        if (!this.mustComplete()) {
-            window.$("#doctorDetailsModal").modal("toggle");
+  SpecialiteChildMount = (specialite_id) => {
+    const selector = `#pills-tab4 .r4_counter_.db_box`;
+    if (specialite_id === this.state.specialite) {
+      window
+        .$(selector + `#specialite-${specialite_id}`)
+        .css("background", "linear-gradient(-12deg,#2a57d7 0,#9eeeff 100%)");
+      window
+        .$(selector + `#specialite-${specialite_id}`)
+        .find("h3")
+        .css("color", "white");
+    }
+  };
+  componentDidMount() {
+    if (!this.mustComplete()) {
+      window.$("#doctorDetailsModal").modal("toggle");
         }
         window.$("#pills .finish").click(this.updateDoctorInfo);
     }
@@ -108,7 +120,6 @@ class DoctorDetailForm extends React.Component {
         // return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
         return false;
     }
-
     handleSpecialiteClik(id) {
         const selector = `#pills-tab4 .r4_counter_.db_box`;
         window.$(selector).css("background", "white");

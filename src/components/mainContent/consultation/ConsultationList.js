@@ -55,7 +55,7 @@ class ConsultationList extends React.Component {
     }
     render() {
         function getDemande(demandes,id){
-            var dmd = demandes.find(d => d.id == id);
+            var dmd = demandes.find(d => d.id === id);
             console.log(dmd+"==========="+id);
             return dmd
         }
@@ -67,9 +67,9 @@ class ConsultationList extends React.Component {
                         <header className="panel_header">
                             <h2 className="title pull-left">Toute les consultations</h2>
                             <div className="actions panel_actions pull-right">
-                                <a className="box_toggle fa fa-chevron-down"></a>
-                                <a className="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a>
-                                <a className="box_close fa fa-times"></a>
+                                {/* <a className="box_toggle fa fa-chevron-down"></a> */}
+                                {/* <a className="box_setting fa fa-cog" data-toggle="modal" href="#section-settings"></a> */}
+                                {/* <a className="box_close fa fa-times"></a> */}
                             </div>
                         </header>
                         <div className="content-body">
@@ -83,8 +83,9 @@ class ConsultationList extends React.Component {
                                                     <th>Demande de consultations</th>
                                                     <th>Motif</th>
                                                     <th>Interrogatoire</th>
-                                                    <th>resume</th>
-                                                    <th>hypothese diagnostique</th>
+                                                    <th>Resume</th>
+                                                    <th>Hypothese diagnostique</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -93,6 +94,7 @@ class ConsultationList extends React.Component {
                                                         updateConsultation={()=>(this.setState({selectedconsultation:consultation}))}
                                                         key={consultation.id}
                                                         demande={getDemande(this.state.demandes,consultation.demande_consultation)}
+                                                        patients = {this.state.patients}
                                                         edit={this.state.edit}
                                                         consultation={consultation}
                                                     />
@@ -109,11 +111,11 @@ class ConsultationList extends React.Component {
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                        <button type="button" id="closeBtnConsultation" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                                                         <h4 class="modal-title"><span dangerouslySetInnerHTML={{__html: this.state.selectedconsultation.motif}}/></h4>
                                                     </div>
                                                     <div class="modal-body">
-                                                        RESUME: {this.state.edit ? <EditConsultation consultation={this.state.selectedconsultation}/> :<div dangerouslySetInnerHTML={{__html: this.state.selectedconsultation.resume}} />}
+                                                        {this.state.edit ? <EditConsultation consultation={this.state.selectedconsultation}/> : <div dangerouslySetInnerHTML={{__html:"Resume: "+this.state.selectedconsultation.resume}} />}
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button class="btn btn-default" onClick={()=> this.setState({edit:false}) } type="button">Afficher</button>
@@ -122,6 +124,7 @@ class ConsultationList extends React.Component {
                                                 </div>
                                             </div>
                                             </div>
+                                            {/* <div class="clearfix"></div> */}
             </div>
         )
     }
