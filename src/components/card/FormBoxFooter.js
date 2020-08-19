@@ -29,7 +29,7 @@ const FormBoxFooter = ({onSaveBtnTapped, onDeleteBtnTapped, isSubmitting, fromTy
             <button style={{marginLeft: '20px'}}
                 type="button" 
                 className={`btn btn-primary gradient-blue ${isSubmitting && 'disabled'}`} 
-                onClick={onSaveBtnTapped} >{fromType === "add" ? "Ajouter" : "Sauvegarder"}</button>
+                onClick={onSaveBtnTapped} >{fromType === "add" ? "Enregister" : "Sauvegarder"}</button>
             
             <button style={{marginLeft: '20px'}}
                 type={fromType==="add" ? 'reset' : 'button'} data-toggle="modal" href="#deleteConfirmationModal"

@@ -22,11 +22,6 @@ class DoctorDashboard extends React.Component {
       <div>
         <PageTitle title="Doctor Dash" />
 
-        {/* <div className="row">
-          <First />
-          <First />
-        </div> */}
-
         <div
           className="modal fade col-xs-12 d-none" id="doctorDetailsModal" tabIndex="-1" role="dialog"aria-hidden="true">
 

@@ -8,14 +8,12 @@ const DemandeConsultationHeader = ({entityName, patientPhoto, hospitalPhoto}) =>
         <div className="before-text"> {entityName}</div>        
 
         <div className="row">
-            <div className="col-lg-2"></div>
-            <div className="col-lg-4">
+            <div className="col-lg-offset-2 col-xs-offset-1 col-lg-4 col-xs-5">
                 <AvatarPreview avatar={patientPhoto} />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 col-xs-5">
                 <AvatarPreview avatar={hospitalPhoto ? hospitalPhoto : building } />
             </div>
-            <div className="col-lg-2"></div>
         </div>
     </div>
 )
