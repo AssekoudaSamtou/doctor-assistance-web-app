@@ -62,6 +62,7 @@ class DemandeConsultationList extends React.Component {
                         <th>Patient</th>
                         <th>Status</th>
                         <th>Date de consultation</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>

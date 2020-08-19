@@ -10,6 +10,7 @@ import PatientDataService from "../../../services/patient.service"
 import PageTitle from '../../card/PageTitle';
 import NotFound from '../error/404';
 import FormBoxFooter from '../../card/FormBoxFooter';
+import DemandeConsultationHeader from '../demande_consultation/DemandeConsultationHeader';
 
 
 class EditConsultation extends React.Component {
@@ -40,7 +41,10 @@ class EditConsultation extends React.Component {
         this.newConsultation = this.newConsultation.bind(this)
     }
 
+    
+    
     componentWillMount() {
+        const params = this.props.match?.params
         DemandeConsultationsDataService.getAll()
         .then(response => {
             this.setState({demandes: response.data.results});
@@ -55,7 +59,7 @@ class EditConsultation extends React.Component {
         }).catch(e => {
             console.log(e);
         });
-        ConsultationDataService.get(this.props.consultation.id)
+        ConsultationDataService.get(this.props.consultation?.id||params?.id)
         .then(response => {
             this.setState({consultation: response.data});
         }).catch(e => {
@@ -158,6 +162,13 @@ class EditConsultation extends React.Component {
 
         return (
             <div>
+                <PageTitle title="mise a jour de la consultation" />
+                <div className="col-xs-12 ">
+                    <DemandeConsultationHeader
+                    entityName="mise a jour de la consultation" 
+                    patientPhoto={this.state.consultation.demande_consultation ? this.state.selectedPatient?.photo : null} 
+                    hospitalPhoto={null} />
+                  <div className="bg-w">
                 { formBoxes.map((box) => 
                     <FormBox 
                         box={box} fromType="edit"
@@ -168,17 +179,8 @@ class EditConsultation extends React.Component {
                         onDeleteBtnTapped={this.deleteConsultation}
                         />
                 )}
-
-                {/* <div className="row">
-                    <div className="col-lg-10 col-lg-offset-1 col-xs-12">
-                        <FormBoxFooter
-                            isSubmitting={this.state.isSubmitting}
-                            onSaveBtnTapped={this.saveConsultation}
-                            onDeleteBtnTapped={this.deleteConsultation}
-                            fromType="edit"
-                        />
-                    </div>
-                </div> */}
+                </div>
+                </div>
             </div>
         )
     }

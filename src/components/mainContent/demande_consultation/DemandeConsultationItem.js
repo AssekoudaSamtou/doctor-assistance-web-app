@@ -25,6 +25,7 @@ class DemandeItem extends React.Component {
             <td>{demande.patient}</td>
             <td>{demande.status=="1"?"accepte":"non accepte"}</td>
             <td>{mdate}</td>
+            <td ><Link to={`/demande_consultation_update/${this.props.demande.id}`}><i class="fa fa-edit"></i></Link></td>
         </tr>
        );
     }

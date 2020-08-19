@@ -27,6 +27,8 @@ import AddDemandeConsultation from './components/mainContent/demande_consultatio
 import DemandeConsultationList from './components/mainContent/demande_consultation/DemandeConsultationList';
 import AddHospital from './components/mainContent/structures_sanitaire/Add';
 import EditHospital from './components/mainContent/structures_sanitaire/Edit';
+import EditConsultation from './components/mainContent/consultation/EditConsultation';
+import EditDemandeConsultation from './components/mainContent/demande_consultation/EditDemandeConsultation';
 
 
 const cookies = new Cookies();
@@ -178,6 +180,12 @@ class App extends React.Component {
                                             render={ props => (
                                                 this.state.loggedIn ? <AddConsultation {...props} /> : <Redirect to="/login" />
                                             ) } />
+
+                                        <Route 
+                                            path={`/consultations_update/:id`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <EditConsultation{...props} /> : <Redirect to="/login" />
+                                            ) } />
                                         
                                         <Route 
                                             path="/hospitals"
@@ -217,7 +225,11 @@ class App extends React.Component {
                                                 this.state.loggedIn ? <AddDemandeConsultation {...props} /> : <Redirect to="/login" />
                                             ) } >
                                         </Route>
-
+                                        <Route exact path={`/demande_consultation_update/:id`}
+                                            render={ props => (
+                                                this.state.loggedIn ? <EditDemandeConsultation {...props} /> : <Redirect to="/login" />
+                                            ) } >
+                                        </Route>
                                         <Route 
                                             path={`/demande_consultations`} 
                                             render={ props => (

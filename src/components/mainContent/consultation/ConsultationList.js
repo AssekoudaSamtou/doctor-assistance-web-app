@@ -83,8 +83,9 @@ class ConsultationList extends React.Component {
                                                     <th>Demande de consultations</th>
                                                     <th>Motif</th>
                                                     <th>Interrogatoire</th>
-                                                    <th>resume</th>
-                                                    <th>hypothese diagnostique</th>
+                                                    <th>Resume</th>
+                                                    <th>Hypothese diagnostique</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

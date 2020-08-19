@@ -17,7 +17,7 @@ class EditDemandeConsultation extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            demmande_consultation: {id:this.props.demande.id,medecin:cookies.get("loggedUser").id,status:null,patient:null,centre_medical:null},
+            demmande_consultation: {id:this.props.demande?.id,medecin:cookies.get("loggedUser").id,status:null,patient:null,centre_medical:null},
             submitted: false,
             isSubmitting: false,
             centre_medicals:[],
