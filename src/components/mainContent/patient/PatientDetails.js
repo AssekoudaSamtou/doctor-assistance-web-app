@@ -327,7 +327,10 @@ class PatientDetails extends React.Component {
                                                                     </div>
                                                                     <div className="visit-date visit-stat pull-right">
                                                                         {/* <span></span> */}
-                                                                        <p className="mb-0">OUVRIR</p>
+                                                                        <Link to={`/consultations_update/${consultation.id}`}>
+                                                                            <p className="mb-0">OUVRIR</p>
+                                                                        </Link>
+                                                                        
                                                                     </div>
                                                                 </div>
                                                             </li>

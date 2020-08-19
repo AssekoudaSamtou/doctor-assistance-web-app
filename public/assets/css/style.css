@@ -11790,13 +11790,19 @@ table.dataTable.display tbody tr:first-child td {
     overflow: hidden;
     white-space: nowrap;
 }
-.detail-consultation *{
+.detail-consultation{
     user-select: none;
     text-overflow: ellipsis !important;
     overflow: hidden;
     white-space: nowrap;
     width: 200px;
     margin: 0;
+}
+.detail-consultation *{
+    display: inline-block;
+    margin-right: 3px;
+}*.detail-consultation *::after{
+    content: ",";
 }
 .detail-consultation-overwiew {
     display: block;
