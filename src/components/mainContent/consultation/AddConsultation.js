@@ -52,7 +52,6 @@ class AddConsultation extends React.Component {
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleConstanteInputChange = this.handleConstanteInputChange.bind(this);
         this.saveConsultation = this.saveConsultation.bind(this);
-        this.newConsultation = this.newConsultation.bind(this);
         this.handleCKEInputChange = this.handleCKEInputChange.bind(this);
     }
 
@@ -157,16 +156,6 @@ class AddConsultation extends React.Component {
                 console.log(e.message);
             });
     }
-
-    newConsultation(){
-        this.setState({consultation:  {
-            demande_consultation:"",
-            motif: "",
-            interrogatoire:"",
-            resume:"",
-            hypothese_diagnostique:"",
-        }})
-    }
     
     render() {
         function getConsultationMessage(patients,patient, ndate){
@@ -174,7 +163,7 @@ class AddConsultation extends React.Component {
             const mdate = ("0"+date.getDay()).slice(-2, 3)+"/"+("0"+date.getMonth()).slice(-2,3)+"/"+date.getFullYear()+" A "+("0"+date.getHours()).slice(-2,3)+":"+("0"+date.getMinutes()).slice(-2,3)+":"+("0"+date.getSeconds()).slice(-2,3)
             var person = patients.find((p) => p.id === patient);
             var message = person?.nom + " "+person?.prenom+" a demande une consultation, le  "+mdate
-            return message
+            return message;
         }
         
         const GenderSelectOptions = [
