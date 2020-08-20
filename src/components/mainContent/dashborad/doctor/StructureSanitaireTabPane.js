@@ -41,7 +41,7 @@ class StructureSanitaireTabPane extends Component {
     componentWillMount() {
         StructureSanitaireDataService.getAll()
         .then(response => {
-            this.setState({ structureSanitaires: response.data.results });
+            this.setState({ structureSanitaires: response.data });
         })
         .catch(error => {
             if (error.response) {

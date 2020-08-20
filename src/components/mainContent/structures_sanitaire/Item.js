@@ -23,7 +23,7 @@ const HospitalItem = ({nom, adresse, id, email, description, owner, onDeleteClic
                 </div>
                 <div className="doc-info">
                     <span className="bold text-uppercase h3" style={{color: '#777'}}>
-                        <i className="fas fa-signature" style={{color:'bisque'}}></i>
+                        {/* <i className="fas fa-signature" style={{color:'bisque'}}></i> */}
                         <span className="structure-sanitaire-name dot-dot">{nom}</span>
                     </span>
                     <h5>

@@ -32,14 +32,13 @@ class DoctorDetailForm extends React.Component {
     }
 
     handleInputChange(name, value) {
-        // const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 
     componentWillMount() {
         SpecialiteDataService.getAll()
             .then((response) => {
-            this.setState({ specialites: response.data.results });
+            this.setState({ specialites: response.data });
             })
             .catch((error) => {
             if (error.response) {
