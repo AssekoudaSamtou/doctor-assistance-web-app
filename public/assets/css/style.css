@@ -1877,8 +1877,8 @@ table.focus-on tbody tr.focused td {
     position: absolute;
     line-height: 44px;
     color: #ffffff;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     font-size: 18px;
     top: 50%;
     transform: translateY(-50%);
@@ -11851,7 +11851,8 @@ table.dataTable.display tbody tr:first-child td {
 
 .patient-consultations-box{
     overflow-y: scroll !important;
-    height: 504px;
+    min-height: 270px !important;
+    max-height: 504px;
 }
 .patient-consultations-box::-webkit-scrollbar {
 	width: 3px;
@@ -11937,6 +11938,11 @@ table.dataTable.display tbody tr:first-child td {
 @keyframes owned-hospital-toggler-border {
     from { box-shadow: 1px 0px 3px 4px #7b3db778; }
     to { box-shadow: -2px 0px 3px 4px #7b3db7; }
+}
+
+
+.blood-pressure-chart-box{
+    min-height: 160px;
 }
 
 @media screen and (max-width: 600px) {

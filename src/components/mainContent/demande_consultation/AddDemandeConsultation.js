@@ -41,14 +41,12 @@ class AddDemandeConsultation extends React.Component {
     console.log(data);
     DemandeConsultationsDataService.create(data)
         .then((response) => {
-        window.showSuccess("demande de consultation effectuee");
-        setTimeout(() => {
-          this.props.history.push(`/demande_consultations/`)
-        }, 500);
-        this.newDemandeConsultation();
+          window.showSuccess("demande de consultation effectuee");
+          this.props.history.push(`/demande_consultations/`);
+          this.newDemandeConsultation();
         })
         .catch((e) => {
-        console.log(e.response);
+          console.log(e.response);
         });
     }
     newDemandeConsultation() {
@@ -64,7 +62,7 @@ class AddDemandeConsultation extends React.Component {
     componentWillMount() {
     StructureSanitaireDataService.getMine()
         .then((response) => {
-        this.setState({ centre_medicals: response.data.results });
+        this.setState({ centre_medicals: response.data });
         })
         .catch((e) => {
         console.log(e);
@@ -72,7 +70,7 @@ class AddDemandeConsultation extends React.Component {
 
     PatientDataService.getAll()
         .then((response) => {
-        this.setState({ patients: response.data.results });
+        this.setState({ patients: response.data });
         })
         .catch((e) => {
         console.log(e);

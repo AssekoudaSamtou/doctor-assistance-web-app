@@ -60,7 +60,7 @@ class StructureSanitaireTabPane extends Component {
 
         StructureSanitaireDataService.getAdded()
         .then(response => {
-            this.setState({ addedStructureSanitaires: response.data.results.map( ss => { return ss.id }) });
+            this.setState({ addedStructureSanitaires: response.data.map( ss => { return ss.id }) });
         })
         .catch(error => {
             if (error.response) {

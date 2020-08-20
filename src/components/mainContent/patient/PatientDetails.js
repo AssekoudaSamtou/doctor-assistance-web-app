@@ -30,10 +30,11 @@ class PatientDetails extends React.Component {
                 habitude_alimentaires: "",
                 photo: "",
             },
-            IMCs: null,
-            heartRate: null,
-            clolesterol: null,
-            glucoseRate: null,
+            IMCs: [],
+            heartRate: [],
+            clolesterol: [],
+            glucoseRate: [],
+            bloodPressures: [[], []],
         }
     }
 
@@ -47,7 +48,8 @@ class PatientDetails extends React.Component {
                 IMCs: this.getIMCData(), 
                 heartRate: this.getHeartRateData(), 
                 glucoseRate: this.getGlucoseRateData(), 
-                clolesterol : this.getClolesterolData()
+                clolesterol : this.getClolesterolData(),
+                bloodPressures : this.getBloodPressureData(),
             });
 
         }).catch(e => {
@@ -65,28 +67,52 @@ class PatientDetails extends React.Component {
     }
 
     initCharts = () => {
-        if(window.$("#blood-pressure-chart").length) {
+        if(window.$("#blood-pressure-chart").length && this.state.bloodPressures[0].length) {
             console.log("cc");
             var ctx = window.$("#blood-pressure-chart")[0].getContext("2d");
             
-            var myBarChart = new window.Chart(ctx).Bar(this.getBloodPressureData(), {
-                responsive: true,
-                tooltips: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return "$" + Number(tooltipItem.yLabel) + " and so worth it !";
+            var myBarChart = new window.Chart(ctx).Line(
+                {
+                    labels: this.state.bloodPressures[2],
+                    datasets: [{
+                        label: "Diastolique",
+                        fillColor: "rgba(63,81,181,0.5)",
+                        strokeColor: "rgba(63,81,181,1)",
+                        pointColor: "rgba(63,81,181,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(63,81,181,1)",
+                        data: this.state.bloodPressures[0].reverse()
+                    }, {
+                        label: "Systolique",
+                        fillColor: "rgba(103,58,183,0.5)",
+                        strokeColor: "rgba(103,58,183,1.0)",
+                        pointColor: "rgba(103,58,183,1.0)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(103,58,183,1.0)",
+                        data: this.state.bloodPressures[1].reverse()
+                    }]
+                }, 
+                {
+                    responsive: true,
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return "$" + Number(tooltipItem.yLabel) + " and so worth it !";
+                            }
                         }
-                    }
-                },
-                title: {
-                    display: true,
-                    text: 'Ice Cream Truck',
-                    position: 'bottom'
-                },
-            });
+                    },
+                    title: {
+                        display: true,
+                        text: 'Ice Cream Truck',
+                        position: 'bottom'
+                    },
+                }
+            );
         }
 
-        if(window.$("#IMC_sparkline").length) {
+        if(window.$("#IMC_sparkline").length && this.state.IMCs.length) {
             window.$("#IMC_sparkline").sparkline(this.state.IMCs.reverse(), {
                 type: 'line',
                 width: '100%',
@@ -99,7 +125,7 @@ class PatientDetails extends React.Component {
             });
         }
 
-        if(window.$("#heart_rate_sparkline").length) {
+        if(window.$("#heart_rate_sparkline").length && this.state.heartRate.length) {
             window.$("#heart_rate_sparkline").sparkline(this.state.heartRate.reverse(), {
                 type: 'line',
                 width: '100%',
@@ -113,7 +139,7 @@ class PatientDetails extends React.Component {
             });
         }
 
-        if(window.$("#glucose_sparkline").length) {
+        if(window.$("#glucose_sparkline").length && this.state.glucoseRate.length) {
             window.$("#glucose_sparkline").sparkline(this.state.glucoseRate.reverse(), {
                 type: 'line',
                 width: '100%',
@@ -125,7 +151,7 @@ class PatientDetails extends React.Component {
             });
         }
 
-        if(window.$("#clolesterol_sparkline").length) {
+        if(window.$("#clolesterol_sparkline").length && this.state.clolesterol.length) {
             window.$("#clolesterol_sparkline").sparkline(this.state.clolesterol.reverse(), {
                 type: 'line',
                 width: '100%',
@@ -150,22 +176,7 @@ class PatientDetails extends React.Component {
         var diastolics = consultations.map( (consultation) => {
             return consultation.constantes.diastolique;
         });
-        return {
-            labels: labels,
-            datasets: [{
-                fillColor: "#26dad2",
-                strokeColor: "#26dad2",
-                highlightFill: "rgba(38,218,210,0.8)",
-                highlightStroke: "#26dad2",
-                data: diastolics
-            }, {
-                fillColor: "rgba(70, 128, 255,1)",
-                strokeColor: "rgba(70, 128, 255,0.8)",
-                highlightFill: "rgba(70, 128, 255,0.8)",
-                highlightStroke: "rgba(70, 128, 255,1.0)",
-                data: systolics
-            }]
-        }
+        return [diastolics, systolics, labels];
     }
 
     getIMCData = () =>  {
@@ -247,9 +258,16 @@ class PatientDetails extends React.Component {
                                             <div className="row">
                                                 <div className="patients-info relative">
                                                     <PatientInfoItem title="Sexe" value={this.state.patient.genre === "M" ? "Masculin" : "Féminin"} />
+                                                    
                                                     <PatientInfoItem title="Age" value={`${computedAge(this.state.patient.date_naissance)} Ans`} />
-                                                    <PatientInfoItem title="Taille du patient" value="176 cm" />
-                                                    <PatientInfoItem title="Poids du patient" value="67 Kg" />
+                                                    
+                                                    { this.state.patient.consultations.length > 0 && (
+                                                        <PatientInfoItem title="Taille du patient" value={`${this.state.patient.consultations[0].constantes.taille} cm`} />
+                                                    )}
+                                                    
+                                                    { this.state.patient.consultations.length > 0 && (
+                                                        <PatientInfoItem title="Poids du patient" value={`${this.state.patient.consultations[0].constantes.poids} Kg`} />
+                                                    )}
                                                 </div>
                                             </div>
                                             {/* <!-- end row --> */}
@@ -297,8 +315,14 @@ class PatientDetails extends React.Component {
                                         <div className="content-body">    
                                             <div className="row">
                                                 <div className="col-xs-12">
-                                                    <div className="">
-                                                        <canvas id="blood-pressure-chart" height="285" width="340"></canvas>
+                                                    <div className="blood-pressure-chart-box">
+                                                        
+                                                        { this.state.bloodPressures[0].length === 0 ? (
+                                                            <div>Aucune donnée disponible</div>
+                                                        ) : (
+                                                            <canvas id="blood-pressure-chart" height="285" width="340"></canvas>
+                                                        )}
+                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -335,6 +359,10 @@ class PatientDetails extends React.Component {
                                                                 </div>
                                                             </li>
                                                         )) }
+
+                                                        { this.state.patient.consultations.length === 0 && (
+                                                            <div>Aucune donnée disponible</div>
+                                                        )}
                                                         
                                                     </ul>
                                                 </div>      
@@ -367,11 +395,21 @@ class PatientDetails extends React.Component {
                                         </div>
                                         <div className="patient-personal mb-0">
                                             <h4 className="w-text">Pression artérielle :</h4>
-                                            <p className="mb-0 g-text info-medicales">130/80 mmHG</p>
+                                            { this.state.patient.consultations.length === 0 ? (
+                                                <p className="mb-0 g-text info-medicales"><span>---Néant---</span></p>
+                                            ) : (
+                                                <p className="mb-0 g-text info-medicales">{this.state.bloodPressures[0][0]}/{this.state.bloodPressures[1][0]} mmHG</p>
+                                            )}
+                                            
                                         </div>
                                         <div className="patient-personal mb-0">
                                             <h4 className="w-text">Température :</h4>
-                                            <p className="mb-0 g-text info-medicales">36.8 Degree</p>
+                                            { this.state.patient.consultations.length === 0 ? (
+                                                <p className="mb-0 g-text info-medicales"><span>---Néant---</span></p>
+                                            ) : (
+                                                <p className="mb-0 g-text info-medicales">{this.state.patient.consultations[0].constantes.temperature} Degree</p>
+                                            )}
+                                            
                                         </div>
                                     </section>
                                 </div>
@@ -388,23 +426,34 @@ class PatientDetails extends React.Component {
                                         <div className="pat-info-wrapper">
                                             <div className="pat-info text-left">
                                                 <h5 className="">Indice de masse corporelle</h5>
-                                                <h6>
-                                                    { (this.state.IMCs && this.state.IMCs[0]) < 16.5 && ("anorexie") }
-                                                    { (this.state.IMCs && this.state.IMCs[0] >= 16.5 && this.state.IMCs[0] < 18.5) && ("maigreur") }
-                                                    { (this.state.IMCs && this.state.IMCs[0] >= 18.5 && this.state.IMCs[0] < 25) && ("poids normal") }
-                                                    { (this.state.IMCs && this.state.IMCs[0] >= 25 && this.state.IMCs[0] < 30) && ("surpoids") }
-                                                    { (this.state.IMCs && this.state.IMCs[0] >= 30 && this.state.IMCs[0] < 35) && ("obésité modérée") }
-                                                    { (this.state.IMCs && this.state.IMCs[0] >= 35 && this.state.IMCs[0] <= 40) && ("obésité sévère") }
-                                                    { (this.state.IMCs && this.state.IMCs[0] > 40) && ("obésité massive") }
-                                                </h6>
+                                                
+                                                { this.state.IMCs.length > 0 && (
+                                                    <h6>
+                                                        { this.state.IMCs[0] < 16.5 && ("anorexie") }
+                                                        { (this.state.IMCs[0] >= 16.5 && this.state.IMCs[0] < 18.5) && ("maigreur") }
+                                                        { (this.state.IMCs[0] >= 18.5 && this.state.IMCs[0] < 25) && ("poids normal") }
+                                                        { (this.state.IMCs[0] >= 25 && this.state.IMCs[0] < 30) && ("surpoids") }
+                                                        { (this.state.IMCs[0] >= 30 && this.state.IMCs[0] < 35) && ("obésité modérée") }
+                                                        { (this.state.IMCs[0] >= 35 && this.state.IMCs[0] <= 40) && ("obésité sévère") }
+                                                        { this.state.IMCs[0] > 40 && ("obésité massive") }
+                                                    </h6>
+                                                )}
+                                                
                                             </div>
                                             <div className="pat-val relative">
-                                                <h4 className="value p-text">{ this.state.IMCs && this.state.IMCs[0] } <span>Kg / m²</span></h4>
+                                                <h4 className="value p-text">{ this.state.IMCs.length > 0 && this.state.IMCs[0] } <span>Kg / m²</span></h4>
                                             </div>
                                         </div>
-                                        <span id="IMC_sparkline">
-                                            <canvas width="121" height="60" style={{display: 'inline-block', width: 121+'px', height: 60+'px', verticalAlign: 'top'}}></canvas>
-                                        </span>
+                                        
+                                        { this.state.IMCs.length === 0 ? (
+                                            <div>Aucune donnée disponible</div>
+                                        ) : (
+                                            <span id="IMC_sparkline">
+                                                <canvas width="121" height="60" style={{display: 'inline-block', width: 121+'px', height: 60+'px', verticalAlign: 'top'}}></canvas>
+                                            </span>
+                                        )}
+
+                                        
                                     </div>
                                 </div>
                                 <div className="col-md-6 col-xs-12">
@@ -412,13 +461,25 @@ class PatientDetails extends React.Component {
                                         <div className="pat-info-wrapper">
                                             <div className="pat-info text-left">
                                                 <h5 className="">Rythme Cardiarque</h5>
-                                                <h6 className="red-text">Above the normal</h6>
+
+                                                { this.state.heartRate.length > 0 && (
+                                                    <h6 className="red-text">Above the normal</h6>
+                                                )}
+                                                
                                             </div>
                                             <div className="pat-val relative">
                                                 <h4 className="value red-text">{ this.state.heartRate && this.state.heartRate[0] } <span>Par min</span></h4>
                                             </div>
                                         </div>
-                                        <span id="heart_rate_sparkline"><canvas width="121" height="60" style={{display: 'inline-block', width: 121+'px', height: 60+'px', verticalAlign: 'top'}}></canvas></span>
+
+                                        { this.state.heartRate.length === 0 ? (
+                                            <div>Aucune donnée disponible</div>
+                                        ) : (
+                                            <span id="heart_rate_sparkline">
+                                                <canvas width="121" height="60" style={{display: 'inline-block', verticalAlign: 'top'}}></canvas>
+                                            </span>
+                                        )}
+                                            
                                     </div>
                                 </div>
                                 
@@ -427,17 +488,33 @@ class PatientDetails extends React.Component {
                                         <div className="pat-info-wrapper">
                                             <div className="pat-info text-left">
                                                 <h5 className="">Glycemie</h5>
-                                                <h6>In the normal</h6>
+
+                                                { this.state.glucoseRate.length > 0 && (
+                                                    <h6>In the normal</h6>
+                                                )}
+                                                
                                             </div>
                                             <div className="pat-val relative">
                                                 <h4 className="value green-text">
-                                                    <i className="complete fa fa-arrow-up"></i>
-                                                    { this.state.glucoseRate && this.state.glucoseRate[0] }
+
+                                                    { this.state.glucoseRate.length > 0 && (
+                                                        <i className="complete fa fa-arrow-up"></i>
+                                                    )}
+                                                    
+                                                    { this.state.glucoseRate.length && this.state.glucoseRate[0] }
                                                     <span>mg/dl</span>
                                                 </h4>
                                             </div>
                                         </div>
-                                        <span id="glucose_sparkline"><canvas width="214" height="60" style={{display: 'inline-block', width: 214+'px', height: 60+'px', verticalAlign: 'top'}}></canvas></span>
+
+                                        { this.state.glucoseRate.length === 0 ? (
+                                            <div>Aucune donnée disponible</div>
+                                        ) : (
+                                            <span id="glucose_sparkline">
+                                                <canvas width="214" height="60" style={{display: 'inline-block', verticalAlign: 'top'}}></canvas>
+                                            </span>
+                                        )}
+                                            
                                     </div>
                                 </div>
                                 <div className="col-md-6 col-xs-12">
@@ -445,20 +522,37 @@ class PatientDetails extends React.Component {
                                         <div className="pat-info-wrapper">
                                             <div className="pat-info text-left">
                                                 <h5 className="">Cholesterol</h5>
-                                                <h6>In the normal</h6>
+
+                                                { this.state.glucoseRate.length > 0 && (
+                                                    <h6>In the normal</h6>
+                                                )}
+                                                
                                             </div>
                                             <div className="pat-val relative">
                                                 <h4 className="value blue-text">
-                                                    <i className="cancelled fa fa-arrow-down"></i>
+
+                                                    { this.state.glucoseRate.length > 0 && (
+                                                        <i className="cancelled fa fa-arrow-down"></i>
+                                                    )}
+                                                    
                                                     { this.state.clolesterol && this.state.clolesterol[0] }
                                                     <span>mg/dl</span>
                                                 </h4>
                                             </div>
                                         </div>
-                                        <span id="clolesterol_sparkline"><canvas width="214" height="60" style={{display: 'inline-block', width: 214+'px', height: 60+'px', verticalAlign: 'top'}}></canvas></span>
+
+                                        { this.state.clolesterol.length === 0 ? (
+                                            <div>Aucune donnée disponible</div>
+                                        ) : (
+                                            <span id="clolesterol_sparkline">
+                                                <canvas width="214" height="60" style={{display: 'inline-block', verticalAlign: 'top'}}></canvas>
+                                            </span>
+                                        )}
+                                            
                                     </div>
                                 </div>
                             </div>
+                        
                         </div>
 
                         <div className="clearfix"></div>

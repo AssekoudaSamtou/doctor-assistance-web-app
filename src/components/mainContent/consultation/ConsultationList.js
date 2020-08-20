@@ -25,20 +25,20 @@ class ConsultationList extends React.Component {
     componentWillMount() {
         ConsultationDataService.getAll()
         .then(response => {
-            this.setState({consultations: response.data.results});
+            this.setState({consultations: response.data});
         }).catch(e => {
             console.log(e);
         });
         DemandeConsultationsDataService.getAll()
         .then(response => {
-            this.setState({demandes: response.data.results});
+            this.setState({demandes: response.data});
             console.log(this.state.demandes)
         }).catch(e => {
             console.log(e);
         });
         PatientDataService.getAll()
         .then(response => {
-            this.setState({patients: response.data.results});
+            this.setState({patients: response.data});
             console.log(this.state.patients)
         }).catch(e => {
             console.log(e);

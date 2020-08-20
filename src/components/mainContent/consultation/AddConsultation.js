@@ -24,17 +24,18 @@ class AddConsultation extends React.Component {
                 interrogatoire: null,
                 resume: null,
                 hypothese_diagnostique: null,
-            },
 
-            constantes: {
-                temperature: null,
-                poids: null,
-                taille: null,
-                systolique: null,
-                diastolique: null,
-                glycemie: null,
-                cholesterol: null,
-                pouls: null,
+                constantes: {
+                    id: null,
+                    temperature: null,
+                    poids: null,
+                    taille: null,
+                    systolique: null,
+                    diastolique: null,
+                    glycemie: null,
+                    cholesterol: null,
+                    pouls: null,
+                },
             },
 
             submitted: false,
@@ -78,8 +79,12 @@ class AddConsultation extends React.Component {
     }
 
     handleConstanteInputChange(name, value) {
-        this.setState({ constantes: { ...this.state.constantes, [name]: value } });
-        console.log("CHANGING... ", name, value);
+        this.setState({ 
+            consultation: { 
+                ...this.state.consultation, 
+                constantes: {...this.state.consultation.constantes, [name]: value} 
+            } 
+        });
     }
 
     handleCKEInputChange(name, data) {
@@ -92,7 +97,7 @@ class AddConsultation extends React.Component {
     componentWillMount() {
         DemandeConsultationsDataService.getAll()
         .then((response) => {
-            this.setState({ demandes: response.data.results });
+            this.setState({ demandes: response.data });
             console.log(this.state.demandes);
         })
         .catch((e) => {
@@ -100,7 +105,7 @@ class AddConsultation extends React.Component {
         });
         PatientDataService.getAll()
         .then((response) => {
-            this.setState({ patients: response.data.results });
+            this.setState({ patients: response.data });
             console.log(this.state.patients);
         })
         .catch((e) => {
@@ -108,7 +113,7 @@ class AddConsultation extends React.Component {
         });
         StructureSanitaireDataService.getMine()
         .then((response) => {
-            this.setState({ structures: response.data.results });
+            this.setState({ structures: response.data });
             console.log(this.state.structures);
         })
         .catch((e) => {
@@ -135,7 +140,7 @@ class AddConsultation extends React.Component {
             patient: this.state.demandeConsultation.patient,
             status:this.state.demandeConsultation.status,
 
-            constantes: this.state.constantes
+            constantes: this.state.consultation.constantes
         };
         console.log(data);
         ConsultationDataService.create(data)
@@ -190,49 +195,49 @@ class AddConsultation extends React.Component {
                         type: "number",
                         label: "Température",
                         name: "temperature",
-                        value: this.state.constantes.temperature,
+                        value: this.state.consultation.constantes.temperature,
                     },
                     {
                         type: "number",
                         label: "Poids (Kg)",
                         name: "poids",
-                        value: this.state.constantes.poids,
+                        value: this.state.consultation.constantes.poids,
                     },
                     {
                         type: "number",
                         label: "Taille (cm)",
                         name: "taille",
-                        value: this.state.constantes.taille,
+                        value: this.state.consultation.constantes.taille,
                     },
                     {
                         type: "number",
                         label: "Systolique",
                         name: "systolique",
-                        value: this.state.constantes.systolique,
+                        value: this.state.consultation.constantes.systolique,
                     },
                     {
                         type: "number",
                         label: "Diastolique",
                         name: "diastolique",
-                        value: this.state.constantes.diastolique,
+                        value: this.state.consultation.constantes.diastolique,
                     },
                     {
                         type: "number",
                         label: "Glycemie (mg/dl)",
                         name: "glycemie",
-                        value: this.state.constantes.glycemie,
+                        value: this.state.consultation.constantes.glycemie,
                     },
                     {
                         type: "number",
                         label: "Cholesterol (mg/dl)",
                         name: "cholesterol",
-                        value: this.state.constantes.cholesterol,
+                        value: this.state.consultation.constantes.cholesterol,
                     },
                     {
                         type: "number",
                         label: "Pouls (Par minute)",
                         name: "pouls",
-                        value: this.state.constantes.pouls,
+                        value: this.state.consultation.constantes.pouls,
                     },
 
                 ],

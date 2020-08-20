@@ -28,7 +28,7 @@ class AddPatient extends React.Component {
                 maladies: "",
                 allergies: "",
                 habitude_alimentaires: "",
-                photo: "",
+                photo: null,
             },
             photo_preview: BOY_AVATAR,
             submitted: false,
@@ -50,7 +50,7 @@ class AddPatient extends React.Component {
                 this.setState({ photo_preview: GIRL_AVATAR });
         }
         this.setState({ patient: { ...this.state.patient, [name]: value } });
-        console.log("CHANGING... ", name, value.name);
+        console.log("CHANGING... ", name, value);
     }
 
     loadImagePreview = (file) => {
@@ -86,7 +86,7 @@ class AddPatient extends React.Component {
             formData.append(key, data[key]);
         }
 
-        PatientDataService.create(formData)
+        PatientDataService.create(this.state.patient.photo ? formData : data, this.state.patient.photo !== null)
         .then(response => {
             this.cleanup();
             console.log(response.data, this.state.submitted);

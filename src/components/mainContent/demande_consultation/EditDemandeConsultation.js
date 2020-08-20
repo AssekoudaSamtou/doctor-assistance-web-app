@@ -77,14 +77,14 @@ class EditDemandeConsultation extends React.Component {
     componentWillMount() {
         StructureSanitaireDataService.getAll()
         .then(response => {
-            this.setState({centre_medicals: response.data.results});
+            this.setState({centre_medicals: response.data});
         }).catch(e => {
             console.log(e);
         });
 
         PatientDataService.getAll()
         .then(response => {
-            this.setState({patients: response.data.results});
+            this.setState({patients: response.data});
         }).catch(e => {
             console.log(e);
         });

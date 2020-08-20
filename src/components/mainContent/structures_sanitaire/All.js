@@ -23,7 +23,7 @@ class HopitalList extends React.Component {
         StructureSanitaireDataService.getMine()
         .then(response => {
             console.log(response.data.results);
-            this.setState({hopitals: response.data.results});
+            this.setState({hopitals: response.data});
         }).catch(e => {
             console.log(e);
         });

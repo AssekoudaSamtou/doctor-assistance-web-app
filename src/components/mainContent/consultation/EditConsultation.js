@@ -20,61 +20,94 @@ class EditConsultation extends React.Component {
         this.state = {
             consultation:  {
                 id:null,
-                demande_consultation:null,
+                demande_consultation:-1,
                 motif: "",
                 interrogatoire:null,
                 resume:null,
                 hypothese_diagnostique:"",
+                
+                constantes: {
+                    id: null,
+                    temperature: null,
+                    poids: null,
+                    taille: null,
+                    systolique: null,
+                    diastolique: null,
+                    glycemie: null,
+                    cholesterol: null,
+                    pouls: null,
+                },
             },
+
             submitted: false,
             isSubmitting: false,
             specialites:[],
             isisDemandeConsultationChecked: false,
             demandes:[],
             patients:[],
-            consultationMessage:String
+            consultationMessage:String,
+            selectedPatient: null
         };
-        this.handleInputChange = this.handleInputChange.bind(this)
-        this.saveConsultation = this.saveConsultation.bind(this)
-        this.deleteConsultation = this.deleteConsultation.bind(this)
-        this.handleCKEInputChange = this.handleCKEInputChange.bind(this)
-        this.newConsultation = this.newConsultation.bind(this)
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleConstanteInputChange = this.handleConstanteInputChange.bind(this);
+        this.saveConsultation = this.saveConsultation.bind(this);
+        this.deleteConsultation = this.deleteConsultation.bind(this);
+        this.handleCKEInputChange = this.handleCKEInputChange.bind(this);
     }
 
-    
+    changePatientPhoto = (demande_id) => {
+        for (let demande in this.state.demandes) {
+            if (this.state.demandes[demande].id == demande_id) {
+                
+                for (let patient in this.state.patients) {
+                    if(this.state.demandes[demande].patient == this.state.patients[patient].id)
+                        this.setState({selectedPatient: this.state.patients[patient]});
+                }
+            }
+        }
+    }
     
     componentWillMount() {
         const params = this.props.match?.params
         DemandeConsultationsDataService.getAll()
         .then(response => {
-            this.setState({demandes: response.data.results});
-            console.log(this.state.demandes)
+            this.setState({demandes: response.data});
+            // console.log(this.state.demandes)
         }).catch(e => {
             console.log(e);
         });
         PatientDataService.getAll()
         .then(response => {
-            this.setState({patients: response.data.results});
-            console.log(this.state.patients)
+            this.setState({patients: response.data});
+            // console.log(this.state.patients)
         }).catch(e => {
             console.log(e);
         });
-        ConsultationDataService.get(this.props.consultation?.id||params?.id)
+        ConsultationDataService.get(params?.id)
         .then(response => {
             this.setState({consultation: response.data});
+            // console.log(this.state.consultation);
         }).catch(e => {
             console.log(e);
         });
     }
 
+    handleConstanteInputChange(name, value) {
+        this.setState({ 
+            consultation: { 
+                ...this.state.consultation, 
+                constantes: {...this.state.consultation.constantes, [name]: value} 
+            } 
+        });
+    }
+
     handleInputChange(name, value) {
-        // const { name, value } = event.target;
         this.setState({ consultation: { ...this.state.consultation, [name]: value } });
-        // data-dismiss="modal"
         console.log("CHANGING... ", name, value);
     }
+
     handleCKEInputChange(name, data) {
-        console.log(name, data);
+        // console.log(name, data);
         this.setState({
           consultation: { ...this.state.consultation, [name]: data },
         });
@@ -82,32 +115,19 @@ class EditConsultation extends React.Component {
 
     saveConsultation() {
         var data = this.state.consultation;
-        console.log("====Edite processing==="); 
+        data['constantes_data'] = this.state.consultation.constantes;
+        data['constantes'] = this.state.consultation.constantes.id;
     
-        ConsultationDataService.update(this.state.consultation.id,data)
+        ConsultationDataService.update(this.state.consultation.id, data)
             .then(response => {
                 console.log(response.data, this.state.submitted);
-                window.showSuccess('the consultation has been saved successfuly');
-                if(this.props.history){
-                    this.props.history.push("/consultations/");
-                }else{
-                    window.$("#closeBtnConsultation").click()
-                }
-                this.newConsultation();
-                console.log(this.state.consultation)
+                window.showSuccess('the consultation has been updated successfuly');
+                this.props.history.push("/consultations/");
+                console.log(this.state.consultation);
             })
             .catch(e => {
                 console.log(e.message);
             });
-    }
-    newConsultation(){
-        this.setState({consultation:  {
-            demande_consultation:"",
-            motif: "",
-            interrogatoire:"",
-            resume:"",
-            hypothese_diagnostique:"",
-        }})
     }
 
     deleteConsultation() {    
@@ -137,6 +157,7 @@ class EditConsultation extends React.Component {
             message += " a "+convDate.getHours()+":"+convDate.getMinutes()
             return message
         }
+
         const GenderSelectOptions = [
             {id: null, libelle: "----Selectionnez un genre-----"},
             {id: "M", libelle: "Masculin"},
@@ -144,8 +165,65 @@ class EditConsultation extends React.Component {
         ];
         const demandesSelectOptions = [
             {id: -1, libelle: "----Selectionnez une demande de consultation-----"},
-        ].concat(this.state.demandes.map((demande)=>(this.state.patients.find(patient =>patient.id == demande.patient))?(({id:demande.id, libelle: getConsultationMessage(this.state.patients,demande.patient,demande.date_consultation)})):{}));
+        ].concat(this.state.demandes.map((demande)=>(
+            this.state.patients.find(patient =>patient.id == demande.patient)) ? (({id:demande.id, libelle: getConsultationMessage(this.state.patients,demande.patient,demande.date_consultation)})):{}
+        ));
+
         const formBoxes = [
+            {
+                headerTitle: "Constantes",
+                fields: [
+                    {
+                        type: "number",
+                        label: "Température",
+                        name: "temperature",
+                        value: this.state.consultation.constantes.temperature,
+                    },
+                    {
+                        type: "number",
+                        label: "Poids (Kg)",
+                        name: "poids",
+                        value: this.state.consultation.constantes.poids,
+                    },
+                    {
+                        type: "number",
+                        label: "Taille (cm)",
+                        name: "taille",
+                        value: this.state.consultation.constantes.taille,
+                    },
+                    {
+                        type: "number",
+                        label: "Systolique",
+                        name: "systolique",
+                        value: this.state.consultation.constantes.systolique,
+                    },
+                    {
+                        type: "number",
+                        label: "Diastolique",
+                        name: "diastolique",
+                        value: this.state.consultation.constantes.diastolique,
+                    },
+                    {
+                        type: "number",
+                        label: "Glycemie (mg/dl)",
+                        name: "glycemie",
+                        value: this.state.consultation.constantes.glycemie,
+                    },
+                    {
+                        type: "number",
+                        label: "Cholesterol (mg/dl)",
+                        name: "cholesterol",
+                        value: this.state.consultation.constantes.cholesterol,
+                    },
+                    {
+                        type: "number",
+                        label: "Pouls (Par minute)",
+                        name: "pouls",
+                        value: this.state.consultation.constantes.pouls,
+                    },
+
+                ],
+            },
             {
                 headerTitle: "mise a jours de la consultation",
                 fields: [
@@ -154,8 +232,6 @@ class EditConsultation extends React.Component {
                     {type: "Cke", label: "Interrogatoire", name: "interrogatoire", value: this.state.consultation.interrogatoire},
                     {type: "Cke", label: "Resume", name: "resume", value: this.state.consultation.resume},
                     {type: "Cke", label: "hypothese diagnostique", name: "hypothese_diagnostique", value: this.state.consultation.hypothese_diagnostique}
-                    // {type: "text", label: "Profile Image"},
-                    // {type: "text", label: "Brief", description: 'e.g. "Enter any size of text description here"'},
                 ]
             }
         ];
@@ -172,9 +248,10 @@ class EditConsultation extends React.Component {
                     <div className="bg-w">
                         { formBoxes.map((box) => 
                             <FormBox 
+                                key={box.headerTitle}
                                 box={box} fromType="edit"
                                 isSubmitting={this.state.isSubmitting}
-                                onInputChange={this.handleInputChange} 
+                                onInputChange={box.headerTitle === "Constantes" ? this.handleConstanteInputChange : this.handleInputChange} 
                                 onSaveBtnTapped={this.saveConsultation}
                                 onCKEditorChange={this.handleCKEInputChange}
                                 onDeleteBtnTapped={this.deleteConsultation}

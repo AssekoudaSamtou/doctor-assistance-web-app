@@ -29,7 +29,7 @@ class EditPatient extends React.Component {
                 maladies: "",
                 allergies: "",
                 habitude_alimentaires: "",
-                photo: "",
+                photo: null,
             },
             photo_preview: BOY_AVATAR,
             submitted: false,
@@ -106,17 +106,12 @@ class EditPatient extends React.Component {
             habitude_alimentaires: this.state.patient.habitude_alimentaires,
             photo: this.state.patient.photo,
         };
-        
-        // if (typeof this.state.patient.photo === "string") {
-        //     console.log("STRING");
-        //     data["photo"] = null;
-        // }
 
         for ( var key in data ) {
             formData.append(key, data[key]);
         }
     
-        PatientDataService.update(this.state.patient.id, formData)
+        PatientDataService.update(this.state.patient.id, this.state.patient.photo ? formData : data, this.state.patient.photo !== null)
             .then(response => {
                 this.setState({ patient: { ...response.data } });
                 console.log(response.data);
