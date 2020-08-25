@@ -11,7 +11,7 @@ import TopnavItem from './topnavItem/TopnavItem';
 import TopNavSearchForm from './topnavSearchForm/TopNavSearchForm';
 import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
-import {GIRL_AVATAR, BOY_AVATAR} from '../../utils';
+import {GIRL_AVATAR, BOY_AVATAR, LitteralDate} from '../../utils';
 import { Avatar } from 'avataaars';
 
 const cookies = new Cookies();
@@ -35,7 +35,7 @@ const TopBar = () => {
     }
 
     return (
-        <div className="page-topbar gradient-blue1">
+        <div className="page-topbar gradient-blue1 sidebar_shift">
             <div className="logo-area crypto">
 
             </div>
@@ -44,7 +44,7 @@ const TopBar = () => {
                     <ul className="info-menu left-links list-inline list-unstyled">
                         
                         <li className="sidebar-toggle-wrap">
-                            <a href="#" data-toggle="sidebar" className="sidebar_toggle">
+                            <a href="#" id="sidebar_toggler" data-toggle="sidebar" className="sidebar_toggle">
                                 <i className="fa fa-bars"></i>
                             </a>
                         </li>
@@ -61,13 +61,24 @@ const TopBar = () => {
                 <div className="pull-right">
                     <ul className="info-menu right-links list-inline list-unstyled">
 
+                        <li className="now-date">
+                            <div>
+                                <i className="fa fa-calendar-day"></i>
+                                <span> {LitteralDate(new Date(), "SMALL")} </span>
+                            </div>
+                        </li>
+
+                        <li className="now-date">
+                            <div>
+                                <i className="fa fa-clock"></i>
+                                <span> {(new Date()).getHours()}:{(new Date()).getMinutes()} </span>
+                            </div>
+                        </li>
+
                         <li className="notify-toggle-wrapper spec showopacity" style={{marginRight: '40px'}}>
                             <div className="toggle moncircle monshape" data-toggle="dropdown" style={{top: '13px', height: '30px', width: '30px'}}>
                                 <i className="text fa fa-plus"></i>
                             </div>
-                            {/* <a href="#" data-toggle="dropdown" className="toggle">
-                                <i className="fa fa-plus"></i>
-                            </a> */}
                             <ul className="dropdown-menu profile animated fadeIn" style={{ left:-20+'px'}}>
                                 
                                 <li>

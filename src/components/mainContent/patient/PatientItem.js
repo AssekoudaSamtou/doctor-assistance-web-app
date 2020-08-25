@@ -15,11 +15,7 @@ const PatientItem = ({fullname, gender, date_naissance, id, photo}) => {
                             <div className="doctors-head relative text-center">
 
                                 <AvatarPreview avatar={ photo ? photo : (gender === "M" ? BOY_AVATAR : GIRL_AVATAR) } id={id} />
-                                {/* <div className="patient-img img-circle">
-                                    <img className="rad-50 center-block" src={ photo ? photo : (gender === "M" ? BOY_AVATAR : GIRL_AVATAR) }/>
-
-                                    <div className="stutas recent"></div>
-                                </div> */}
+                                
                                 <h3 className="header w-text relative bold">{fullname} </h3>
                                 
                             </div>
