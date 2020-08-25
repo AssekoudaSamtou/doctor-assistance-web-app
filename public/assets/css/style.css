@@ -11945,6 +11945,12 @@ table.dataTable.display tbody tr:first-child td {
     min-height: 160px;
 }
 
+.now-date {
+    color: black;
+    font-weight: 700;
+}
+
+
 @media screen and (max-width: 600px) {
     .detail-consultation *:first-child {
         margin: 0;

@@ -83,7 +83,11 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        
+        window.$(document).ready(() =>{
+            window.setTimeout( ()=> {
+                window.$("#sidebar_toggler").trigger('click');
+            }, 1000);
+        })
     }
 
     render() {

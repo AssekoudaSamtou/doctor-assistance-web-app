@@ -5,9 +5,7 @@ import FormBoxItem from "../../../card/FormBoxItem";
 import Specialite from "../../../card/Specialite";
 import SpecialiteDataService from "../../../../services/specialite.service";
 import DoctorDataService from "../../../../services/doctor.service";
-import "./DoctorDetailForm.css";
 import StructureSanitaireTabPane from "./StructureSanitaireTabPane";
-import StructureSanitaireForm from "./StructureSanitaireForm";
 
 const cookies = new Cookies();
 
@@ -116,8 +114,8 @@ class DoctorDetailForm extends React.Component {
     }
 
     mustComplete() {
-        // return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
-        return false;
+        return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
+        // return false;
     }
     handleSpecialiteClik(id) {
         const selector = `#pills-tab4 .r4_counter_.db_box`;
