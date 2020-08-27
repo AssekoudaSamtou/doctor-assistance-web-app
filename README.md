@@ -1,3 +1,5 @@
+[![Run on Repl.it](https://repl.it/badge/github/AssekoudaSamtou/doctor-assistance-web-app)](https://repl.it/github/AssekoudaSamtou/doctor-assistance-web-app)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
