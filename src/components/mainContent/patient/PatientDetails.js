@@ -62,13 +62,12 @@ class PatientDetails extends React.Component {
         window.$(document).ready( () => {
             window.setTimeout(() => {
                 this.initCharts();
-            }, 2000);
+            }, 1000);
         });
     }
 
     initCharts = () => {
         if(window.$("#blood-pressure-chart").length && this.state.bloodPressures[0].length) {
-            console.log("cc");
             var ctx = window.$("#blood-pressure-chart")[0].getContext("2d");
             
             var myBarChart = new window.Chart(ctx).Line(

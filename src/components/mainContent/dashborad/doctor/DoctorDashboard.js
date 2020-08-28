@@ -5,24 +5,133 @@ import Cookies from "universal-cookie";
 import DoctorDetailForm from "./DoctorDetailForm";
 import patientIcon from '../../../../data/icons/gradient/icons8-fever-96.png';
 import DashboardResumeItem from "../../../card/dashboard-resume-item";
-import { BOY_AVATAR, random_item } from "../../../../utils";
-import AvatarPreview from "../../../card/AvatarPreview";
+import { BOY_AVATAR, random_item, literalHour } from "../../../../utils";
+import DoctorDataService from "../../../../services/doctor.service";
+import { Link } from "react-router-dom";
 
 const cookies = new Cookies();
 
 class DoctorDashboard extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            activites: {
+                label: [],
+                consultations: [],
+                patients: [],
+            },
+            patients_incoming: {
+                labels: [],
+                males: [],
+                females: [],
+            },
+            consultations: {
+                total: 0,
+                a_venir: 0
+            },
+            patients: {
+                total: 0,
+                new: 0
+            },
+            rdv: {
+                total: 0,
+                actuel: 0,
+                liste: []
+            }
+        };
+    }
+
+    componentWillMount() {
+        DoctorDataService.getDashInfos()
+        .then((response) => {
+            this.setState(response.data);
+        })
+        .catch((e) => {
+            console.log(e);
+        })
     }
 
     componentDidMount() {
-        let doctor = cookies.get("loggedUser");
+        window.$(document).ready( () => {
+            window.setTimeout(() => {
+                this.initCharts();
+            }, 1000);
+        });
     }
+
+    initCharts = () => {
+        if(window.$("#activity-chartjs").length) {
+            var ctx = window.$("#activity-chartjs")[0].getContext("2d");
+            
+            var activityChart = new window.Chart(ctx).Line(
+                {
+                    labels: this.state.activites.label.reverse(),
+                    datasets: [{
+                        label: "Diastolique",
+                        fillColor: "rgba(63,81,181,0.5)",
+                        strokeColor: "rgba(63,81,181,1)",
+                        pointColor: "rgba(63,81,181,1)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(63,81,181,1)",
+                        data: this.state.activites.patients.reverse()
+                    }, {
+                        label: "Systolique",
+                        fillColor: "rgba(103,58,183,0.5)",
+                        strokeColor: "rgba(103,58,183,1.0)",
+                        pointColor: "rgba(103,58,183,1.0)",
+                        pointStrokeColor: "#fff",
+                        pointHighlightFill: "#fff",
+                        pointHighlightStroke: "rgba(103,58,183,1.0)",
+                        data: this.state.activites.consultations.reverse()
+                    }]
+                }, 
+                {
+                    responsive: true,
+                    tooltips: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return "$" + Number(tooltipItem.yLabel) + " and so worth it !";
+                            }
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Ice Cream Truck',
+                        position: 'bottom'
+                    },
+                }
+            );
+        }
+
+        if(window.$("#patient-incoming-chartjs").length){
+
+            var patientsIncomingChartData = {
+                labels: this.state.patients_incoming.labels.reverse(),
+                datasets: [{
+                    fillColor: "#26dad2",
+                    strokeColor: "#26dad2",
+                    highlightFill: "rgba(38,218,210,0.8)",
+                    highlightStroke: "#26dad2",
+                    data: this.state.patients_incoming.males.reverse()
+                }, {
+                    fillColor: "rgba(70, 128, 255,1)",
+                    strokeColor: "rgba(70, 128, 255,0.8)",
+                    highlightFill: "rgba(70, 128, 255,0.8)",
+                    highlightStroke: "rgba(70, 128, 255,1.0)",
+                    data: this.state.patients_incoming.females.reverse()
+                }]
+
+            }
+
+            var ctxb = document.getElementById("patient-incoming-chartjs").getContext("2d");
+            new window.Chart(ctxb).Bar(patientsIncomingChartData);
+        }
+    };
 
     render() {
         const borderColors = ['#2acd72', '#f46bd7', '#ffc04f', '#07c7e0'];
-
+        
         return (
             <div>
                 <PageTitle title="Tableau de board" />
@@ -34,8 +143,8 @@ class DoctorDashboard extends React.Component {
                                 
                                 <DashboardResumeItem 
                                     title="Total Patients" 
-                                    value="61,923" icon={patientIcon} 
-                                    footer={{label: "Total nouveau patient", value: '32,303'}} 
+                                    value={this.state.patients.total} icon={patientIcon} 
+                                    footer={{label: "Total nouveau patient", value: this.state.patients.new}} 
                                     style={{
                                         backgroundImage: "linear-gradient(to right bottom, #00d0c2, #1fd3c6, #2fd6ca, #3bd9ce, #46dcd2)",
                                         boxShadow: "0px 0px 15px 0px rgba(70,220,210,1)"
@@ -43,8 +152,8 @@ class DoctorDashboard extends React.Component {
                                 />
                                 <DashboardResumeItem 
                                     title="Total Consultations" 
-                                    value="92" icon={patientIcon} 
-                                    footer={{label: "Consultation à venir", value: '09'}} 
+                                    value={this.state.consultations.total} icon={patientIcon} 
+                                    footer={{label: "Consultation à venir", value: this.state.consultations.a_venir}} 
                                     style={{
                                         backgroundImage: "linear-gradient(to right top, #6e8df2, #6686f1, #5e7ff1, #5578f0, #4d71ef)",
                                         boxShadow: "0px 0px 15px 0px #4d71ef"
@@ -52,8 +161,8 @@ class DoctorDashboard extends React.Component {
                                 />
                                 <DashboardResumeItem 
                                     title="Rendez-vous" 
-                                    value="23" icon={patientIcon} 
-                                    footer={{label: "Rendez-vous acceptés", value: '03'}} 
+                                    value={this.state.rdv.total} icon={patientIcon} 
+                                    footer={{label: "Rendez-vous d'aujourd'hui", value: this.state.rdv.actuel}} 
                                     style={{
                                         backgroundImage: "linear-gradient(to right top, #f29d6e, #f29765, #f1915d, #f18b54, #f0854c)",
                                         boxShadow: "0px 0px 15px 0px #F29D6E"
@@ -71,7 +180,7 @@ class DoctorDashboard extends React.Component {
                                         <div className="col-xs-12">
                                             <div className="doctor-activity-chart-box">
                                                 
-                                                <canvas id="line-chartjs"></canvas>
+                                                <canvas id="activity-chartjs"></canvas>
                                                 
                                             </div>
                                         </div>
@@ -109,7 +218,7 @@ class DoctorDashboard extends React.Component {
                                                 <div className="col-xs-12">
                                                     <div className="doctor-activity-chart-box">
                                                         
-                                                        <canvas id="bar-chartjs"></canvas>
+                                                        <canvas id="patient-incoming-chartjs"></canvas>
                                                         
                                                     </div>
                                                 </div>
@@ -119,19 +228,50 @@ class DoctorDashboard extends React.Component {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-3" id="appointments" style={{height: '', overflowY: 'scroll'}}>
-                            <div>
+                        <div className="col-lg-3" id="appointments">
+                            {/* <div> */}
                                 <div className="appointment-day today-appointment">
                                     <div className="appointment-day-header row">
-                                        <div className="col-lg-8"><span>Rendez-vous à venir</span></div>
-                                        <div className="col-lg-4" style={{padding: '5px'}}><span className="appointment-date">AUJOURD'HUI</span></div>
+                                        <div className="col-lg-8"><span>Rendez-vous</span></div>
+                                        <div className="col-lg-4" style={{padding: '0 5px'}}><span className="appointment-date">AUJOURD'HUI</span></div>
+                                    </div>
+                                    <div className="appointment-day-content">
+                                        { this.state.rdv.liste.map( (rdv) => (
+                                            <div className="item" key={rdv.id}>
+                                                <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
+                                                    {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
+                                                        <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
+                                                    </div> */}
+                                                    <div className="col-lg-12" style={{ background: 'white' }}>
+                                                        <div className="nom-motif">
+                                                            <span> { rdv.patient.nom} </span>
+                                                            <span> - </span>
+                                                            <span> { rdv.hopital.denomination} </span>{/* MOTIF DE CONSULTATION */}
+                                                        </div>
+                                                        <div className="heure">
+                                                            <span>{literalHour(rdv.date_consultation)} </span>
+                                                            <span> . </span>
+                                                            <span> 30 Mins </span>
+                                                        </div>
+                                                        <div style={{padding: "0 0 0 0"}}>
+                                                            <Link to={`/patients_details/${rdv.patient.id}`} className="appointment-action">HISTORIQUE MEDICAL</Link>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                            
+                                    </div>
+                                </div>
+
+                                <div className="appointment-day">
+                                    <div className="appointment-day-header row">
+                                        <div className="col-lg-8"><span>Rendez-vous passés</span></div>
+                                        <div className="col-lg-4" style={{padding: '0 5px'}}><span className="appointment-date">21 Dec 2020</span></div>
                                     </div>
                                     <div className="appointment-day-content">
                                         <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
+                                            <div className="row" style={{borderLeft: `1px solid #6565653b`}}>
                                                 <div className="col-lg-12" style={{ background: 'white' }}>
                                                     <div className="nom-motif">
                                                         <span>Veronica </span>
@@ -143,301 +283,15 @@ class DoctorDashboard extends React.Component {
                                                         <span> . </span>
                                                         <span> 30 Mins </span>
                                                     </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                </div> */}
-                                                <div className="col-lg-12" style={{ background: 'white' }}>
-                                                    <div className="nom-motif">
-                                                        <span>Veronica </span>
-                                                        <span> - </span>
-                                                        <span> Control Général </span>
-                                                    </div>
-                                                    <div className="heure">
-                                                        <span>14:45 </span>
-                                                        <span> . </span>
-                                                        <span> 30 Mins </span>
-                                                    </div>
-                                                    <div style={{padding: "10px 0 0 0"}}>
-                                                        <span className="appointment-action">HISTORIQUE MEDICAL</span>
+                                                    <div style={{padding: "0 0 0 0"}}>
+                                                        <span className="appointment-action" style={{color: 'gray'}}>HISTORIQUE MEDICAL</span>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            {/* </div> */}
                         </div>
                     </div>
                 </div>

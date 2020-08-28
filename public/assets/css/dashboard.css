@@ -31,27 +31,52 @@
     border: 2px solid #e1e1e1;
     font-weight: 700;
     padding: 6px 0;
+    margin: 0 !important;
 }
-.today-appointment .appointment-date {
+.appointment-date {
     display: block;
     border-radius: 3px;
-    color: whitesmoke;
-    background-color: #fdb40f;
     width: 100%;
     margin: auto;
-    font-size: x-small;
     font-weight: 700;
     padding: 0 ;
     text-align: center;
 }
+.today-appointment .appointment-date {
+    background-color: #fdb40f;
+    color: whitesmoke;
+    font-size: x-small;
+}
+
+.appointment-day-content {
+    height: 400px;
+    overflow-y: scroll;
+}
+.appointment-day-content::-webkit-scrollbar {
+	width: 3px;
+	background-color: #4680ff;
+}
+.appointment-day-content::-webkit-scrollbar-track
+{
+	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+.appointment-day-content::-webkit-scrollbar-thumb
+{
+	background-color: #4680ff;
+}
 .appointment-day-content .item {
     font-weight: 700;
     background-color: white;
+    margin: 0;
 }
 .appointment-day-content .item .row {
-    padding: 10px 0;
+    padding: 0;
+    width: 100%;
+    margin: auto;
     background: white;
-    border-bottom: 1px solid #727272;
+    border-bottom: 1px solid #6565653b;
     border-left: 2px solid darkorchid;
 }
 .appointment-day-content .avatar {
@@ -86,9 +111,15 @@
 }
 .appointment-action:hover {
     background: #dfe5ea7a;
+    color: gray;
 }
+.today-appointment .appointment-action:hover {
+    color: #9932cc94;
+}
+
 .appointment-action:active {
     background: #a4a7aa7a;
+    color: white !important;
 }
 
 .appointment-action i{
@@ -98,14 +129,13 @@
 .doctor-activity, .patient-income, .diseases-report {
     border-radius: 20px;
 }
-.doctor-activity-chart-box canvas {
-    /* width: 100% !important; */
-}
+
 #appointments {
-    height: 942px;
-    overflow-y: scroll;
+    padding: 0 0;
+    /* height: 942px; */
+    /* overflow-y: scroll; */
 }
-#appointments::-webkit-scrollbar {
+/* #appointments::-webkit-scrollbar {
 	width: 3px;
 	background-color: #4680ff;
 }
@@ -118,4 +148,4 @@
 #appointments::-webkit-scrollbar-thumb
 {
 	background-color: #4680ff;
-}
+} */

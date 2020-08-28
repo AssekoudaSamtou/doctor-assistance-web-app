@@ -11990,3 +11990,10 @@ table.dataTable.display tbody tr:first-child td {
         width: 170px;
     }
 }
+
+.d-none {
+    display: none;
+}
+.d-block {
+    display: block;
+}
