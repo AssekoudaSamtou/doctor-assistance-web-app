@@ -29,6 +29,7 @@ import AddHospital from './components/mainContent/structures_sanitaire/Add';
 import EditHospital from './components/mainContent/structures_sanitaire/Edit';
 import EditConsultation from './components/mainContent/consultation/EditConsultation';
 import EditDemandeConsultation from './components/mainContent/demande_consultation/EditDemandeConsultation';
+import Calendar from './components/card/Calendar';
 
 
 const cookies = new Cookies();
@@ -86,7 +87,7 @@ class App extends React.Component {
         window.$(document).ready(() =>{
             window.setTimeout( ()=> {
                 window.$("#sidebar_toggler").trigger('click');
-            }, 1000);
+            }, 500);
         })
     }
 
@@ -221,7 +222,7 @@ class App extends React.Component {
                                         <Route 
                                             path={`/schedules`} 
                                             render={ props => (
-                                                this.state.loggedIn ? <Schedule {...props} /> : <Redirect to="/login" />
+                                                this.state.loggedIn ? <Calendar {...props} /> : <Redirect to="/login" />
                                             ) } />
 
                                         <Route exact path={`/demande_consultation_new`}

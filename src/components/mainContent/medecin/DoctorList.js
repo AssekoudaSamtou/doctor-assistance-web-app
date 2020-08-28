@@ -15,7 +15,7 @@ class DoctorList extends React.Component {
   componentWillMount() {
     DoctorDataService.getAll()
       .then((response) => {
-        this.setState({ medecins: response.data.results });
+        this.setState({ medecins: response.data });
       })
       .catch((e) => {
         console.log(e);

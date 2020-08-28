@@ -19,7 +19,7 @@ const computedAge = (date_naissance) => {
 const LitteralDate = (date, format="LARGE") => {
     var d = new Date(date);
     if (format === "LARGE")
-        return `${WEEKDAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+        return `${WEEKDAYS[d.getDay()-1]} ${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
     
     if (format === "SMALL")
         return `${d.getDate()} ${SMALL_MONTHS[d.getMonth()]} ${d.getFullYear()}`;
@@ -29,6 +29,11 @@ const random_item = (items) => {
     return items[Math.floor(Math.random()*items.length)];
 }
 
+const literalHour = (date) => {
+    var d = new Date(date);
+    return `${d.getHours()}:${d.getMinutes()}`
+}
 
-export {GIRL_AVATAR, BOY_AVATAR, LitteralDate, random_item};
+
+export {GIRL_AVATAR, BOY_AVATAR, WEEKDAYS, MONTHS, LitteralDate, literalHour, random_item};
 export default computedAge;

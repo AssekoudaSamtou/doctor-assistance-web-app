@@ -5,35 +5,39 @@ const cookies = new Cookies();
 let token = "Token " + cookies.get("token");
 
 let options = {
-  headers: {
-    'Authorization': token,
-  }
+    headers: {
+        'Authorization': token,
+    }
 };
 
 class DoctorDataService {
-  getAll() {
-    return http.get("/medecins/", options);
-  }
+    getAll() {
+        return http.get("/medecins/", options);
+    }
 
-  get(id) {
-    return http.get(`/medecins/${id}/`, options);
-  }
+    get(id) {
+        return http.get(`/medecins/${id}/`, options);
+    }
 
-  create(data) {
-    return http.post("/medecins/", data, options);
-  }
+    create(data) {
+        return http.post("/medecins/", data, options);
+    }
 
-  update(id, data) {
-    return http.put(`/medecins/${id}/`, data, options);
-  }
+    update(id, data) {
+        return http.put(`/medecins/${id}/`, data, options);
+    }
 
-  delete(id) {
-    return http.delete(`/medecins/${id}/`, options);
-  }
+    delete(id) {
+        return http.delete(`/medecins/${id}/`, options);
+    }
 
-  addHospital(data) {
-    return http.post(`/medecins/add_structure_sanitaire/`, data, options);
-  }
+    addHospital(data) {
+        return http.post(`/medecins/add_structure_sanitaire/`, data, options);
+    }
+
+    getDashInfos() {
+        return http.get("/dash_infos/", options);
+    }
 }
 
 export default new DoctorDataService();
