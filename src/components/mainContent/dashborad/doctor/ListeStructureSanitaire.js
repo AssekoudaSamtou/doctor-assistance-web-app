@@ -32,7 +32,7 @@ const ListeStructureSanitaire = ({filterText, liste, onClick, owned, added}) => 
             <div className="list-hospital-title">Hopitaux Existants</div>
                 <div className="row">
                     { filteredList && filteredList.map(({denomination, adresse, id}) => (
-                        <div className="col-lg-2 col-xs-12" key={id} style={{margin: '10px 0 0 0'}}>
+                        <div className="col-lg-3 col-xs-12" key={id} style={{margin: '10px 0 0 0'}}>
                             <StructureSanitaire nom={denomination} adresse={adresse} id={id} onClick={onClick} isSelected={added.includes(id)} isOwned={false} />
                         </div>
                     ))}
@@ -55,7 +55,7 @@ const ListeStructureSanitaire = ({filterText, liste, onClick, owned, added}) => 
                 <div className="list-hospital-title">Mes Hopitaux</div>
                 <div className="row">
                     { ownedList && ownedList.map(({denomination, adresse, id}) => (
-                        <div className="col-lg-2 col-xs-12" key={id} style={{marginTop: '20px'}}>
+                        <div className="col-lg-3 col-xs-12" key={id} style={{marginTop: '20px'}}>
                             <StructureSanitaire nom={denomination} adresse={adresse} id={id} onClick={onClick} isOwned={true} />
                         </div>
                     ))}

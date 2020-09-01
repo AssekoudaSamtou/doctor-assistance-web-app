@@ -40,9 +40,6 @@
   font-size: 18px;
   font-weight: 700;
 }
-/* .calendar-header h1:hover {
-  color: aqua;
-} */
 .calendar-header p {
   margin: 5px 0 0 0;
   font-size: 13px;
@@ -69,7 +66,6 @@
   color: #000000;
   position: relative;
   /* pointer-events: none; */
-  z-index: 100;
 }
 .day:nth-of-type(7n + 7) {
   border-right: 0;
@@ -140,24 +136,19 @@
   font-size: 11px;
   position: relative;
 
-  /* text-overflow: ellipsis; */
-  /* overflow: hidden; */
+  text-overflow: ellipsis;
   height: 24px;
-  /* white-space: nowrap; */
+  white-space: nowrap;
 }
 .task--warning {
   border-left-color: #fdb44d;
-  /* grid-column: 4 / span 3;
-  grid-row: 3; */
   background: #fef0db;
   align-self: center;
   color: #fc9b10;
-  margin-top: -5px;
+  margin-top: 3px;
 }
 .task--danger {
   border-left-color: #fa607e;
-  /* grid-column: 2 / span 3;
-  grid-row: 3; */
   margin-top: 7px;
   background: rgba(253, 197, 208, 0.7);
   align-self: end;
@@ -165,8 +156,6 @@
 }
 .task--info {
   border-left-color: #4786ff;
-  /* grid-column: 6 / span 2;
-  grid-row: 5; */
   margin-top: 15px;
   background: rgba(218, 231, 255, 0.7);
   align-self: end;
@@ -176,17 +165,14 @@
   background: #4786ff;
   border: 0;
   border-radius: 4px;
-  /* grid-column: 3 / span 3;
-  grid-row: 4; */
   align-self: end;
   color: #fff;
   box-shadow: 0 10px 14px rgba(71, 134, 255, 0.4);
 }
 
 .task__container {
-  margin: 26px 0 0 0;
+  margin: 28px 0 0 0;
   overflow-y: scroll;
-  z-index: 110;
 }
 .task__container::-webkit-scrollbar {
   width: 0px;
@@ -210,12 +196,13 @@
   left: 0;
   top: calc(100% + 10px);
   background: #fff;
-  border: 1px solid rgba(166, 168, 179, 0.2);
+  border-left: 5px solid rgb(230 13 13 / 20%);
+  background: antiquewhite;
   color: #000;
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   box-sizing: border-box;
   border-radius: 4px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  /* width: 300px; */
   z-index: 2;
 }
 .task__detail:after, .task__detail:before {
@@ -239,13 +226,14 @@
   margin-left: -6px;
 }
 .task__detail h2 {
+  font-weight: 700;
   font-size: 15px;
   margin: 0;
   color: #51565d;
 }
 .task__detail p {
-  margin-top: 4px;
-  font-size: 12px;
+  margin-top: 7px;
+  font-size: 15px;
   margin-bottom: 0;
   font-weight: 500;
   color: rgba(81, 86, 93, 0.7);
@@ -261,7 +249,7 @@
 }
 .new-appointment-modal .first-child {
     width: 500px;
-    height: 300px;
+    height: 250px;
     margin-left: 25%;
     text-align: center;
     background: #e1eaf3;
@@ -274,11 +262,11 @@
 }
 .show-modal {
     top: 250px;
-    animation: slide-top-to-down 1s ease-in-out;
+    animation: slide-top-to-down .4s ease-in-out;
 }
 .hide-modal {
     top: -400px;
-    animation: slide-down-to-top 1s ease-in-out;
+    animation: slide-down-to-top .4s ease-in-out;
 }
 @keyframes slide-top-to-down {
     from { top: -400px; }
@@ -296,13 +284,30 @@
 }
 .new-appointment-btn {
   width: 100px;
-  margin: 50px auto;
+  margin: 30px auto;
   background: bisque;
   border-radius: 28px;
   padding: 8px 0;
   cursor: pointer;
   font-weight: 700;
-  -webkit-box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.75);
-  -moz-box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.75);
-  box-shadow: 0px 5px 11px 1px rgba(0,0,0,0.75);
+  -webkit-box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.75);
+  box-shadow: 0px 3px 3px 1px rgba(0,0,0,0.75);
+}
+.new-appointment-btn:active {
+  box-shadow: 0px -3px 3px 1px rgba(0,0,0,0.75);
+}
+.task__detail__actions {
+  margin: 14px 0 0 0;
+  border-top: 1px solid #c7c1c1;
+}
+.task__detail__action {
+  padding: 5px 15px;
+  cursor: pointer;
+}
+.task__detail__action:active {
+  background: #e9eef399;
+}
+.task__detail__action:first-child {
+  border-right: 1px solid #c7c1c1;
 }

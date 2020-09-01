@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 import DoctorDetailForm from "./DoctorDetailForm";
 import patientIcon from '../../../../data/icons/gradient/icons8-fever-96.png';
 import DashboardResumeItem from "../../../card/dashboard-resume-item";
-import { BOY_AVATAR, random_item, literalHour } from "../../../../utils";
+import { BOY_AVATAR, random_item, literalHour, LitteralDate } from "../../../../utils";
 import DoctorDataService from "../../../../services/doctor.service";
 import { Link } from "react-router-dom";
 
@@ -37,14 +37,15 @@ class DoctorDashboard extends React.Component {
                 total: 0,
                 actuel: 0,
                 liste: []
-            }
+            },
+            orderedRDVs: {}
         };
     }
 
     componentWillMount() {
         DoctorDataService.getDashInfos()
         .then((response) => {
-            this.setState(response.data);
+            this.setState(response.data, this.getOrderedRDVs);
         })
         .catch((e) => {
             console.log(e);
@@ -127,7 +128,31 @@ class DoctorDashboard extends React.Component {
             var ctxb = document.getElementById("patient-incoming-chartjs").getContext("2d");
             new window.Chart(ctxb).Bar(patientsIncomingChartData);
         }
-    };
+    }
+
+    getOrderedRDVs = () => {
+        var rdvs = {};
+
+        this.state.rdv.liste.map( (rdv) => {
+            var date = new Date(rdv.date_consultation);
+            var key = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+
+            if ( rdvs.hasOwnProperty(key) ) {
+                rdvs[key].push(rdv);
+            }
+            else {
+                rdvs[key] = [rdv];
+            }
+        });
+
+        console.log(rdvs);
+        this.setState({orderedRDVs: rdvs});
+    }
+
+    getDateKey = (date) => {
+        date = new Date(date);
+        return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+    }
 
     render() {
         const borderColors = ['#2acd72', '#f46bd7', '#ffc04f', '#07c7e0'];
@@ -229,69 +254,83 @@ class DoctorDashboard extends React.Component {
                             </div>
                         </div>
                         <div className="col-lg-3" id="appointments">
-                            {/* <div> */}
-                                <div className="appointment-day today-appointment">
-                                    <div className="appointment-day-header row">
-                                        <div className="col-lg-8"><span>Rendez-vous</span></div>
-                                        <div className="col-lg-4" style={{padding: '0 5px'}}><span className="appointment-date">AUJOURD'HUI</span></div>
-                                    </div>
-                                    <div className="appointment-day-content">
-                                        { this.state.rdv.liste.map( (rdv) => (
-                                            <div className="item" key={rdv.id}>
-                                                <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
-                                                    {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
-                                                        <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
-                                                    </div> */}
-                                                    <div className="col-lg-12" style={{ background: 'white' }}>
-                                                        <div className="nom-motif">
-                                                            <span> { rdv.patient.nom} </span>
-                                                            <span> - </span>
-                                                            <span> { rdv.hopital.denomination} </span>{/* MOTIF DE CONSULTATION */}
-                                                        </div>
-                                                        <div className="heure">
-                                                            <span>{literalHour(rdv.date_consultation)} </span>
-                                                            <span> . </span>
-                                                            <span> 30 Mins </span>
-                                                        </div>
-                                                        <div style={{padding: "0 0 0 0"}}>
-                                                            <Link to={`/patients_details/${rdv.patient.id}`} className="appointment-action">HISTORIQUE MEDICAL</Link>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                            
-                                    </div>
+                            
+                            <div className="appointment-day today-appointment">
+                                <div className="appointment-day-header row">
+                                    <div className="col-lg-8"><span>Rendez-vous</span></div>
+                                    <div className="col-lg-4" style={{padding: '0 5px'}}><span className="appointment-date">AUJOURD'HUI</span></div>
                                 </div>
-
-                                <div className="appointment-day">
-                                    <div className="appointment-day-header row">
-                                        <div className="col-lg-8"><span>Rendez-vous passés</span></div>
-                                        <div className="col-lg-4" style={{padding: '0 5px'}}><span className="appointment-date">21 Dec 2020</span></div>
-                                    </div>
-                                    <div className="appointment-day-content">
-                                        <div className="item">
-                                            <div className="row" style={{borderLeft: `1px solid #6565653b`}}>
+                                <div className="appointment-day-content" style={{height: '300px'}}>
+                                    { this.state.orderedRDVs[this.getDateKey(new Date())] && this.state.orderedRDVs[this.getDateKey(new Date())].map( (rdv) => (
+                                        <div className="item" key={rdv.id}>
+                                            <div className="row" style={{borderLeft: `2px solid ${random_item(borderColors)}`}}>
+                                                {/* <div className="col-lg-2" style={{padding: 0, background: 'white'}}>
+                                                    <div className="avatar" style={{backgroundImage: `url(${BOY_AVATAR})`}}></div>
+                                                </div> */}
                                                 <div className="col-lg-12" style={{ background: 'white' }}>
                                                     <div className="nom-motif">
-                                                        <span>Veronica </span>
+                                                        <span> { rdv.patient.nom} </span>
                                                         <span> - </span>
-                                                        <span> Control Général </span>
+                                                        <span> { rdv.hopital.denomination} </span>{/* MOTIF DE CONSULTATION */}
                                                     </div>
                                                     <div className="heure">
-                                                        <span>14:45 </span>
+                                                        <span>{literalHour(rdv.date_consultation)} </span>
                                                         <span> . </span>
                                                         <span> 30 Mins </span>
                                                     </div>
-                                                    <div style={{padding: "0 0 0 0"}}>
-                                                        <span className="appointment-action" style={{color: 'gray'}}>HISTORIQUE MEDICAL</span>
+                                                    <div style={{padding: "5px 0 5px 0"}}>
+                                                        <Link to={`/patients_details/${rdv.patient.id}`} className="appointment-action">HISTORIQUE MEDICAL</Link>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    ))}
+                                        
                                 </div>
-                            {/* </div> */}
+                            </div>
+                            
+
+                            { Object.keys(this.state.orderedRDVs).map( (key) => {
+                                
+                                return (
+                                    <div className="appointment-day">
+                                        <div className="appointment-day-header row">
+                                            <div className="col-lg-8"><span>Rendez-vous passés</span></div>
+                                            <div className="col-lg-4" style={{padding: '0 5px'}}><span className="appointment-date">{LitteralDate(key, "SMALL")}</span></div>
+                                        </div>
+                                        <div className="appointment-day-content">
+
+                                            { this.state.orderedRDVs[key].map( (rdv) => {
+                                                return (
+                                                    <div className="item">
+                                                        <div className="row" style={{borderLeft: `1px solid #6565653b`}}>
+                                                            <div className="col-lg-12" style={{ background: 'white' }}>
+                                                                <div className="nom-motif">
+                                                                    <span>Veronica </span>
+                                                                    <span> - </span>
+                                                                    <span> Control Général </span>
+                                                                </div>
+                                                                <div className="heure">
+                                                                    <span>14:45 </span>
+                                                                    <span> . </span>
+                                                                    <span> 30 Mins </span>
+                                                                </div>
+                                                                <div style={{padding: "5px 0 5px 0"}}>
+                                                                    <span className="appointment-action" style={{color: 'gray'}}>HISTORIQUE MEDICAL</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
+                                                    
+                                        </div>
+                                    </div>
+                                )
+                                
+                            })}
+                                
+                            
                         </div>
                     </div>
                 </div>
