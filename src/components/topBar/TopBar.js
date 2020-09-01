@@ -11,7 +11,7 @@ import TopnavItem from './topnavItem/TopnavItem';
 import TopNavSearchForm from './topnavSearchForm/TopNavSearchForm';
 import Cookies from 'universal-cookie';
 import { Link } from 'react-router-dom';
-import {GIRL_AVATAR, BOY_AVATAR, LitteralDate} from '../../utils';
+import {GIRL_AVATAR, BOY_AVATAR, LitteralDate, literalHour} from '../../utils';
 import { Avatar } from 'avataaars';
 
 const cookies = new Cookies();
@@ -71,7 +71,7 @@ const TopBar = () => {
                         <li className="now-date">
                             <div>
                                 <i className="fa fa-clock"></i>
-                                <span> {(new Date()).getHours()}:{(new Date()).getMinutes()} </span>
+                                <span> {literalHour(new Date())} </span>
                             </div>
                         </li>
 

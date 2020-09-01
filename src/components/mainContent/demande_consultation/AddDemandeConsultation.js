@@ -21,7 +21,7 @@ class AddDemandeConsultation extends React.Component {
             medecin: cookies.get("loggedUser").id,
             status: null,
             patient: null,
-            medecin_centre_medical: null,
+            centre_medical: null,
             },
             submitted: false,
             isSubmitting: false,
@@ -53,7 +53,7 @@ class AddDemandeConsultation extends React.Component {
     this.setState({
         demmande_consultation: {
         status: 1,
-        medecin_centre_medical: -1,
+        centre_medical: -1,
         patient: -1,
         },
     });
@@ -128,7 +128,7 @@ class AddDemandeConsultation extends React.Component {
         fields: [
           {
             type: "select",
-            name: "medecin_centre_medical",
+            name: "centre_medical",
             label: "Centre medical",
             selectOptions: CenterSelectOptions,
           },

@@ -31,9 +31,17 @@ const random_item = (items) => {
 
 const literalHour = (date) => {
     var d = new Date(date);
-    return `${d.getHours()}:${d.getMinutes()}`
+    return `${fillZero(d.getHours(), 2)}:${fillZero(d.getMinutes(), 2)}`
+}
+
+const fillZero = (value, size) => {
+    value = value + '';
+    while( value.length < size ) {
+        value = "0" + value;
+    }
+    return value;
 }
 
 
-export {GIRL_AVATAR, BOY_AVATAR, WEEKDAYS, MONTHS, LitteralDate, literalHour, random_item};
+export {GIRL_AVATAR, BOY_AVATAR, WEEKDAYS, MONTHS, LitteralDate, literalHour, random_item, fillZero};
 export default computedAge;

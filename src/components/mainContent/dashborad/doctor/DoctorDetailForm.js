@@ -114,8 +114,8 @@ class DoctorDetailForm extends React.Component {
     }
 
     mustComplete() {
-        return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
-        // return false;
+        // return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
+        return false;
     }
     handleSpecialiteClik(id) {
         const selector = `#pills-tab4 .r4_counter_.db_box`;
