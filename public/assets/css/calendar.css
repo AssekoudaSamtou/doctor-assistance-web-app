@@ -31,6 +31,10 @@
   margin: 0 10px 0 10px;
   color: #dae7ffb3;
   cursor: pointer;
+  width: 40px;
+  height: 40px;
+  background: #b1a9a9;
+  border-radius: 50%;
 }
 .calendar-header .month-chevron:hover {
   color: aqua;
@@ -115,7 +119,7 @@
   line-height: 50px;
   font-weight: 500;
   position: relative;
-  z-index: 100;
+  /* z-index: 100; */
   background: aquamarine;
   color: black;
   font-weight: bold;

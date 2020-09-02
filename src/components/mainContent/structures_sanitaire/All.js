@@ -22,10 +22,9 @@ class HopitalList extends React.Component {
     componentWillMount() {
         StructureSanitaireDataService.getMine()
         .then(response => {
-            console.log(response.data.results);
             this.setState({hopitals: response.data});
         }).catch(e => {
-            console.log(e);
+            window.showErrorMessage("Echec !!!")
         });
     }
 
@@ -39,7 +38,6 @@ class HopitalList extends React.Component {
             this.setState({ hopitals: response.data });
         })
         .catch((e) => {
-            console.log(e);
             window.showErrorMessage("Something went wrong!!!");
         });
     } else if (owner === doctor_id) {
@@ -49,7 +47,6 @@ class HopitalList extends React.Component {
             this.setState({ hopitals: response.data });
         })
         .catch((e) => {
-            console.log(e);
             window.showErrorMessage("Something went wrong!!!");
         });
     }
@@ -66,16 +63,10 @@ class HopitalList extends React.Component {
                 <PageTitle title="Toutes Les Structures Sanitaires" />
                 
                 <div className="row">
-                    { this.state.hopitals !== null && this.state.hopitals.map(({denomination, adresse, id, email, description, owner, telephone}) => 
-                        <div className="col-xs-12 col-lg-3 structure-sanitaire-column" key={id}>
+                    { this.state.hopitals !== null && this.state.hopitals.map((hopital) => 
+                        <div className="col-xs-12 col-lg-3 structure-sanitaire-column" key={hopital.id}>
                             <HospitalItem 
-                                nom={denomination} 
-                                id={id} 
-                                email={email} 
-                                description={description} 
-                                owner={owner} 
-                                telephone={telephone} 
-                                adresse={adresse}
+                                data={hopital}
                                 onDeleteClick={this.delete}
                                 onEditClick={this.edit}
                                 onSeeClick={this.seeDetails}

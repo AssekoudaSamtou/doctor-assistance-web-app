@@ -1,5 +1,5 @@
 import React from "react";
-import {WEEKDAYS, MONTHS, LitteralDate, literalHour, fillZero} from "../../utils";
+import {WEEKDAYS, MONTHS, LitteralDate, literalHour, fillZero, BOY_AVATAR, GIRL_AVATAR} from "../../utils";
 import CustomSelect from "./CustomSelect";
 import PatientDataService from "../../services/patient.service";
 import HospitalService from "../../services/structureSanitaire.service";
@@ -315,7 +315,7 @@ class Calendar extends React.Component {
                                             {
                                                 id: patient.id, 
                                                 value: `${patient.nom} ${patient.prenom}`, 
-                                                photo: patient.photo
+                                                photo: patient.photo ? patient.photo : patient.genre === "M" ? BOY_AVATAR : GIRL_AVATAR
                                             }
                                         )) }
                                         withAvatar={1} default="---Selectioner un patient---" 

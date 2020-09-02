@@ -69,49 +69,23 @@ class AddPatient extends React.Component {
         var formData = new FormData();
         var data = {
             doctor: loggedDoctor.id,
-            nom: this.state.patient.nom,
-            prenom: this.state.patient.prenom,
-            adresse: this.state.patient.adresse,
-            telephone: this.state.patient.telephone,
-            date_naissance: this.state.patient.date_naissance,
-            genre: this.state.patient.genre,
-            groupage: this.state.patient.groupage,
-            maladies: this.state.patient.maladies,
-            allergies: this.state.patient.allergies,
-            habitude_alimentaires: this.state.patient.habitude_alimentaires,
-            photo: this.state.patient.photo,
+            ...this.state.patient,
         };
 
         for ( var key in data ) {
             formData.append(key, data[key]);
         }
 
-        PatientDataService.create(this.state.patient.photo ? formData : data, this.state.patient.photo !== null)
+        var isFormData = this.state.patient.photo !== null && typeof this.state.patient.photo === "object";
+
+        PatientDataService.create(isFormData ? formData : data, isFormData)
         .then(response => {
-            this.cleanup();
-            console.log(response.data, this.state.submitted);
             window.showSuccess('Votre patient a été enrégistrer avec succès');
             this.props.history.push(`/patients_details/${response.data.id}`);
         })
         .catch(e => {
-            console.log(e.response);
             window.showErrorMessage('Something went wrong');
         });
-    }
-
-    cleanup() {
-    this.setState({
-        patient: {
-        id: null,
-        nom: null,
-        prenom: null,
-        adresse: null,
-        telephone: null,
-        date_naissance: null,
-        genre: null,
-        },
-    });
-    // this.setState({ submitted: true });
     }
 
   render() {

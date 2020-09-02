@@ -59,7 +59,6 @@ class DoctorDetailForm extends React.Component {
         data["last_name"] = this.state.prenom;
 
         window.$("#pills .finish").text("sending....").addClass("disabled");
-        // window.setTimeout(()=>{console.log("waiting")}, 1000000);
         DoctorDataService.update(data["id"], data)
             .then((response) => {
             cookies.set("loggedUser", response.data);
@@ -114,8 +113,8 @@ class DoctorDetailForm extends React.Component {
     }
 
     mustComplete() {
-        // return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
-        return false;
+        return this.state.nom && this.state.prenom && this.state.genre && this.state.date_naissance && this.state.specialite;
+        // return false;
     }
     handleSpecialiteClik(id) {
         const selector = `#pills-tab4 .r4_counter_.db_box`;
@@ -131,7 +130,6 @@ class DoctorDetailForm extends React.Component {
             .css("color", "white");
 
         this.state.specialite = id;
-        console.log(this.state.specialite);
     }
 
   render() {

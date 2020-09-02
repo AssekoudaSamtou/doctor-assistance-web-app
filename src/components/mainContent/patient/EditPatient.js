@@ -46,12 +46,12 @@ class EditPatient extends React.Component {
         
         PatientDataService.get(params.id)
         .then(response => {
-            console.log(response.data);
+            
             this.setState({patient: {...response.data}, photo_preview: response.data.photo ? response.data.photo : (response.data.genre === "M" ? BOY_AVATAR : GIRL_AVATAR)});
-            this.loadImageFromURL(response.data.photo);
+            
         }).catch(e => {
             this.setState({patient: {...this.state.patient, id: 0}});
-            console.log(e);
+            window.showErrorMessage("Echec !!!")
         });
     }
 
@@ -94,32 +94,22 @@ class EditPatient extends React.Component {
         var formData = new FormData();
         var data = {
             doctor: loggedDoctor.id,
-            nom: this.state.patient.nom,
-            prenom: this.state.patient.prenom,
-            adresse: this.state.patient.adresse,
-            telephone: this.state.patient.telephone,
-            date_naissance: this.state.patient.date_naissance,
-            genre: this.state.patient.genre,
-            groupage: this.state.patient.groupage,
-            maladies: this.state.patient.maladies,
-            allergies: this.state.patient.allergies,
-            habitude_alimentaires: this.state.patient.habitude_alimentaires,
-            photo: this.state.patient.photo,
-        };
+            ...this.state.patient,
+        }
 
         for ( var key in data ) {
             formData.append(key, data[key]);
         }
     
-        PatientDataService.update(this.state.patient.id, this.state.patient.photo ? formData : data, this.state.patient.photo !== null)
+        var isFormData = this.state.patient.photo !== null && typeof this.state.patient.photo === "object";
+        
+        PatientDataService.update(this.state.patient.id,  isFormData ? formData : data, isFormData)
             .then(response => {
                 this.setState({ patient: { ...response.data } });
-                console.log(response.data);
                 window.showSuccess('Your patient has been saved successfuly');
                 this.props.history.push("/patients_details/" + this.state.patient.id);
             })
             .catch(e => {
-                console.log(e);
                 window.showErrorMessage('Something went wrong');
             });
     }
@@ -236,8 +226,8 @@ class EditPatient extends React.Component {
                 )}
 
             </div>
-    );
-  }
+        );
+    }
 }
 
 export default EditPatient;

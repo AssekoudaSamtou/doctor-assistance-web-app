@@ -83,8 +83,8 @@ class Login extends React.Component {
                                 <div className="login-form-header">
                                     <img src={padlock} alt="login-icon" style={{maxWidth:'64px'}}/>
                                     <div className="login-header">
-                                        <h4 className="bold color-white">Login Now!</h4>
-                                        <h4><small>Please enter your credentials to login.</small></h4>
+                                        <h4 className="bold color-white">Identifiez-vous maintenant !</h4>
+                                        <h4><small>Veuillez saisir vos identifiants pour vous connecter.</small></h4>
                                     </div>
                                 </div>
                             
@@ -98,21 +98,21 @@ class Login extends React.Component {
 
                                                     <FormBoxItem 
                                                         type="text"
-                                                        label="Username"
+                                                        label="Nom d'utilisateur"
                                                         onInputChange={this.handleInputChange}
                                                         name="username"
                                                         value={this.state.username}/>
                                                     
                                                     <FormBoxItem 
                                                         type="password"
-                                                        label="Password" 
+                                                        label="Mot de passe" 
                                                         onInputChange={this.handleInputChange}
                                                         name="password"
                                                         value={this.state.password}/>
 
                                                     <div className="pull-left">
-                                                        <a onClick={this.login} className="btn btn-primary mt-10 btn-corner right-15">Log in</a>
-                                                        <Link to="/signup" className="btn mt-10 btn-corner signup" title="Sign In" >Sign Up</Link>
+                                                        <a onClick={this.login} className="btn btn-primary mt-10 btn-corner right-15">Se connecter</a>
+                                                        <Link style={{color: "white"}} to="/signup" className="btn mt-10 btn-corner signup" title="Sign In" >S'inscrire</Link>
                                                     </div>
 
                                                 </div>
@@ -122,8 +122,8 @@ class Login extends React.Component {
                                 </div>
 
                                 <p id="nav">
-                                    <Link to="#" className="pull-left" title="Password Lost and Found" >Forgot password?</Link>
-                                    <Link to="/signup" className="pull-right" title="Sign In" >Sign Up</Link>
+                                    {/* <Link to="#" className="pull-left" title="Password Lost and Found" >Forgot password?</Link> */}
+                                    {/* <Link to="/signup" className="pull-right" title="Sign In" >{""} Sign Up </Link> */}
                                 </p>
 
                             </div>

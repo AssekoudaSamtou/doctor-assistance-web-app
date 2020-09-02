@@ -129,8 +129,8 @@ class Login extends React.Component {
                                 <div className="login-form-header">
                                     <img src={signup} alt="login-icon" style={{maxWidth:'64px'}}/>
                                     <div className="login-header">
-                                        <h4 className="bold color-white">Signup Now!</h4>
-                                        <h4><small>Please enter your data to register.</small></h4>
+                                        <h4 className="bold color-white">Inscrivez-vous maintenant !</h4>
+                                        <h4><small>Veuillez saisir vos données pour vous inscrire.</small></h4>
                                     </div>
                                 </div>
                             
@@ -179,16 +179,16 @@ class Login extends React.Component {
                                             </div>
 
                                             <div className="pull-left">
-                                                <a onClick={this.handleSignInClicked} className="btn btn-primary mt-10 btn-corner right-15">Sign up</a>
-                                                <a  className="btn mt-10 btn-corner signup">Log in</a>
+                                                <a onClick={this.handleSignInClicked} className="btn btn-primary mt-10 btn-corner right-15">S'inscrire</a>
+                                                <Link style={{color: "white"}} to="/login" className="btn mt-10 btn-corner signin" title="log in" >Se connecter</Link>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
 
                                 <p id="nav">
-                                    <Link to="#" className="pull-left" title="Password Lost and Found" >Forgot password?</Link>
-                                    <Link to="/login" className="pull-right" title="Sign In" >Login</Link>
+                                    {/* <Link to="#" className="pull-left" title="Password Lost and Found" >Forgot password?</Link>
+                                    <Link to="/login" className="pull-right" title="Sign In" >Login</Link> */}
                                 </p>
 
                             </div>
