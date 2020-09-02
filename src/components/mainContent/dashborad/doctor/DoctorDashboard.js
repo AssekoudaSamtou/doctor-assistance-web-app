@@ -4,6 +4,9 @@ import PageTitle from "../../../card/PageTitle";
 import Cookies from "universal-cookie";
 import DoctorDetailForm from "./DoctorDetailForm";
 import patientIcon from '../../../../data/icons/gradient/icons8-fever-96.png';
+import patientIcon2 from '../../../../data/icons/gradient/icons8-hand-with-a-pill-96.png';
+import patientIcon3 from '../../../../data/icons/gradient/icons8-hospital-bed-96.png';
+import patientIcon4 from '../../../../data/icons/gradient/icons8-t-shirt-96.png';
 import DashboardResumeItem from "../../../card/dashboard-resume-item";
 import { BOY_AVATAR, random_item, literalHour, LitteralDate } from "../../../../utils";
 import DoctorDataService from "../../../../services/doctor.service";
@@ -159,7 +162,7 @@ class DoctorDashboard extends React.Component {
         
         return (
             <div>
-                <PageTitle title="Tableau de board" />
+                {/* <PageTitle title="Tableau de board" /> */}
 
                 <div>
                     <div className="row">
@@ -168,7 +171,7 @@ class DoctorDashboard extends React.Component {
                                 
                                 <DashboardResumeItem 
                                     title="Total Patients" 
-                                    value={this.state.patients.total} icon={patientIcon} 
+                                    value={this.state.patients.total} icon={patientIcon4} 
                                     footer={{label: "Total nouveau patient", value: this.state.patients.new}} 
                                     style={{
                                         backgroundImage: "linear-gradient(to right bottom, #00d0c2, #1fd3c6, #2fd6ca, #3bd9ce, #46dcd2)",
@@ -177,7 +180,7 @@ class DoctorDashboard extends React.Component {
                                 />
                                 <DashboardResumeItem 
                                     title="Total Consultations" 
-                                    value={this.state.consultations.total} icon={patientIcon} 
+                                    value={this.state.consultations.total} icon={patientIcon2} 
                                     footer={{label: "Consultation à venir", value: this.state.consultations.a_venir}} 
                                     style={{
                                         backgroundImage: "linear-gradient(to right top, #6e8df2, #6686f1, #5e7ff1, #5578f0, #4d71ef)",
@@ -187,7 +190,7 @@ class DoctorDashboard extends React.Component {
                                 <DashboardResumeItem 
                                     title="Rendez-vous" 
                                     value={this.state.rdv.total} icon={patientIcon} 
-                                    footer={{label: "Rendez-vous d'aujourd'hui", value: this.state.rdv.actuel}} 
+                                    footer={{label: "Rendez-vous d'aujourd'hui", value: this.state.orderedRDVs[this.getDateKey(new Date())] ? this.state.orderedRDVs[this.getDateKey(new Date())].length : 0}} 
                                     style={{
                                         backgroundImage: "linear-gradient(to right top, #f29d6e, #f29765, #f1915d, #f18b54, #f0854c)",
                                         boxShadow: "0px 0px 15px 0px #F29D6E"
@@ -288,32 +291,31 @@ class DoctorDashboard extends React.Component {
                                         
                                 </div>
                             </div>
-                            
 
                             { Object.keys(this.state.orderedRDVs).map( (key) => {
                                 
                                 return (
-                                    <div className="appointment-day">
+                                    <div key={key} className="appointment-day">
                                         <div className="appointment-day-header row">
-                                            <div className="col-lg-8"><span>Rendez-vous passés</span></div>
-                                            <div className="col-lg-4" style={{padding: '0 5px'}}><span className="appointment-date">{LitteralDate(key, "SMALL")}</span></div>
+                                            <div className="col-lg-7"><span>Rendez-vous passés</span></div>
+                                            <div className="col-lg-5" style={{padding: '0 5px'}}><span className="appointment-date">{LitteralDate(key, "SMALL")}</span></div>
                                         </div>
                                         <div className="appointment-day-content">
 
                                             { this.state.orderedRDVs[key].map( (rdv) => {
                                                 return (
-                                                    <div className="item">
+                                                    <div key={rdv.id} className="item">
                                                         <div className="row" style={{borderLeft: `1px solid #6565653b`}}>
                                                             <div className="col-lg-12" style={{ background: 'white' }}>
                                                                 <div className="nom-motif">
-                                                                    <span>Veronica </span>
+                                                                    <span>{ rdv.patient.nom} </span>
                                                                     <span> - </span>
-                                                                    <span> Control Général </span>
+                                                                    <span> { rdv.hopital.denomination} </span>
                                                                 </div>
                                                                 <div className="heure">
-                                                                    <span>14:45 </span>
-                                                                    <span> . </span>
-                                                                    <span> 30 Mins </span>
+                                                                    <span>{literalHour(rdv.date_consultation)} </span>
+                                                                    {/* <span> . </span> */}
+                                                                    {/* <span> 30 Mins </span> */}
                                                                 </div>
                                                                 <div style={{padding: "5px 0 5px 0"}}>
                                                                     <span className="appointment-action" style={{color: 'gray'}}>HISTORIQUE MEDICAL</span>
@@ -329,8 +331,7 @@ class DoctorDashboard extends React.Component {
                                 )
                                 
                             })}
-                                
-                            
+
                         </div>
                     </div>
                 </div>

@@ -1205,7 +1205,7 @@ a:hover, a:focus {
 
 section.box {
     background-color: #ffffff;
-    margin: 15px 0;
+    margin: 15px 0 0 0;
     display: inline-block;
     width: 100%;
     overflow: hidden;
@@ -1219,21 +1219,22 @@ section header {
     border-bottom: 0px solid transparent;
     vertical-align: top;
     position: relative;
-    min-height: 75px;
+    /* min-height: 75px; */
 }
 section header .title {
-    margin-top: 10px;
+    /* margin-top: 10px; */
     font-family: 'Roboto', Arial, Helvetica, sans-serif;
     font-size: 18px;
     padding-left: 20px;
-    padding-top: 15px;
+    /* padding-top: 15px; */
     line-height: 30px;
     color: #676767;
     font-weight: 400;
     display: inline-block;
+    margin: 5px 0 0 0;
 }
 section .content-body {
-    padding: 5px 20px 30px 20px;
+    padding: 5px 20px 0px 20px;
     border: 1px solid #e8e8e8;
     border-top: 0px;
     -webkit-transition: 800ms;

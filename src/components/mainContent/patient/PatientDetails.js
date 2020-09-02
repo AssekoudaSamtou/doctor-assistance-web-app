@@ -188,7 +188,7 @@ class PatientDetails extends React.Component {
             taille = window.parseFloat(consultation.constantes.taille) / 100;
             IMCs.push((masse / (taille * taille)).toFixed(2));
         }
-        console.log(IMCs);
+        // console.log(IMCs);
         return IMCs;
     };
 

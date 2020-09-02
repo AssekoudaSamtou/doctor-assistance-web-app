@@ -20,7 +20,6 @@ class PatientDataService {
     }
 
     create(data, isFormData=false) {
-        console.log(isFormData);
         if (isFormData)
             return http.post("/patients/", data, {...options, "Content-type": "multipart/form-data; boundary=63c5979328c44e2c869349443a94200e"});
         return http.post("/patients/", data, options);
@@ -31,7 +30,9 @@ class PatientDataService {
         return http.post("count/patients/", data, options);
     }
 
-    update(id, data) {
+    update(id, data, isFormData=false) {
+        if (isFormData)
+            return http.put(`/patients/${id}/`, data, {...options, "Content-type": "multipart/form-data; boundary=63c5979328c44e2c869349443a94200e"});
         return http.put(`/patients/${id}/`, data, options);
     }
 

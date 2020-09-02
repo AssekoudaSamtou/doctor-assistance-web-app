@@ -15,7 +15,7 @@ class FormBoxItem extends React.Component {
             window.$(document).ready( () => {
                 window.$(`#${this.props.name}-control`).find('input[data-role="tagsinput"]').first().tagsinput();
                 var taginput = window.$(`#${this.props.name}-control`).find(".bootstrap-tagsinput").find("input").first();
-                console.log(taginput);
+                // console.log(taginput);
                 taginput.keyup(() => {
                     this.handleTagsInputChange(this.props.name, window.$(`#${this.props.name}-control`).find('input[data-role="tagsinput"]').first().val());
                 });
