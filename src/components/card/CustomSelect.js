@@ -4,14 +4,26 @@ import { BOY_AVATAR } from "../../utils";
 class CustomSelect extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             selectedOption: null
         };
     }
 
-    componentDidMount() {
-        
+    componentWillReceiveProps(nextProps) {
+        var selectedOption = null;
+        if (nextProps.value !== 0) {
+            for (let option of nextProps.options) {
+                if (parseInt(nextProps.value) === option.id) {
+                    selectedOption = option;
+                    break;
+                }
+            }
+            this.setState({selectedOption: selectedOption});
+        }
     }
+
+    componentDidMount() {}
 
     isMobileDevice = () => {
         return (typeof window.orientation !== "undefined") || (navigator.userAgent.indexOf('IEMobile') !== -1);
@@ -121,22 +133,22 @@ class CustomSelect extends React.Component {
                     ))}
 				</select>
 
-                <p className="selecionado_opcion" onClick={ this.open_select } data-n-select={this.props.value}>{this.props.default}</p>
-				
-                {/* { this.props.value === 0 ? (
+                { this.props.value === 0 ? (
                     <p className="selecionado_opcion" onClick={ this.open_select } data-n-select={this.props.value}>{this.props.default}</p>
                 ) : (
-                    <p className="selecionado_opcion" onClick={ this.open_select } data-n-select={this.props.value}>
-                        <div>
-                            <div className="avatar-box">
-                                <div>
-                                    <img src={option.photo ? option.photo : BOY_AVATAR} />
+                    <div className="selecionado_opcion" onClick={ this.open_select } data-n-select={this.props.value}>
+                        { this.props.withAvatar ? (
+                            <div>
+                                <div className="avatar-box">
+                                    <div>
+                                        <img src={ this.state.selectedOption ? this.state.selectedOption.photo : undefined } />
+                                    </div>
                                 </div>
+                                <div className="content"> { this.state.selectedOption ? this.state.selectedOption.value : "" } </div>
                             </div>
-                            <div className="content"> {option.value} </div>
-                        </div>
-                    </p>
-                )} */}
+                        ) : ( this.state.selectedOption ? this.state.selectedOption.value : "" )}
+                    </div>
+                )}
                 
 				
                 <span className="icon_select_mate" onClick={ this.open_select } data-n-select={this.props.value} style={{transform: 'rotate(0deg)'}}>

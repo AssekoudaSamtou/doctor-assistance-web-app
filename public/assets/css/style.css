@@ -1627,7 +1627,7 @@ section.box .actions a:hover {
 .add-header-wrapper{
     position: relative;
     overflow: hidden;
-    padding: 50px 30px 80px
+    padding: 3px 30px 30px;
 }
 .add-header-wrapper p{
     width: 80%;
@@ -11755,8 +11755,9 @@ table.dataTable.display tbody tr:first-child td {
     margin: auto;
   }
   .avatar-upload .avatar-preview {
-    width: 192px;
-    height: 192px;
+    margin: auto;
+    width: 150px;
+    height: 150px;
     position: relative;
     border-radius: 100%;
     border: 6px solid #F8F8F8;

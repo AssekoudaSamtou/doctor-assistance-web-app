@@ -36,7 +36,6 @@ class AddPatient extends React.Component {
         };
         this.handleInputChange = this.handleInputChange.bind(this)
         this.savePatient = this.savePatient.bind(this)
-        this.cleanup = this.cleanup.bind(this)
     }
     handleInputChange(name, value) {
         // const { name, value } = event.target;
