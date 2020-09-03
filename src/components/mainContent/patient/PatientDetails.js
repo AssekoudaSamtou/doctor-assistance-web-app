@@ -280,7 +280,7 @@ class PatientDetails extends React.Component {
                                                 </a>
                                             </div>
                                             
-                                            <div className="modal fade col-xs-12" id="cmpltadminModal-7" tabIndex="-1" role="dialog" aria-hidden="true">
+                                            {/* <div className="modal fade col-xs-12" id="cmpltadminModal-7" tabIndex="-1" role="dialog" aria-hidden="true">
                                                 <div className="modal-dialog" style={{width:"80%"}}>
                                                     <div className="modal-content">
                                                         <div className="modal-header">
@@ -295,7 +295,7 @@ class PatientDetails extends React.Component {
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     
                                     </div>

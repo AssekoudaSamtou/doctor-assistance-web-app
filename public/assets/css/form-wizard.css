@@ -170,10 +170,10 @@ span.round-tab:hover {
 }
 .ordonnance-item {
     height: 200px;
-    padding: 35px 0;
+    /* padding: 35px 0; */
     border: 2px solid #4e86e3;
     border-radius: 10px;
-    margin: auto;
+    margin: 10px auto;
     width: 70%
 }
 .ordonnance-item div {
@@ -186,18 +186,14 @@ span.round-tab:hover {
 }
 .left-action {
     float: left;
-    /* position: relative;
-    right: 40px;
-    transition: right .30s ease-in-out ; */
+    border-radius: 0px 10px 10px 0px;
 }
 .right-action {
     float: right;
-    /* position: relative;
-    left: 40px;
-    transition: all .30s ease-in-out ; */
+    border-radius: 10px 0px 0 10px;
 }
 .ordonnance-item .actions-overlay .action {
-    padding: 0 !important;
+    /* padding: 0 !important; */
     height: 40px;
     width: 40px;
     background: darkgrey;

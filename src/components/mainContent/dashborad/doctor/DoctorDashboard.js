@@ -59,7 +59,7 @@ class DoctorDashboard extends React.Component {
         window.$(document).ready( () => {
             window.setTimeout(() => {
                 this.initCharts();
-            }, 1000);
+            }, 2000);
         });
     }
 
