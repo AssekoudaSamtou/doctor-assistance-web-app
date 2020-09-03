@@ -7,6 +7,7 @@ import ConsultationDataService from "../../../services/consultation.service";
 import DemandeConsultationsDataService from "../../../services/demande_consultation.service";
 import PatientDataService from "../../../services/patient.service";
 import StructureSanitaireDataService from "../../../services/structureSanitaire.service";
+import OrdonnanceService from "../../../services/ordonnance.service";
 
 import PageTitle from "../../card/PageTitle";
 import StructureSanitaire from "../../card/StructureSanitaire";
@@ -28,21 +29,21 @@ class AddConsultation extends React.Component {
         this.state = {
             consultation: {
                 demande_consultation: (queries.appointment) ? parseInt(queries.appointment) : null,
-                motif: null,
-                interrogatoire: null,
-                resume: null,
-                hypothese_diagnostique: null,
+                motif: "Motif",
+                interrogatoire: "interrogatoire",
+                resume: "resume",
+                hypothese_diagnostique: "hypothese_diagnostique",
 
                 constantes: {
                     id: null,
-                    temperature: null,
-                    poids: null,
-                    taille: null,
-                    systolique: null,
-                    diastolique: null,
-                    glycemie: null,
-                    cholesterol: null,
-                    pouls: null,
+                    temperature: "30",
+                    poids: "100",
+                    taille: "160",
+                    systolique: "30",
+                    diastolique: "30",
+                    glycemie: "30",
+                    cholesterol: "35",
+                    pouls: "45",
                 },
             },
 
@@ -56,6 +57,7 @@ class AddConsultation extends React.Component {
             demandes: [],
             patients: [],
             structures: [],
+            ordonnances: [],
             structure: {},
             consultationMessage: String,
             demandeConsultation: { status: 1, patient: this.props.patientId },
@@ -123,6 +125,8 @@ class AddConsultation extends React.Component {
             window.showErrorMessage("Echec!!")
         });
 
+        this.refreshOrdonnances();
+
         PatientDataService.getAll()
         .then((response) => {
             this.setState({ patients: response.data }, () => { 
@@ -138,6 +142,16 @@ class AddConsultation extends React.Component {
         StructureSanitaireDataService.getMine()
         .then((response) => {
             this.setState({ structures: response.data });
+        })
+        .catch((e) => {
+            window.showErrorMessage("Echec!!")
+        });
+    }
+
+    refreshOrdonnances = () => {
+        OrdonnanceService.getAll()
+        .then((response) => {
+            this.setState({ ordonnances: response.data });
         })
         .catch((e) => {
             window.showErrorMessage("Echec!!")
@@ -196,16 +210,26 @@ class AddConsultation extends React.Component {
         ConsultationDataService.create(data)
             .then(response => {
                 window.showSuccess('the consultation has been saved successfuly');
-                window.$(target).prev().find("boutton").trigger("click");
-
-                // if(this.props.detail!="detail"){
-                //     this.props.history.push(`/consultations/`)
-                // }
-                // this.newConsultation();
+                this.setState({
+                    ordonnance: {consultation: response.data.id},
+                    consultation: response.data
+                });
+                window.$(target).parent().prev().find("button").trigger("click");
             })
             .catch(e => {
                 window.showErrorMessage("Echec!!")
             });
+    }
+
+    addOrdonnance = (e) => {
+        const data = this.state.ordonnance;
+        OrdonnanceService.create(data)
+        .then((response) => {
+            this.refreshOrdonnances();
+        })
+        .catch((e) => {
+            window.showErrorMessage("Echec!!")
+        });
     }
     
     render() {
@@ -360,7 +384,7 @@ class AddConsultation extends React.Component {
                                     <div className="connecting-line"></div>
                                     <ul className="nav nav-tabs" role="tablist">
 
-                                        <li role="presentation" className="">
+                                        <li role="presentation" className="active">
                                             <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
                                                 <span className="round-tab">
                                                     <i className="glyphicon glyphicon-folder-open"></i>
@@ -368,7 +392,7 @@ class AddConsultation extends React.Component {
                                             </a>
                                         </li>
 
-                                        <li role="presentation" className="">
+                                        <li role="presentation" className="disabled">
                                             <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
                                                 <span className="round-tab">
                                                     <i className="glyphicon glyphicon-pencil"></i>
@@ -376,7 +400,7 @@ class AddConsultation extends React.Component {
                                             </a>
                                         </li>
 
-                                        <li role="presentation" className="active">
+                                        <li role="presentation" className="disabled">
                                             <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
                                                 <span className="round-tab">
                                                     <i className="glyphicon glyphicon-picture"></i>
@@ -394,12 +418,12 @@ class AddConsultation extends React.Component {
                                     </ul>
                                 </div>
 
-                                <form role="form">
+                                <div role="form">
                                     <div className="tab-content">
 
                                         { formBoxes.map((box, index) => (
 
-                                            <div className={`tab-pane `} role="tabpanel" id={`step${index+1}`}>
+                                            <div key={index} className={`tab-pane ${index===0 ? "active" : ""}`} role="tabpanel" id={`step${index+1}`}>
                                                 {/* ${index===0 ? "active" : ""} */}
                                                 <FormBox
                                                     box={box}
@@ -436,24 +460,29 @@ class AddConsultation extends React.Component {
                                             </div>
                                         )) }
 
-                                        <div className="tab-pane active" role="tabpanel" id="step3">
+                                        <div className="tab-pane" role="tabpanel" id="step3">
                                             <div id="ordonnance-tab-pane">
                                                 <div className="row">
-                                                    <div className="col-lg-3">
-                                                        <div className="ordonnance-item">
-                                                            <div className="ordonnance-title">Ordonnance No 1</div>
-                                                            <div>Date : 3 Sept 2020</div>
-                                                            <div>Heure : 13:45</div>
+                                                    { this.state.ordonnances.map( ()=> {
 
-                                                            <section className="actions-overlay">
-                                                                <div className="action left-action"></div>
-                                                                <div className="action right-action"></div>
-                                                            </section>
-                                                        </div>
-                                                    </div>
+                                                        return (
+                                                            <div className="col-lg-3">
+                                                                <div className="ordonnance-item">
+                                                                    <div className="ordonnance-title">Ordonnance No 1</div>
+                                                                    <div>Date : 3 Sept 2020</div>
+                                                                    <div>Heure : 13:45</div>
 
+                                                                    <section className="actions-overlay">
+                                                                        <div className="action left-action"></div>
+                                                                        <div className="action right-action"></div>
+                                                                    </section>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    })}
+                                                            
                                                     <div className="col-lg-3">
-                                                        <div className="new-record-placeholder">
+                                                        <div className="new-record-placeholder" onClick={this.addOrdonnance}>
                                                             <div className="content">
                                                                 <div className="moncircle monshape" style={{margin: '13px 10px 0 0', width: '70px', height: '70px', background: '#17a4d8' }} title="Ajouter une prescription">
                                                                     <i className="text fa fa-plus fa-3x" style={{textShadow: 'none', fontSize: '3em'}}></i>
@@ -476,22 +505,13 @@ class AddConsultation extends React.Component {
                                         </div>
                                         <div className="clearfix"></div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </section>
                     </div>
                 </div>
 
-                {/* <div className="row">
-                    <div className="col-lg-10 col-lg-offset-1 col-xs-12">
-                        <FormBoxFooter
-                            isSubmitting={this.state.isSubmitting}
-                            onSaveBtnTapped={this.saveConsultation}
-                            fromType="add"
-                        />
-                    </div>
-                </div> */}
-          </div>
+            </div>
         </div>
       </div>
     );

@@ -5,12 +5,14 @@ import FormBox from '../../card/FormBox';
 import DoctorDataService from "../../../services/doctor.service";
 import ConsultationDataService from "../../../services/consultation.service";
 import DemandeConsultationsDataService from "../../../services/demande_consultation.service"
-import PatientDataService from "../../../services/patient.service"
+import PatientDataService from "../../../services/patient.service";
+import OrdonnanceService from "../../../services/ordonnance.service";
 
 import PageTitle from '../../card/PageTitle';
 import NotFound from '../error/404';
 import FormBoxFooter from '../../card/FormBoxFooter';
 import DemandeConsultationHeader from '../demande_consultation/DemandeConsultationHeader';
+import { LitteralDate, literalHour } from '../../../utils';
 
 
 class EditConsultation extends React.Component {
@@ -39,13 +41,20 @@ class EditConsultation extends React.Component {
                 },
             },
 
+            ordonnance: {
+                consultation: null
+            },
+
+            selectedOrdonnance: null,
+
             submitted: false,
             isSubmitting: false,
             specialites:[],
             isisDemandeConsultationChecked: false,
             demandes:[],
             patients:[],
-            consultationMessage:String,
+            ordonnances: [],
+            consultationMessage: String,
             selectedPatient: null
         };
         this.handleInputChange = this.handleInputChange.bind(this);
@@ -76,6 +85,9 @@ class EditConsultation extends React.Component {
         }).catch(e => {
             console.log(e);
         });
+
+        this.refreshOrdonnances();
+
         PatientDataService.getAll()
         .then(response => {
             this.setState({patients: response.data});
@@ -83,13 +95,90 @@ class EditConsultation extends React.Component {
         }).catch(e => {
             console.log(e);
         });
+
         ConsultationDataService.get(params?.id)
         .then(response => {
-            this.setState({consultation: response.data});
+            this.setState({consultation: response.data, ordonnance: {consultation: response.data.id}});
             // console.log(this.state.consultation);
         }).catch(e => {
             console.log(e);
         });
+    }
+
+    componentDidMount() {
+        window.$(document).ready(function () {
+            //Initialize tooltips
+            window.$('.nav-tabs > li a[title]').tooltip();
+            
+            //Wizard
+            window.$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+        
+                var $target = window.$(e.target);
+            
+                if ($target.parent().hasClass('disabled')) {
+                    return false;
+                }
+            });
+        
+            window.$(".next-step").click(function (e) {
+        
+                var $active = window.$('.wizard .nav-tabs li.active');
+                $active.next().removeClass('disabled');
+                nextTab($active);
+        
+            });
+            window.$(".prev-step").click(function (e) {
+        
+                var $active = window.$('.wizard .nav-tabs li.active');
+                prevTab($active);
+        
+            });
+
+            function nextTab(elem) {
+                window.$(elem).next().find('a[data-toggle="tab"]').click();
+                window.scrollTo(0, 400);
+            }
+            function prevTab(elem) {
+                window.$(elem).prev().find('a[data-toggle="tab"]').click();
+                window.scrollTo(0, 400);
+            }
+        });
+    }
+
+    refreshOrdonnances = () => {
+        OrdonnanceService.getAll()
+        .then((response) => {
+            this.setState({ ordonnances: response.data });
+        })
+        .catch((e) => {
+            window.showErrorMessage("Echec!!")
+        });
+    }
+    
+    addOrdonnance = (e) => {
+        const data = this.state.ordonnance;
+        OrdonnanceService.create(data)
+        .then((response) => {
+            // this.setState({  }, this.refreshOrdonnances);
+            this.refreshOrdonnances();
+        })
+        .catch((e) => {
+            window.showErrorMessage("Echec!!")
+        });
+    }
+
+    deleteOrdonnance = (id) => {
+        OrdonnanceService.delete(id)
+        .then((response) => {
+            this.refreshOrdonnances();
+        })
+        .catch((e) => {
+            window.showErrorMessage("Echec!!");
+        });
+    }
+
+    editOrdonnance = (ordonnance) => {
+        this.setState({selectedOrdonnance: ordonnance});
     }
 
     handleConstanteInputChange(name, value) {
@@ -113,20 +202,22 @@ class EditConsultation extends React.Component {
         });
     }
 
-    saveConsultation() {
+    saveConsultation(e) {
+        const target = e.target;
         var data = this.state.consultation;
         data['constantes_data'] = this.state.consultation.constantes;
         data['constantes'] = this.state.consultation.constantes.id;
     
         ConsultationDataService.update(this.state.consultation.id, data)
             .then(response => {
-                console.log(response.data, this.state.submitted);
                 window.showSuccess('the consultation has been updated successfuly');
-                this.props.history.push("/consultations/");
-                console.log(this.state.consultation);
+                this.setState({
+                    consultation: response.data
+                });
+                window.$(target).parent().prev().find("button").trigger("click");
             })
             .catch(e => {
-                console.log(e.message);
+                window.showErrorMessage('Error !!!');
             });
     }
 
@@ -163,6 +254,7 @@ class EditConsultation extends React.Component {
             {id: "M", libelle: "Masculin"},
             {id: "F", libelle: "Féminin"},
         ];
+        
         const demandesSelectOptions = [
             {id: -1, libelle: "----Selectionnez une demande de consultation-----"},
         ].concat(this.state.demandes.map((demande)=>(
@@ -238,7 +330,7 @@ class EditConsultation extends React.Component {
 
         return (
             <div>
-                <PageTitle title="mise a jour de la consultation" />
+                {/* <PageTitle title="mise a jour de la consultation" /> */}
                 <div className="col-xs-12 ">
                     <DemandeConsultationHeader
                         entityName="mise a jour de la consultation" 
@@ -246,28 +338,143 @@ class EditConsultation extends React.Component {
                         hospitalPhoto={null} />
                     
                     <div className="bg-w">
-                        { formBoxes.map((box) => 
-                            <FormBox 
-                                key={box.headerTitle}
-                                box={box} fromType="edit"
-                                isSubmitting={this.state.isSubmitting}
-                                onInputChange={box.headerTitle === "Constantes" ? this.handleConstanteInputChange : this.handleInputChange} 
-                                onSaveBtnTapped={this.saveConsultation}
-                                onCKEditorChange={this.handleCKEInputChange}
-                                onDeleteBtnTapped={this.deleteConsultation}
-                            />
-                        )}
 
-                        <div className="row">
-                            <div className="col-lg-10 col-lg-offset-1 col-xs-12">
-                                <FormBoxFooter
-                                    isSubmitting={this.state.isSubmitting}
-                                    onSaveBtnTapped={this.saveConsultation}
-                                    onDeleteBtnTapped={this.deleteConsultation}
-                                    fromType="edit"
-                                />
+                        <div className="">
+                            <div className="row">
+                                <section>
+                                    <div className="wizard">
+                                        <div className="wizard-inner">
+                                            <div className="connecting-line"></div>
+                                            <ul className="nav nav-tabs" role="tablist">
+
+                                                <li role="presentation" className="active">
+                                                    <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Constantes">
+                                                        <span className="round-tab">
+                                                            <i className="fas fa-thermometer-half" style={{fontSize: '2rem', color: '#555555'}}></i>
+                                                        </span>
+                                                    </a>
+                                                </li>
+
+                                                <li role="presentation" className="disabled">
+                                                    <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Details de la consultation">
+                                                        <span className="round-tab">
+                                                            <i className="fas fa-book-medical" style={{fontSize: '2rem', color: '#555555'}}></i>
+                                                        </span>
+                                                    </a>
+                                                </li>
+
+                                                <li role="presentation" className="disabled">
+                                                    <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Ordonance">
+                                                        <span className="round-tab">
+                                                            <i className="fas fa-list-ol" style={{fontSize: '2rem', color: '#555555'}}></i>
+                                                        </span>
+                                                    </a>
+                                                </li>
+
+                                                <li role="presentation" className="disabled">
+                                                    <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
+                                                        <span className="round-tab">
+                                                            <i className="fas fa-thumbs-up" style={{fontSize: '2rem', color: '#555555'}}></i>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                        <div role="form">
+                                            <div className="tab-content">
+
+                                                { formBoxes.map((box, index) => (
+
+                                                    <div key={index} className={`tab-pane ${index===0 ? "active" : ""}`} role="tabpanel" id={`step${index+1}`}>
+                                                        {/* ${index===0 ? "active" : ""} */}
+                                                        <FormBox
+                                                            box={box}
+                                                            key={box.headerTitle}
+                                                            fromType="add"
+                                                            isSubmitting={this.state.isSubmitting}
+                                                            onInputChange={ box.headerTitle === "Constantes" ? this.handleConstanteInputChange : this.handleInputChange}
+                                                            onCKEditorChange={this.handleCKEInputChange}
+                                                            onSaveBtnTapped={this.saveConsultation}
+                                                        />
+                                                        <div>
+                                                            { index === 0 && (
+                                                                <ul className="list-inline pull-right">
+                                                                    <li><button type="button" className="btn btn-primary next-step">Suivant</button></li>
+                                                                </ul>
+                                                            )}
+
+                                                            { index === 1 && (
+                                                                <ul className="list-inline pull-right">
+                                                                    <li><button type="button" className="btn btn-default prev-step">Précédant</button></li>
+                                                                    <li style={{display: 'none'}}><button type="button" className="btn btn-primary next-step">Enregistrer et continuer</button></li>
+                                                                    <li><button type="button" onClick={this.saveConsultation} className="btn btn-primary">Enregistrer et continuer</button></li>
+                                                                </ul>
+                                                            )}
+
+                                                            { index === 2 && (
+                                                                <ul className="list-inline pull-right">
+                                                                    <li><button type="button" className="btn btn-default prev-step">Précédant</button></li>
+                                                                    <li><button type="button" className="btn btn-primary btn-info-full next-step">Terminer</button></li>
+                                                                </ul>
+                                                            )}
+                                                        </div>
+                                                            
+                                                    </div>
+                                                
+                                                )) }
+
+                                                <div className="tab-pane" role="tabpanel" id="step3">
+                                                    <div id="ordonnance-tab-pane">
+                                                        <div className="row">
+                                                            { this.state.ordonnances.map( (ordonnance, index)=> {
+
+                                                                return (
+                                                                    <div key={ordonnance.id} className="col-lg-3">
+                                                                        <div className="ordonnance-item">
+                                                                            <div className="ordonnance-title">Ordonnance No {index+1} </div>
+                                                                            <div>Date : {LitteralDate(ordonnance.mod_date_time, "SMALL")}</div>
+                                                                            <div>Heure : {literalHour(ordonnance.mod_date_time)}</div>
+
+                                                                            <section className="actions-overlay">
+                                                                                <div onClick={ () => {this.editOrdonnance(ordonnance)} } className="action left-action"><i className="fas fa-pen-alt fa-2x"></i></div>
+                                                                                <div onClick={ () => {this.deleteOrdonnance(ordonnance.id)} } className="action right-action"><i className="fas fa-trash fa-2x"></i></div>
+                                                                            </section>
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            })}
+                                                                    
+                                                            <div className="col-lg-3">
+                                                                <div className="new-record-placeholder" onClick={this.addOrdonnance}>
+                                                                    <div className="content">
+                                                                        <div className="moncircle monshape" style={{margin: '13px 10px 0 0', width: '70px', height: '70px', background: '#17a4d8' }} title="Ajouter une prescription">
+                                                                            <i className="text fa fa-plus fa-3x" style={{textShadow: 'none', fontSize: '3em'}}></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <ul className="list-inline pull-right">
+                                                        <li><button type="button" className="btn btn-default prev-step">Précédant</button></li>
+                                                        <li><button type="button" className="btn btn-primary btn-info-full next-step">Terminer</button></li>
+                                                    </ul>
+                                                </div>
+
+                                                <div className="tab-pane" role="tabpanel" id="complete">
+                                                    <h3>Complete</h3>
+                                                    <p>You have successfully completed all steps.</p>
+                                                </div>
+                                                <div className="clearfix"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
