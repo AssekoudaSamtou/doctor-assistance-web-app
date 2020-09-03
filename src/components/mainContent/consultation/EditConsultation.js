@@ -227,7 +227,7 @@ class EditConsultation extends React.Component {
             {
                 headerTitle: "mise a jours de la consultation",
                 fields: [
-                    {type: "select",label:"Demande de consultation",name:"demande_consultation", value:this.state.consultation.demande_consultation,selectOptions:demandesSelectOptions},
+                    // {type: "select",label:"Demande de consultation",name:"demande_consultation", value:this.state.consultation.demande_consultation,selectOptions:demandesSelectOptions},
                     {type: "Cke", label: "Motif", name: "motif", value: this.state.consultation.motif},
                     {type: "Cke", label: "Interrogatoire", name: "interrogatoire", value: this.state.consultation.interrogatoire},
                     {type: "Cke", label: "Resume", name: "resume", value: this.state.consultation.resume},

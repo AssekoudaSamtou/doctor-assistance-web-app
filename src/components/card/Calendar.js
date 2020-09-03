@@ -6,6 +6,7 @@ import HospitalService from "../../services/structureSanitaire.service";
 import AppointmentService from "../../services/demande_consultation.service";
 import scheduleService from '../../services/schedule.service';
 import Cookies from "universal-cookie";
+import { Link } from "react-router-dom";
 
 
 const cookies = new Cookies();
@@ -31,7 +32,7 @@ class Calendar extends React.Component {
                 medecin: cookies.get("loggedUser").id,
                 patient: null,
                 centre_medical: null,
-                date: null,
+                date: new Date(),
                 time: literalHour(new Date()),
                 status: 1,
             },
@@ -48,14 +49,14 @@ class Calendar extends React.Component {
     }
 
     getDatesArray() {
-        console.log(this.state.currentYear, this.state.currentMonth);
+        // console.log(this.state.currentYear, this.state.currentMonth);
         var start = new Date();
         start.setFullYear(this.state.currentYear, this.state.currentMonth, 1);
         var end = new Date(start);
 
         end.setFullYear(this.state.currentYear, this.state.currentMonth+1, 1);
         end.setDate(end.getDate() - 1);
-        console.log(start, end);
+        // console.log(start, end);
 
         var days = [[], [], []];
 
@@ -166,6 +167,7 @@ class Calendar extends React.Component {
     }
 
     toggleAppointmentModal(date, data) {
+        date = `${this.state.currentYear}-${fillZero(this.state.currentMonth+1, 2)}-${fillZero(date, 2)}`
         window.$(".task__detail").css("display", "none");
         this.setState({
             showNewAppointmentModal: !this.state.showNewAppointmentModal,
@@ -212,7 +214,7 @@ class Calendar extends React.Component {
     saveAppointment = () => {
         var data = {
             ...this.state.appointment,
-            date_consultation: `${this.state.currentYear}-${fillZero(this.state.currentMonth+1, 2)}-${this.state.appointment.date}T${this.state.appointment.time}:00`
+            date_consultation: `${this.state.appointment.date}T${this.state.appointment.time}:00`
         };
         
         AppointmentService.create(data)
@@ -230,7 +232,7 @@ class Calendar extends React.Component {
     updateAppointment = () => {
         var data = {
             ...this.state.appointment,
-            date_consultation: `${this.state.currentYear}-${fillZero(this.state.currentMonth+1, 2)}-${this.state.appointment.date}T${this.state.appointment.time}:00`
+            date_consultation: `${this.state.appointment.date}T${this.state.appointment.time}:00`
         };
         
         AppointmentService.update(data.id, data)
@@ -269,7 +271,7 @@ class Calendar extends React.Component {
 
     getAppointmentConsultation = (rdv) => {
         for (let consultation of this.state.consultations) {
-            if (rdv.id === consultation.id) 
+            if (rdv.id === consultation.demande_consultation) 
                 return consultation;
         }
         return null;
@@ -292,6 +294,11 @@ class Calendar extends React.Component {
         if (date > today) {
             return "info";
         }
+    }
+
+    isToday = (date) => {
+        var today = new Date();
+        return today.getFullYear() === this.state.currentYear && today.getMonth() === this.state.currentMonth && today.getDate() === date;
     }
 
     render() {
@@ -343,7 +350,15 @@ class Calendar extends React.Component {
                             </div>
 
                             <div className="row" style={{margin: '20px 0'}}>
-                                <div className="col-lg-12">
+                                <div className="col-lg-8">
+                                    <input 
+                                        type='date' name="appointment_date" 
+                                        value={ this.state.appointment.date } 
+                                        onChange={ (e) => { this.handleInputChange("date", e.target.value) }}
+                                        className="form-control" />
+                                </div>
+
+                                <div className="col-lg-4">
                                     <input 
                                         type='time' name="appointment_time" 
                                         value={ this.state.appointment.time } 
@@ -376,7 +391,7 @@ class Calendar extends React.Component {
                     ))}
 
                     { this.state.dates[1].map( (date) => (
-                        <div key={date} className="day" onClick={ () => { this.toggleAppointmentModal(date) } }>{date}</div>
+                        <div key={date} className={`day ${ this.isToday(date) ? "today" : "" } ${ (new Date(this.state.appointment.date)).getDate() === date ? "day--active" : ""}`} onClick={ () => { this.toggleAppointmentModal(date) } }>{date}</div>
                     ))}
 
                     { this.state.dates[2].map( (date) => (
@@ -400,6 +415,18 @@ class Calendar extends React.Component {
                                                     <h2><i className="fas fa-user"></i> {rdv.patient.prenom} {rdv.patient.nom}</h2>
                                                     <p><i className="fas fa-calendar"></i> {LitteralDate(rdv.date_consultation)} à {literalHour(rdv.date_consultation)}</p>
                                                     <p><i className="fas fa-hospital"></i> {rdv.hopital.denomination}</p>
+
+                                                    { (flag === "primary" || flag === "warning") && !this.getAppointmentConsultation(rdv) && (
+                                                        <div style={{width: '100%', height: '25px'}}>
+                                                            <Link className="appointment-action" to={`/patient/consultation/new/?appointment=${rdv.id}`} style={{ float: 'right', background: "#8ee2c6"}} > Passer la consultation </Link>
+                                                        </div>
+                                                    )}
+
+                                                    { this.getAppointmentConsultation(rdv) && (
+                                                        <div style={{width: '100%', height: '25px'}}>
+                                                            <Link className="appointment-action" to={`/consultations_update/${this.getAppointmentConsultation(rdv).id}`} style={{ float: 'right', background: "#8ee2c6"}} > Modifier la consultation </Link>
+                                                        </div>
+                                                    )}
 
                                                     { flag !== "danger" && (
                                                         <div className="row task__detail__actions">

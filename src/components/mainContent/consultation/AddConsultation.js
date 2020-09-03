@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import qs from "qs";
 import AddHeader from "../../card/AddHeader";
 import FormBox from "../../card/FormBox";
 
@@ -15,11 +16,18 @@ import DemandeConsultationHeader from "../demande_consultation/DemandeConsultati
 
 const cookies = new Cookies();
 class AddConsultation extends React.Component {
+    
     constructor(props) {
         super(props);
+
+        const { match: { params } } = this.props;
+        const { location: { search } } = this.props;
+        const queries = qs.parse(search.slice(1));
+        console.log(queries);
+        
         this.state = {
             consultation: {
-                demande_consultation: null,
+                demande_consultation: (queries.appointment) ? parseInt(queries.appointment) : null,
                 motif: null,
                 interrogatoire: null,
                 resume: null,
@@ -36,6 +44,10 @@ class AddConsultation extends React.Component {
                     cholesterol: null,
                     pouls: null,
                 },
+            },
+
+            ordonnance: {
+                consultation: null
             },
 
             submitted: false,
@@ -56,12 +68,12 @@ class AddConsultation extends React.Component {
     }
 
     changePatientPhoto = (demande_id) => {
-        for (let demande in this.state.demandes) {
-            if (this.state.demandes[demande].id == demande_id) {
-                
-                for (let patient in this.state.patients) {
-                    if(this.state.demandes[demande].patient == this.state.patients[patient].id)
-                        this.setState({selectedPatient: this.state.patients[patient]});
+        for (let demande of this.state.demandes) {
+            if (demande.id === demande_id) {
+                for (let patient of this.state.patients) {
+                    if (demande.patient === patient.id) {
+                        this.setState({selectedPatient: patient});
+                    }
                 }
             }
         }
@@ -94,70 +106,114 @@ class AddConsultation extends React.Component {
     }
 
     componentWillMount() {
+
+        const { match: { params } } = this.props;
+        const { location: { search } } = this.props;
+        const queries = qs.parse(search.slice(1));
+
         DemandeConsultationsDataService.getAll()
         .then((response) => {
-            this.setState({ demandes: response.data });
-            console.log(this.state.demandes);
+            this.setState({ demandes: response.data }, () => { 
+                if (queries.appointment) {
+                    this.changePatientPhoto(parseInt(queries.appointment));
+                }
+            });
         })
         .catch((e) => {
-            console.log(e);
+            window.showErrorMessage("Echec!!")
         });
+
         PatientDataService.getAll()
         .then((response) => {
-            this.setState({ patients: response.data });
-            console.log(this.state.patients);
+            this.setState({ patients: response.data }, () => { 
+                if (queries.appointment) {
+                    this.changePatientPhoto(parseInt(queries.appointment));
+                }
+            });
         })
         .catch((e) => {
-            console.log(e);
+            window.showErrorMessage("Echec!!")
         });
+
         StructureSanitaireDataService.getMine()
         .then((response) => {
             this.setState({ structures: response.data });
-            console.log(this.state.structures);
         })
         .catch((e) => {
-            console.log(e);
+            window.showErrorMessage("Echec!!")
         });
     }
 
     componentDidMount() {
-        // window.$(document).ready( () => {
-        //     window.$('#cmpltadminModal-7').modal();
-        // })
+        window.$(document).ready(function () {
+            //Initialize tooltips
+            window.$('.nav-tabs > li a[title]').tooltip();
+            
+            //Wizard
+            window.$('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+        
+                var $target = window.$(e.target);
+            
+                if ($target.parent().hasClass('disabled')) {
+                    return false;
+                }
+            });
+        
+            window.$(".next-step").click(function (e) {
+        
+                var $active = window.$('.wizard .nav-tabs li.active');
+                $active.next().removeClass('disabled');
+                nextTab($active);
+        
+            });
+            window.$(".prev-step").click(function (e) {
+        
+                var $active = window.$('.wizard .nav-tabs li.active');
+                prevTab($active);
+        
+            });
+
+            function nextTab(elem) {
+                window.$(elem).next().find('a[data-toggle="tab"]').click();
+            }
+            function prevTab(elem) {
+                window.$(elem).prev().find('a[data-toggle="tab"]').click();
+            }
+        });
     }
 
-    saveConsultation() {
-        var user = cookies.get("loggedUser")
+    saveConsultation(e) {
+        const target = e.target;
+        var user = cookies.get("loggedUser");
+        
         var data = {
             structure_sanitaire_pk:this.state.structure.id,
             medecin_pk:user.id,
-            demande_consultation:this.state.consultation.demande_consultation,
-            motif: this.state.consultation.motif,
-            interrogatoire:this.state.consultation.interrogatoire,
-            resume:this.state.consultation.resume,
-            hypothese_diagnostique:this.state.consultation.hypothese_diagnostique,
-            patient: this.state.demandeConsultation.patient,
-            status:this.state.demandeConsultation.status,
-
-            constantes: this.state.consultation.constantes
+            ...this.state.consultation,
+            ...this.state.demandeConsultation,
         };
-        console.log(data);
+
         ConsultationDataService.create(data)
             .then(response => {
-                console.log(response.data, this.state.submitted);
                 window.showSuccess('the consultation has been saved successfuly');
-                if(this.props.detail!="detail"){
-                    this.props.history.push(`/consultations/`)
-                }
-                this.newConsultation();
-                console.log(this.state.consultation)
+                window.$(target).prev().find("boutton").trigger("click");
+
+                // if(this.props.detail!="detail"){
+                //     this.props.history.push(`/consultations/`)
+                // }
+                // this.newConsultation();
             })
             .catch(e => {
-                console.log(e.message);
+                window.showErrorMessage("Echec!!")
             });
     }
     
     render() {
+
+        const { match: { params } } = this.props;
+        const { location: { search } } = this.props;
+        const queries = qs.parse(search.slice(1));
+
         function getConsultationMessage(patients,patient, ndate){
             const date = new Date(ndate)
             const mdate = ("0"+date.getDay()).slice(-2, 3)+"/"+("0"+date.getMonth()).slice(-2,3)+"/"+date.getFullYear()+" A "+("0"+date.getHours()).slice(-2,3)+":"+("0"+date.getMinutes()).slice(-2,3)+":"+("0"+date.getSeconds()).slice(-2,3)
@@ -235,75 +291,198 @@ class AddConsultation extends React.Component {
             {
                 headerTitle: "Details de la consultation",
                 fields: [
-                this.props.detail == "detail"
-                    ? {
-                        type: "select",
-                        label: "Liste de structure sanitaires",
-                        name: "id",
-                        value: this.state.structure.id,
-                        selectOptions: structureSelectOptions,
-                    }
-                    : {
-                        type: "select",
-                        label: "Demande de consultation",
-                        name: "demande_consultation",
-                        value: this.state.consultation.demande_consultation,
-                        selectOptions: demandesSelectOptions,
+                    {
+                        type: "Cke",
+                        label: "Motif",
+                        name: "motif",
+                        value: this.state.consultation.motif,
                     },
-                {
-                    type: "Cke",
-                    label: "Motif",
-                    name: "motif",
-                    value: this.state.consultation.motif,
-                },
-                {
-                    type: "Cke",
-                    label: "Interrogatoire",
-                    name: "interrogatoire",
-                    value: this.state.consultation.interrogatoire,
-                },
-                {
-                    type: "Cke",
-                    label: "Resume",
-                    name: "resume",
-                    value: this.state.consultation.resume,
-                },
-                {
-                    type: "Cke",
-                    label: "hypothese diagnostique",
-                    name: "hypothese_diagnostique",
-                    value: this.state.consultation.hypothese_diagnostique,
-                }
+                    {
+                        type: "Cke",
+                        label: "Interrogatoire",
+                        name: "interrogatoire",
+                        value: this.state.consultation.interrogatoire,
+                    },
+                    {
+                        type: "Cke",
+                        label: "Resume",
+                        name: "resume",
+                        value: this.state.consultation.resume,
+                    },
+                    {
+                        type: "Cke",
+                        label: "hypothese diagnostique",
+                        name: "hypothese_diagnostique",
+                        value: this.state.consultation.hypothese_diagnostique,
+                    }
                 ],
             },
+            
         ];
+
+        var tmp = queries.appointment ? null : (
+            this.props.detail == "detail" ? {
+                type: "select",
+                label: "Liste de structure sanitaires",
+                name: "id",
+                value: this.state.structure.id,
+                selectOptions: structureSelectOptions,
+            } : {
+                type: "select",
+                label: "Demande de consultation",
+                name: "demande_consultation",
+                value: this.state.consultation.demande_consultation,
+                selectOptions: demandesSelectOptions,
+            }
+        )
+
+        if (tmp)
+            formBoxes[1].fields = [tmp].concat(formBoxes[1].fields);
 
     return (
       <div>
-        <PageTitle title="Ajout d'une nouvelle consultation" />
+        {/* <PageTitle title="Ajout d'une nouvelle consultation" /> */}
 
         <div className="col-xs-12 ">
             
             <DemandeConsultationHeader 
                 entityName="Nouvelle consultation" 
-                patientPhoto={this.state.consultation.demande_consultation ? this.state.selectedPatient.photo : null} 
+                patientPhoto={this.state.consultation.demande_consultation && this.state.selectedPatient ? this.state.selectedPatient.photo : null} 
                 hospitalPhoto={null} />
           
             <div className="bg-w">
 
-                {formBoxes.map((box) => (
-                    <FormBox
-                        box={box}
-                        key={box.headerTitle}
-                        fromType="add"
-                        isSubmitting={this.state.isSubmitting}
-                        onInputChange={ box.headerTitle === "Constantes" ? this.handleConstanteInputChange : this.handleInputChange}
-                        onCKEditorChange={this.handleCKEInputChange}
-                        onSaveBtnTapped={this.saveConsultation}
-                    />
-                ))}
+                <div className="">
+                    <div className="row">
+                        <section>
+                            <div className="wizard">
+                                <div className="wizard-inner">
+                                    <div className="connecting-line"></div>
+                                    <ul className="nav nav-tabs" role="tablist">
 
-                <div className="row">
+                                        <li role="presentation" className="">
+                                            <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
+                                                <span className="round-tab">
+                                                    <i className="glyphicon glyphicon-folder-open"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li role="presentation" className="">
+                                            <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
+                                                <span className="round-tab">
+                                                    <i className="glyphicon glyphicon-pencil"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li role="presentation" className="active">
+                                            <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
+                                                <span className="round-tab">
+                                                    <i className="glyphicon glyphicon-picture"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+
+                                        <li role="presentation" className="disabled">
+                                            <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
+                                                <span className="round-tab">
+                                                    <i className="glyphicon glyphicon-ok"></i>
+                                                </span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <form role="form">
+                                    <div className="tab-content">
+
+                                        { formBoxes.map((box, index) => (
+
+                                            <div className={`tab-pane `} role="tabpanel" id={`step${index+1}`}>
+                                                {/* ${index===0 ? "active" : ""} */}
+                                                <FormBox
+                                                    box={box}
+                                                    key={box.headerTitle}
+                                                    fromType="add"
+                                                    isSubmitting={this.state.isSubmitting}
+                                                    onInputChange={ box.headerTitle === "Constantes" ? this.handleConstanteInputChange : this.handleInputChange}
+                                                    onCKEditorChange={this.handleCKEInputChange}
+                                                    onSaveBtnTapped={this.saveConsultation}
+                                                />
+                                                <div>
+                                                    { index === 0 && (
+                                                        <ul className="list-inline pull-right">
+                                                            <li><button type="button" className="btn btn-primary next-step">Suivant</button></li>
+                                                        </ul>
+                                                    )}
+
+                                                    { index === 1 && (
+                                                        <ul className="list-inline pull-right">
+                                                            <li><button type="button" className="btn btn-default prev-step">Précédant</button></li>
+                                                            <li style={{display: 'none'}}><button type="button" className="btn btn-primary next-step">Enregistrer et continuer</button></li>
+                                                            <li><button type="button" onClick={this.saveConsultation} className="btn btn-primary">Enregistrer et continuer</button></li>
+                                                        </ul>
+                                                    )}
+
+                                                    { index === 2 && (
+                                                        <ul className="list-inline pull-right">
+                                                            <li><button type="button" className="btn btn-default prev-step">Précédant</button></li>
+                                                            <li><button type="button" className="btn btn-primary btn-info-full next-step">Terminer</button></li>
+                                                        </ul>
+                                                    )}
+                                                </div>
+                                                    
+                                            </div>
+                                        )) }
+
+                                        <div className="tab-pane active" role="tabpanel" id="step3">
+                                            <div id="ordonnance-tab-pane">
+                                                <div className="row">
+                                                    <div className="col-lg-3">
+                                                        <div className="ordonnance-item">
+                                                            <div className="ordonnance-title">Ordonnance No 1</div>
+                                                            <div>Date : 3 Sept 2020</div>
+                                                            <div>Heure : 13:45</div>
+
+                                                            <section className="actions-overlay">
+                                                                <div className="action left-action"></div>
+                                                                <div className="action right-action"></div>
+                                                            </section>
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="col-lg-3">
+                                                        <div className="new-record-placeholder">
+                                                            <div className="content">
+                                                                <div className="moncircle monshape" style={{margin: '13px 10px 0 0', width: '70px', height: '70px', background: '#17a4d8' }} title="Ajouter une prescription">
+                                                                    <i className="text fa fa-plus fa-3x" style={{textShadow: 'none', fontSize: '3em'}}></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <ul className="list-inline pull-right">
+                                                <li><button type="button" className="btn btn-default prev-step">Précédant</button></li>
+                                                <li><button type="button" className="btn btn-primary btn-info-full next-step">Terminer</button></li>
+                                            </ul>
+                                        </div>
+
+                                        <div className="tab-pane" role="tabpanel" id="complete">
+                                            <h3>Complete</h3>
+                                            <p>You have successfully completed all steps.</p>
+                                        </div>
+                                        <div className="clearfix"></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
+                {/* <div className="row">
                     <div className="col-lg-10 col-lg-offset-1 col-xs-12">
                         <FormBoxFooter
                             isSubmitting={this.state.isSubmitting}
@@ -311,7 +490,7 @@ class AddConsultation extends React.Component {
                             fromType="add"
                         />
                     </div>
-                </div>
+                </div> */}
           </div>
         </div>
       </div>

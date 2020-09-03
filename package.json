@@ -24,6 +24,7 @@
     "jquery": "^1.12.4",
     "path": "^0.12.7",
     "popper.js": "^1.16.1",
+    "qs": "^6.9.4",
     "react": "^16.13.1",
     "react-bootstrap": "^0.33.1",
     "react-cookie": "^4.0.3",

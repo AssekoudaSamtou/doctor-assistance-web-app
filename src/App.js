@@ -118,7 +118,7 @@ class App extends React.Component {
                             <section id="main-content">
                                 <div className="wrapper main-wrapper row">
                                     <Switch>
-                                        <Route exact path={["/", "/dashboard"]}
+                                        {/* <Route exact path={["/", "/dashboard"]}
                                             render={ props => (
                                                 this.state.loggedIn ? <DoctorDashboard {...props} /> : <Redirect to="/login" />
                                             )}>
@@ -178,10 +178,16 @@ class App extends React.Component {
                                             path={`/consultations`} 
                                             render={ props => (
                                                 this.state.loggedIn ? <ConsultationList {...props} /> : <Redirect to="/login" />
-                                            ) } />
+                                            ) } /> */}
 
                                         <Route 
                                             path={`/consultation_new`} 
+                                            render={ props => (
+                                                this.state.loggedIn ? <AddConsultation {...props} /> : <Redirect to="/login" />
+                                            ) } />
+
+                                        <Route 
+                                            path={`/patient/consultation/new`}
                                             render={ props => (
                                                 this.state.loggedIn ? <AddConsultation {...props} /> : <Redirect to="/login" />
                                             ) } />
@@ -192,7 +198,7 @@ class App extends React.Component {
                                                 this.state.loggedIn ? <EditConsultation{...props} /> : <Redirect to="/login" />
                                             ) } />
                                         
-                                        <Route 
+                                        {/* <Route 
                                             path="/hospitals"
                                             render={ props => (
                                                 this.state.loggedIn ? <HopitalList {...props} /> : <Redirect to="/login" />
@@ -239,7 +245,7 @@ class App extends React.Component {
                                             path={`/demande_consultations`} 
                                             render={ props => (
                                                 this.state.loggedIn ? <DemandeConsultationList {...props} /> : <Redirect to="/login" />
-                                            ) } />
+                                            ) } /> */}
                                     </Switch>
                                 </div>
                             </section>
