@@ -15,6 +15,10 @@ class ConsultationDataService {
     return http.get("/consultations/", options);
   }
 
+  getOrdonnances(id) {
+    return http.get(`/consultations/${id}/ordonnances/`, options);
+  }
+
   get(id) {
     return http.get(`/consultations/${id}/`, options);
   }

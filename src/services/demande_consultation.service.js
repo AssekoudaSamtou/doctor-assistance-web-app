@@ -14,6 +14,11 @@ class DemandeConsultationsDataService {
   getAll() {
     return http.get("/demandeConsultations/", options);
   }
+
+  getNews() {
+    return http.get("/demandeConsultations/news/", options);
+  }
+
   getAllWithNames() {
     return http.get("demandeConsultationsWithNames/", options);
   }

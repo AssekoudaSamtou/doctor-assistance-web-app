@@ -272,7 +272,7 @@ section.actions-overlay {
     color: #005be7;
 }
 .row {
-    margin: 0 !important;
+    /* margin: 0 !important; */
 }
 .back__btn {
     display: inline-block;

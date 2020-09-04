@@ -108,6 +108,37 @@ class DoctorDashboard extends React.Component {
             );
         }
 
+        if(window.$("#maladies-chartjs").length) {
+            var doughnutData = [{
+                value: 200,
+                color: "#E91E63",
+                highlight: "rgba(250,133,100,0.8)",
+                label: "Paludisme"
+            }, {
+                value: 150,
+                color: "#2acd72",
+                highlight: "rgba(44,188,108,0.65)",
+                label: "Epathite"
+            }, {
+                value: 100,
+                color: "#eee",
+                highlight: "#e1dcdc",
+                label: "Cholera"
+            }, {
+                value: 120,
+                color: "rgba(103,58,183,1.0)",
+                highlight: "rgba(103,58,183,0.8)",
+                label: "Ebola"
+            }
+
+            ];
+
+            var ctxd = document.getElementById("maladies-chartjs").getContext("2d");
+            var myDoughnut = new window.Chart(ctxd).Doughnut(doughnutData, {
+                responsive: true
+            });
+        }
+
         if(window.$("#patient-incoming-chartjs").length){
 
             var patientsIncomingChartData = {
@@ -201,7 +232,7 @@ class DoctorDashboard extends React.Component {
 
                             <section className="box doctor-activity">
                                 <header className="panel_header">
-                                    <h2 className="title pull-left">Rapport des Activités</h2>
+                                    <h2 className="title pull-left">Evolution du nombre de consultations et de patients dans le temps</h2>
                                 </header>
                                 <div className="content-body">    
                                     <div className="row">
@@ -220,14 +251,14 @@ class DoctorDashboard extends React.Component {
                                 <div className="col-lg-6">
                                     <section className="box diseases-report">
                                         <header className="panel_header">
-                                            <h2 className="title pull-left">Rapport sur les maladies</h2>
+                                            <h2 className="title pull-left">Les maladies recurrentes</h2>
                                         </header>
                                         <div className="content-body">    
                                             <div className="row">
                                                 <div className="col-xs-12">
                                                     <div className="doctor-activity-chart-box">
                                                         
-                                                        <canvas id="donut-chartjs"></canvas>
+                                                        <canvas id="maladies-chartjs"></canvas>
                                                         
                                                     </div>
                                                 </div>
@@ -239,14 +270,14 @@ class DoctorDashboard extends React.Component {
                                 <div className="col-lg-6">
                                     <section className="box patient-income">
                                         <header className="panel_header">
-                                            <h2 className="title pull-left">Historique d'arrivée des patients</h2>
+                                            <h2 className="title pull-left">Répartition des patients par sexe</h2>
                                         </header>
                                         <div className="content-body">    
                                             <div className="row">
                                                 <div className="col-xs-12">
                                                     <div className="doctor-activity-chart-box">
                                                         
-                                                        <canvas id="patient-incoming-chartjs"></canvas>
+                                                        <canvas id="patient-incoming-chartjs" style={{width: '100%', height: '200px'}}></canvas>
                                                         
                                                     </div>
                                                 </div>
@@ -282,7 +313,8 @@ class DoctorDashboard extends React.Component {
                                                         <span> 30 Mins </span>
                                                     </div>
                                                     <div style={{padding: "5px 0 5px 0"}}>
-                                                        <Link to={`/patients_details/${rdv.patient.id}`} className="appointment-action">HISTORIQUE MEDICAL</Link>
+                                                        <Link to={`/patients_details/${rdv.patient.id}`} className="appointment-action">HISTORIQUE</Link>
+                                                        <Link to={`/patient/consultation/new/?appointment=${rdv.id}`} className="appointment-action" style={{color: '#00c4ff'}}>CONSULTER</Link>
                                                     </div>
                                                 </div>
                                             </div>

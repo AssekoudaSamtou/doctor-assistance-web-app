@@ -60,7 +60,7 @@ class HopitalList extends React.Component {
     render() {
         return (
             <div>
-                <PageTitle title="Toutes Les Structures Sanitaires" />
+                <PageTitle title="Toutes mes structures sanitaires" />
                 
                 <div className="row">
                     { this.state.hopitals !== null && this.state.hopitals.map((hopital) => 
