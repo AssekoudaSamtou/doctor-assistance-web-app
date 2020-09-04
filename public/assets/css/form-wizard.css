@@ -105,7 +105,7 @@ span.round-tab:hover {
 
 .wizard .tab-pane {
     position: relative;
-    padding-top: 50px;
+    padding-top: 0px;
 }
 
 .wizard h3 {
@@ -209,4 +209,79 @@ section.actions-overlay {
     height: 60px;
     position: relative;
     top: -89px;
+}
+
+.new-prescription-placeholder {
+    height: unset;
+    width: 96%;
+    margin: auto;
+    border-radius: 10px;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: #31afde;
+    cursor: pointer;
+    margin: 0 auto 41px auto
+}
+.new-prescription-placeholder .content {
+    display: table !important;
+    margin: auto;
+}
+.prescription-item {
+    /* width: 85%; */
+    margin: auto;
+}
+.new-prescription-placeholder .moncircle {
+    margin: 5px 0px 0px 0px;
+    width: 50px;
+    height: 50px;
+    background: rgb(23, 164, 216);
+}
+.prescription-item .row  {
+    border-bottom: 1px solid #8080801c;
+    padding: 10px 0;
+    /* margin: 0 0 30px 0; */
+}
+.prescription-item .icon, #prescription-form .icon {
+    display: inline-block !important;
+    line-height: unset !important;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    background: #e5eefc;
+    margin: 0 10px 0 0;
+    cursor: pointer;
+}
+#prescription-form {
+    margin: 0px 0 30px 0 !important;
+}
+#prescription-form .col{
+    margin: 30px 0 0px 0 !important;
+}
+.prescription-item .row div {
+    text-align: center;
+    height: 50px;
+}
+.prescription-item .row div span {
+    display: inline-block;
+    height: 50px;
+    line-height: 330%;
+    font-weight: 700;
+}
+.prescription-item i  {
+    margin: 10px;
+    color: #005be7;
+}
+.row {
+    margin: 0 !important;
+}
+.back__btn {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background: #d0d2d270;
+    border-radius: 50%;
+    padding: 10px;
+}
+.back__btn:hover {
+    background: aqua;
 }
