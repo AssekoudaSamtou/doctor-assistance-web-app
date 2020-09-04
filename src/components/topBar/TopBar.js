@@ -35,7 +35,7 @@ const TopBar = () => {
         setItems(tmp);
     }
 
-    setInterval(()=> { setDate(new Date()) }, 6000);
+    // setInterval(()=> { setDate(new Date()) }, 6000);
 
     return (
         <div className="page-topbar gradient-blue1 sidebar_shift">
