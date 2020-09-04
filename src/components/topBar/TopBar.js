@@ -19,6 +19,7 @@ const cookies = new Cookies();
 const TopBar = () => {
     const user = cookies.get("loggedUser");
     const [items, setItems] = useState([false, false, false]);
+    var [date, setDate] = useState(new Date());
 
     const logout = () => {
         cookies.remove("loggedUser");
@@ -33,6 +34,8 @@ const TopBar = () => {
         tmp[id] = true;
         setItems(tmp);
     }
+
+    setInterval(()=> { setDate(new Date()) }, 6000);
 
     return (
         <div className="page-topbar gradient-blue1 sidebar_shift">
@@ -64,14 +67,14 @@ const TopBar = () => {
                         <li className="now-date">
                             <div>
                                 <i className="fa fa-calendar-day"></i>
-                                <span> {LitteralDate(new Date(), "SMALL")} </span>
+                                <span> {LitteralDate(date, "SMALL")} </span>
                             </div>
                         </li>
 
                         <li className="now-date">
                             <div>
                                 <i className="fa fa-clock"></i>
-                                <span> {literalHour(new Date())} </span>
+                                <span> {literalHour(date)} </span>
                             </div>
                         </li>
 
@@ -108,14 +111,14 @@ const TopBar = () => {
                                     <span>Dr {user.username} <i className="fa fa-angle-down"></i></span>
                                 </a>
                                 <ul className="dropdown-menu profile animated fadeIn">
-                                    <li>
+                                    {/* <li>
                                         <Link to={`/profile`}>
                                             <i className="fas fa-id-badge"></i> Profile
                                         </Link>
-                                    </li>
+                                    </li> */}
                                     <li className="">
                                         <a onClick={logout} style={{cursor : 'pointer'}}>
-                                            <i className="fas fa-sign-out-alt"></i> Logout
+                                            <i className="fas fa-sign-out-alt"></i> Déconnection
                                         </a>
                                     </li>
                                 </ul>

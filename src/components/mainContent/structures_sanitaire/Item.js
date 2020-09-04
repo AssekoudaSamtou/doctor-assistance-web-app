@@ -48,11 +48,11 @@ const HospitalItem = ({data, onDeleteClick, onEditClick, onSeeClick }) => {
                 <div className="row mt-5">
                     <div className="col-lg-6 col-xs-6 mt-5" style={{borderRight: "2px solid black", color: 'aliceblue'}}>
                         <div className="text-center"><i className="fas fa-hospital-user fa-3x"></i></div>
-                    <div className="text-center" style={{marginTop: 15+'px'}}><span className="h3" style={{fontWeight: "bolder"}}> {fillZero(data.patients.length, 4)} </span></div>
+                    <div className="text-center" style={{marginTop: 15+'px'}}><span className="h3" style={{fontWeight: "bolder"}}> {fillZero(data.patients.length, 2)} </span></div>
                     </div>
                     <div className="col-lg-6 col-xs-6 mt-5" style={{color: 'aliceblue'}}>
                         <div className="text-center"><i className="fas fa-hand-holding-medical fa-3x"></i></div>
-                        <div className="text-center" style={{marginTop: 15+'px'}}><span className="h3" style={{fontWeight: "bolder"}}> {fillZero(data.patients.length, 4)} </span></div>
+                        <div className="text-center" style={{marginTop: 15+'px'}}><span className="h3" style={{fontWeight: "bolder"}}> {fillZero(data.consultations.length, 2)} </span></div>
                     </div>
                 </div>
             </div>

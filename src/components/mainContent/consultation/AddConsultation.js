@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import qs from "qs";
-import AddHeader from "../../card/AddHeader";
 import FormBox from "../../card/FormBox";
 
 import ConsultationDataService from "../../../services/consultation.service";
@@ -8,12 +7,13 @@ import DemandeConsultationsDataService from "../../../services/demande_consultat
 import PatientDataService from "../../../services/patient.service";
 import StructureSanitaireDataService from "../../../services/structureSanitaire.service";
 import OrdonnanceService from "../../../services/ordonnance.service";
+import PrescriptionService from "../../../services/prescription.service";
+import ProduitService from "../../../services/produit.service";
 
-import PageTitle from "../../card/PageTitle";
-import StructureSanitaire from "../../card/StructureSanitaire";
 import Cookies from "universal-cookie";
-import FormBoxFooter from "../../card/FormBoxFooter";
 import DemandeConsultationHeader from "../demande_consultation/DemandeConsultationHeader";
+import SearchSelect from "../../card/SearchSelect";
+import { LitteralDate, literalHour } from "../../../utils";
 
 const cookies = new Cookies();
 class AddConsultation extends React.Component {
@@ -21,7 +21,7 @@ class AddConsultation extends React.Component {
     constructor(props) {
         super(props);
 
-        const { match: { params } } = this.props;
+        const { } = this.props;
         const { location: { search } } = this.props;
         const queries = qs.parse(search.slice(1));
         console.log(queries);
@@ -50,12 +50,26 @@ class AddConsultation extends React.Component {
             ordonnance: {
                 consultation: null
             },
+            prescription: {
+                produit: {
+                    id: 0,
+                    denomination: "",
+                    nom_commercial: "Quaterm",
+                    dosage: "",
+                    forme: "Comprimé",
+                },
+                quantite: 1,
+                posologie: "1 mat 1 soir"
+            },
+
+            selectedOrdonnance: null,
 
             submitted: false,
             isSubmitting: false,
             isisDemandeConsultationChecked: false,
             demandes: [],
             patients: [],
+            produits:[],
             structures: [],
             ordonnances: [],
             structure: {},
@@ -109,7 +123,7 @@ class AddConsultation extends React.Component {
 
     componentWillMount() {
 
-        const { match: { params } } = this.props;
+        const { } = this.props;
         const { location: { search } } = this.props;
         const queries = qs.parse(search.slice(1));
 
@@ -121,11 +135,18 @@ class AddConsultation extends React.Component {
                 }
             });
         })
-        .catch((e) => {
+        .catch(() => {
             window.showErrorMessage("Echec!!")
         });
 
-        this.refreshOrdonnances();
+        ProduitService.getAll()
+        .then(response => {
+            this.setState({produits: response.data});
+        }).catch(e => {
+            console.log(e);
+        });
+
+        // this.refreshOrdonnances();
 
         PatientDataService.getAll()
         .then((response) => {
@@ -135,7 +156,7 @@ class AddConsultation extends React.Component {
                 }
             });
         })
-        .catch((e) => {
+        .catch(() => {
             window.showErrorMessage("Echec!!")
         });
 
@@ -143,19 +164,103 @@ class AddConsultation extends React.Component {
         .then((response) => {
             this.setState({ structures: response.data });
         })
-        .catch((e) => {
+        .catch(() => {
             window.showErrorMessage("Echec!!")
         });
     }
 
     refreshOrdonnances = () => {
-        OrdonnanceService.getAll()
+        ConsultationDataService.getOrdonnances(this.state.consultation.id)
         .then((response) => {
-            this.setState({ ordonnances: response.data });
+            this.setState({ ordonnances: response.data }, this.refreshSelectedOrdonnance);
         })
-        .catch((e) => {
+        .catch(() => {
             window.showErrorMessage("Echec!!")
         });
+    }
+
+    refreshSelectedOrdonnance = () => {
+        var res = null;
+        if (this.state.selectedOrdonnance !== null) {
+            for (let ordonnance of this.state.ordonnances) {
+                if (this.state.selectedOrdonnance.id === ordonnance.id) {
+                    res = ordonnance;
+                    break;
+                }
+            }
+            console.log(res);
+            this.setState({selectedOrdonnance: res});
+        }
+    }
+
+    addOrdonnance = () => {
+        const data = this.state.ordonnance;
+        OrdonnanceService.create(data)
+        .then(() => {
+            this.refreshOrdonnances();
+        })
+        .catch(() => {
+            window.showErrorMessage("Echec!!")
+        });
+    }
+
+    addPrescription = () => {
+        if (this.state.prescription.produit.id) {
+            const data = {
+                ...this.state.prescription,
+                produit: this.state.prescription.produit.id,
+                ordonnance: this.state.selectedOrdonnance.id,
+            };
+            PrescriptionService.create(data)
+            .then(() => {
+                this.refreshOrdonnances();
+            })
+            .catch(() => {
+                window.showErrorMessage("Echec!!")
+            });
+        }
+    }
+
+    deleteOrdonnance = (id) => {
+        OrdonnanceService.delete(id)
+        .then(() => {
+            this.refreshOrdonnances();
+        })
+        .catch(() => {
+            window.showErrorMessage("Echec!!");
+        });
+    }
+
+    deletePrescription = (id) => {
+        PrescriptionService.delete(id)
+        .then(() => {
+            this.refreshOrdonnances();
+        })
+        .catch(() => {
+            window.showErrorMessage("Echec!!");
+        });
+    }
+
+    editOrdonnance = (ordonnance) => {
+        this.setState({selectedOrdonnance: ordonnance});
+    }
+
+    handlePrescriptionInputChange = (name, value) => {
+        console.log("prescription")
+        this.setState({ 
+            prescription: { 
+                ...this.state.prescription, 
+                [name]: name === "produit" ? this.getSelectedProduit(value) : value
+            } 
+        });
+    }
+
+    getSelectedProduit = (id) => {
+        for (let produit of this.state.produits) {
+            if (parseInt(id) === produit.id) 
+                return produit
+        }
+        return null
     }
 
     componentDidMount() {
@@ -173,14 +278,14 @@ class AddConsultation extends React.Component {
                 }
             });
         
-            window.$(".next-step").click(function (e) {
+            window.$(".next-step").click(function () {
         
                 var $active = window.$('.wizard .nav-tabs li.active');
                 $active.next().removeClass('disabled');
                 nextTab($active);
         
             });
-            window.$(".prev-step").click(function (e) {
+            window.$(".prev-step").click(function () {
         
                 var $active = window.$('.wizard .nav-tabs li.active');
                 prevTab($active);
@@ -216,25 +321,18 @@ class AddConsultation extends React.Component {
                 });
                 window.$(target).parent().prev().find("button").trigger("click");
             })
-            .catch(e => {
+            .catch(() => {
                 window.showErrorMessage("Echec!!")
             });
     }
 
-    addOrdonnance = (e) => {
-        const data = this.state.ordonnance;
-        OrdonnanceService.create(data)
-        .then((response) => {
-            this.refreshOrdonnances();
-        })
-        .catch((e) => {
-            window.showErrorMessage("Echec!!")
-        });
+    goBack = () =>{
+        this.setState({selectedOrdonnance: null});
     }
     
     render() {
 
-        const { match: { params } } = this.props;
+        const { } = this.props;
         const { location: { search } } = this.props;
         const queries = qs.parse(search.slice(1));
 
@@ -246,11 +344,6 @@ class AddConsultation extends React.Component {
             return message;
         }
         
-        const GenderSelectOptions = [
-            {id: null, libelle: "----Selectionnez un genre-----"},
-            {id: "M", libelle: "Masculin"},
-            {id: "F", libelle: "Féminin"},
-        ];
 
         const demandesSelectOptions = [ {id: -1, libelle: "----Selectionnez une demande de consultation-----"} ].concat(this.state.demandes.map((demande)=>(this.state.patients.find(patient =>patient.id == demande.patient))?(({id:demande.id, libelle: getConsultationMessage(this.state.patients,demande.patient,demande.date_consultation)})):{}));
 
@@ -385,25 +478,25 @@ class AddConsultation extends React.Component {
                                     <ul className="nav nav-tabs" role="tablist">
 
                                         <li role="presentation" className="active">
-                                            <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Step 1">
+                                            <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Constantes">
                                                 <span className="round-tab">
-                                                    <i className="glyphicon glyphicon-folder-open"></i>
+                                                    <i className="fas fa-thermometer-half" style={{fontSize: '2rem', color: '#555555'}}></i>
                                                 </span>
                                             </a>
                                         </li>
 
                                         <li role="presentation" className="disabled">
-                                            <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Step 2">
+                                            <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Details de la consultation">
                                                 <span className="round-tab">
-                                                    <i className="glyphicon glyphicon-pencil"></i>
+                                                    <i className="fas fa-book-medical" style={{fontSize: '2rem', color: '#555555'}}></i>
                                                 </span>
                                             </a>
                                         </li>
 
                                         <li role="presentation" className="disabled">
-                                            <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Step 3">
+                                            <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Ordonance">
                                                 <span className="round-tab">
-                                                    <i className="glyphicon glyphicon-picture"></i>
+                                                    <i className="fas fa-list-ol" style={{fontSize: '2rem', color: '#555555'}}></i>
                                                 </span>
                                             </a>
                                         </li>
@@ -411,7 +504,7 @@ class AddConsultation extends React.Component {
                                         <li role="presentation" className="disabled">
                                             <a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Complete">
                                                 <span className="round-tab">
-                                                    <i className="glyphicon glyphicon-ok"></i>
+                                                    <i className="fas fa-thumbs-up" style={{fontSize: '2rem', color: '#555555'}}></i>
                                                 </span>
                                             </a>
                                         </li>
@@ -458,40 +551,137 @@ class AddConsultation extends React.Component {
                                                 </div>
                                                     
                                             </div>
+                                        
                                         )) }
 
                                         <div className="tab-pane" role="tabpanel" id="step3">
-                                            <div id="ordonnance-tab-pane">
-                                                <div className="row">
-                                                    { this.state.ordonnances.map( ()=> {
 
-                                                        return (
-                                                            <div className="col-lg-3">
-                                                                <div className="ordonnance-item">
-                                                                    <div className="ordonnance-title">Ordonnance No 1</div>
-                                                                    <div>Date : 3 Sept 2020</div>
-                                                                    <div>Heure : 13:45</div>
+                                            { this.state.selectedOrdonnance ? (
+                                                <div id="prescription-tab-pane">
+                                                    <span onClick={this.goBack} className="back__btn"><i className="fas fa-arrow-left fa-2x"></i></span>
+                                                    <div className="row">
 
-                                                                    <section className="actions-overlay">
-                                                                        <div className="action left-action"></div>
-                                                                        <div className="action right-action"></div>
-                                                                    </section>
+                                                        { this.state.selectedOrdonnance.prescriptions.map( (prescription)=> {
+
+                                                            return (
+                                                                <div key={prescription.id} className="col-lg-12">
+                                                                    <div className="prescription-item">
+                                                                        <div className="row">
+                                                                            <div className="col-lg-3" style={{textAlign: 'unset'}}>
+                                                                                <span className="icon"><i className="fas fa-pills fa-2x" aria-hidden="true"></i></span>
+                                                                                <span>{prescription.produit.nom_commercial}</span>
+                                                                            </div>
+
+                                                                            <div className="col-lg-2">
+                                                                                <span>{prescription.produit.forme}</span>
+                                                                            </div>
+
+                                                                            <div className="col-lg-2">
+                                                                                <span>{prescription.produit.dosage}</span>
+                                                                            </div>
+
+                                                                            <div className="col-lg-2">
+                                                                                <span>{prescription.quantite}</span>
+                                                                            </div>
+
+                                                                            <div className="col-lg-2">
+                                                                                <span>{prescription.posologie}</span>
+                                                                            </div>
+
+                                                                            <div className="col-lg-1">
+                                                                                <span onClick={ () => { this.deletePrescription(prescription.id)}} className="icon"><i style={{color: '#e45e85'}} className="fas fa-trash fa-2x" aria-hidden="true"></i></span>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
+                                                            )
+                                                        }) }
+
+                                                        <div id="prescription-form" className="row">
+                                                            <div className="col col-lg-3" style={{textAlign: 'unset'}}>
+                                                                <label>Désignation</label>
+
+                                                                <SearchSelect
+                                                                    options={ this.state.produits.map( (produit) => (
+                                                                        { id: produit.id, value: `${produit.nom_commercial} | ${produit.forme} | ${produit.dosage}` }
+                                                                    ))}
+                                                                    onInputChange={this.handlePrescriptionInputChange}
+                                                                    value={this.state.prescription.produit.id}
+                                                                    name="produit"
+                                                                />
                                                             </div>
-                                                        )
-                                                    })}
-                                                            
-                                                    <div className="col-lg-3">
-                                                        <div className="new-record-placeholder" onClick={this.addOrdonnance}>
-                                                            <div className="content">
-                                                                <div className="moncircle monshape" style={{margin: '13px 10px 0 0', width: '70px', height: '70px', background: '#17a4d8' }} title="Ajouter une prescription">
-                                                                    <i className="text fa fa-plus fa-3x" style={{textShadow: 'none', fontSize: '3em'}}></i>
+
+                                                            <div className="col col-lg-2">
+                                                                <label>Présentation</label>
+                                                                <input type="text" className="form-control" disabled value={this.state.prescription.produit.forme} />
+                                                            </div>
+
+                                                            <div className="col col-lg-2">
+                                                                <label>Dosage</label>
+                                                                <input type="text" className="form-control" disabled value={this.state.prescription.produit.dosage} />
+                                                            </div>
+
+                                                            <div className="col col-lg-2">
+                                                                <label>Quantité</label>
+                                                                <input onChange={ (e) => {this.handlePrescriptionInputChange("quantite", e.target.value)}} type="number" className="form-control" value={this.state.prescription.quatite} />
+                                                            </div>
+
+                                                            <div className="col col-lg-2">
+                                                                <label>Posologie</label>
+                                                                <input onChange={ (e) => {this.handlePrescriptionInputChange("posologie", e.target.value)}} type="text" className="form-control" value={this.state.prescription.posologie}/>
+                                                            </div>
+
+                                                            <div className="col col-lg-1">
+                                                                <span onClick={ () => {  }} className="icon" style={{padding: '10px', textAlign: 'center'}}>
+                                                                    <i style={{color: '#e45e85'}} className="fas fa-times fa-2x" aria-hidden="true"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                                
+                                                        <div className="col-lg-12">
+                                                            <div className="new-prescription-placeholder" onClick={this.addPrescription}>
+                                                                <div className="content">
+                                                                    <div className="moncircle monshape" style={{margin: '5px 0px 0 0', width: '50px', height: '50px', background: '#17a4d8' }} title="Ajouter une prescription">
+                                                                        <i className="text fa fa-plus fa-3x" style={{textShadow: 'none', fontSize: '3em'}}></i>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            ) : (
+                                                <div id="ordonnance-tab-pane">
+                                                    <div className="row">
+                                                        { this.state.ordonnances.map( (ordonnance, index)=> {
+
+                                                            return (
+                                                                <div key={ordonnance.id} className="col-lg-3">
+                                                                    <div className="ordonnance-item">
+                                                                        <div className="ordonnance-title">Ordonnance No {index+1} </div>
+                                                                        <div>Date : {LitteralDate(ordonnance.mod_date_time, "SMALL")}</div>
+                                                                        <div>Heure : {literalHour(ordonnance.mod_date_time)}</div>
+
+                                                                        <section className="actions-overlay">
+                                                                            <div onClick={ () => {this.editOrdonnance(ordonnance)} } className="action left-action"><i className="fas fa-pen-alt fa-2x"></i></div>
+                                                                            <div onClick={ () => {this.deleteOrdonnance(ordonnance.id)} } className="action right-action"><i className="fas fa-trash fa-2x"></i></div>
+                                                                        </section>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        })}
+                                                                
+                                                        <div className="col-lg-3">
+                                                            <div className="new-record-placeholder" onClick={this.addOrdonnance}>
+                                                                <div className="content">
+                                                                    <div className="moncircle monshape" style={{margin: '13px 10px 0 0', width: '70px', height: '70px', background: '#17a4d8' }} title="Ajouter une ordonnance">
+                                                                        <i className="text fa fa-plus fa-3x" style={{textShadow: 'none', fontSize: '3em'}}></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            )}
 
                                             <ul className="list-inline pull-right">
                                                 <li><button type="button" className="btn btn-default prev-step">Précédant</button></li>

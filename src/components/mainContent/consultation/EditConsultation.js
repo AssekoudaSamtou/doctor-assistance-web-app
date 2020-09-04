@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import AddHeader from '../../card/AddHeader';
+import React from 'react';
 import FormBox from '../../card/FormBox';
 
-import DoctorDataService from "../../../services/doctor.service";
 import ConsultationDataService from "../../../services/consultation.service";
 import DemandeConsultationsDataService from "../../../services/demande_consultation.service"
 import PatientDataService from "../../../services/patient.service";
@@ -10,13 +8,8 @@ import OrdonnanceService from "../../../services/ordonnance.service";
 import PrescriptionService from "../../../services/prescription.service";
 import ProduitService from "../../../services/produit.service";
 
-import PageTitle from '../../card/PageTitle';
-import NotFound from '../error/404';
-import FormBoxFooter from '../../card/FormBoxFooter';
 import DemandeConsultationHeader from '../demande_consultation/DemandeConsultationHeader';
 import { LitteralDate, literalHour } from '../../../utils';
-import FormBoxItem from '../../card/FormBoxItem';
-import CustomSelect from '../../card/CustomSelect';
 import SearchSelect from '../../card/SearchSelect';
 
 
@@ -110,8 +103,6 @@ class EditConsultation extends React.Component {
             console.log(e);
         });
 
-        this.refreshOrdonnances();
-
         PatientDataService.getAll()
         .then(response => {
             this.setState({patients: response.data});
@@ -121,7 +112,7 @@ class EditConsultation extends React.Component {
 
         ConsultationDataService.get(params?.id)
         .then(response => {
-            this.setState({consultation: response.data, ordonnance: {consultation: response.data.id}});
+            this.setState({consultation: response.data, ordonnance: {consultation: response.data.id}}, this.refreshOrdonnances);
         }).catch(e => {
             console.log(e);
         });
@@ -142,14 +133,14 @@ class EditConsultation extends React.Component {
                 }
             });
         
-            window.$(".next-step").click(function (e) {
+            window.$(".next-step").click(function () {
         
                 var $active = window.$('.wizard .nav-tabs li.active');
                 $active.next().removeClass('disabled');
                 nextTab($active);
         
             });
-            window.$(".prev-step").click(function (e) {
+            window.$(".prev-step").click(function () {
         
                 var $active = window.$('.wizard .nav-tabs li.active');
                 prevTab($active);
@@ -168,11 +159,11 @@ class EditConsultation extends React.Component {
     }
 
     refreshOrdonnances = () => {
-        OrdonnanceService.getAll()
+        ConsultationDataService.getOrdonnances(this.state.consultation.id)
         .then((response) => {
             this.setState({ ordonnances: response.data }, this.refreshSelectedOrdonnance);
         })
-        .catch((e) => {
+        .catch(() => {
             window.showErrorMessage("Echec!!")
         });
     }
@@ -191,18 +182,18 @@ class EditConsultation extends React.Component {
         }
     }
     
-    addOrdonnance = (e) => {
+    addOrdonnance = () => {
         const data = this.state.ordonnance;
         OrdonnanceService.create(data)
-        .then((response) => {
+        .then(() => {
             this.refreshOrdonnances();
         })
-        .catch((e) => {
+        .catch(() => {
             window.showErrorMessage("Echec!!")
         });
     }
 
-    addPrescription = (e) => {
+    addPrescription = () => {
         if (this.state.prescription.produit.id) {
             const data = {
                 ...this.state.prescription,
@@ -210,10 +201,10 @@ class EditConsultation extends React.Component {
                 ordonnance: this.state.selectedOrdonnance.id,
             };
             PrescriptionService.create(data)
-            .then((response) => {
+            .then(() => {
                 this.refreshOrdonnances();
             })
-            .catch((e) => {
+            .catch(() => {
                 window.showErrorMessage("Echec!!")
             });
         }
@@ -221,20 +212,20 @@ class EditConsultation extends React.Component {
 
     deleteOrdonnance = (id) => {
         OrdonnanceService.delete(id)
-        .then((response) => {
+        .then(() => {
             this.refreshOrdonnances();
         })
-        .catch((e) => {
+        .catch(() => {
             window.showErrorMessage("Echec!!");
         });
     }
 
     deletePrescription = (id) => {
         PrescriptionService.delete(id)
-        .then((response) => {
+        .then(() => {
             this.refreshOrdonnances();
         })
-        .catch((e) => {
+        .catch(() => {
             window.showErrorMessage("Echec!!");
         });
     }
@@ -296,7 +287,7 @@ class EditConsultation extends React.Component {
                 });
                 window.$(target).parent().prev().find("button").trigger("click");
             })
-            .catch(e => {
+            .catch(() => {
                 window.showErrorMessage('Error !!!');
             });
     }
@@ -323,6 +314,20 @@ class EditConsultation extends React.Component {
         this.setState({selectedOrdonnance: null});
     }
 
+    cleanUp = () =>{
+        this.setState({prescription: {
+            produit: {
+                id: 0,
+                denomination: "",
+                nom_commercial: "",
+                dosage: "",
+                forme: "",
+            },
+            quantite: 1,
+            posologie: ""
+        },});
+    }
+
     render() {
 
         function getConsultationMessage(patients,patient, date){
@@ -333,17 +338,7 @@ class EditConsultation extends React.Component {
             return message
         }
 
-        const GenderSelectOptions = [
-            {id: null, libelle: "----Selectionnez un genre-----"},
-            {id: "M", libelle: "Masculin"},
-            {id: "F", libelle: "Féminin"},
-        ];
         
-        const demandesSelectOptions = [
-            {id: -1, libelle: "----Selectionnez une demande de consultation-----"},
-        ].concat(this.state.demandes.map((demande)=>(
-            this.state.patients.find(patient =>patient.id == demande.patient)) ? (({id:demande.id, libelle: getConsultationMessage(this.state.patients,demande.patient,demande.date_consultation)})):{}
-        ));
 
         const formBoxes = [
             {
@@ -431,7 +426,7 @@ class EditConsultation extends React.Component {
                                             <div className="connecting-line"></div>
                                             <ul className="nav nav-tabs" role="tablist">
 
-                                                <li role="presentation" className="">
+                                                <li role="presentation" className="disabled">
                                                     <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Constantes">
                                                         <span className="round-tab">
                                                             <i className="fas fa-thermometer-half" style={{fontSize: '2rem', color: '#555555'}}></i>
@@ -515,7 +510,7 @@ class EditConsultation extends React.Component {
                                                             <span onClick={this.goBack} className="back__btn"><i className="fas fa-arrow-left fa-2x"></i></span>
                                                             <div className="row">
 
-                                                                { this.state.selectedOrdonnance.prescriptions.map( (prescription, index)=> {
+                                                                { this.state.selectedOrdonnance.prescriptions.map( (prescription)=> {
 
                                                                     return (
                                                                         <div key={prescription.id} className="col-lg-12">
@@ -586,7 +581,7 @@ class EditConsultation extends React.Component {
                                                                     </div>
 
                                                                     <div className="col col-lg-1">
-                                                                        <span onClick={ () => {  }} className="icon" style={{padding: '10px', textAlign: 'center'}}>
+                                                                        <span onClick={ () => { this.cleanUp() }} className="icon" style={{padding: '10px', textAlign: 'center'}}>
                                                                             <i style={{color: '#e45e85'}} className="fas fa-times fa-2x" aria-hidden="true"></i>
                                                                         </span>
                                                                     </div>
