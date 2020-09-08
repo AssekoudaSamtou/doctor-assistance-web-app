@@ -426,7 +426,7 @@ class EditConsultation extends React.Component {
                                             <div className="connecting-line"></div>
                                             <ul className="nav nav-tabs" role="tablist">
 
-                                                <li role="presentation" className="disabled">
+                                                <li role="presentation" className="active">
                                                     <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Constantes">
                                                         <span className="round-tab">
                                                             <i className="fas fa-thermometer-half" style={{fontSize: '2rem', color: '#555555'}}></i>
@@ -434,7 +434,7 @@ class EditConsultation extends React.Component {
                                                     </a>
                                                 </li>
 
-                                                <li role="presentation" className="disabled">
+                                                <li role="presentation" className="">
                                                     <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Details de la consultation">
                                                         <span className="round-tab">
                                                             <i className="fas fa-book-medical" style={{fontSize: '2rem', color: '#555555'}}></i>
@@ -442,7 +442,7 @@ class EditConsultation extends React.Component {
                                                     </a>
                                                 </li>
 
-                                                <li role="presentation" className="active">
+                                                <li role="presentation" className="">
                                                     <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Ordonance">
                                                         <span className="round-tab">
                                                             <i className="fas fa-list-ol" style={{fontSize: '2rem', color: '#555555'}}></i>
@@ -465,7 +465,7 @@ class EditConsultation extends React.Component {
 
                                                 { formBoxes.map((box, index) => (
 
-                                                    <div key={index} className={`tab-pane`} role="tabpanel" id={`step${index+1}`}>
+                                                    <div key={index} className={`tab-pane ${index===0 ? "active" : ""}`} role="tabpanel" id={`step${index+1}`}>
                                                         {/* ${index===0 ? "active" : ""} */}
                                                         <FormBox
                                                             box={box}
@@ -503,7 +503,7 @@ class EditConsultation extends React.Component {
                                                 
                                                 )) }
 
-                                                <div className="tab-pane active" role="tabpanel" id="step3">
+                                                <div className="tab-pane" role="tabpanel" id="step3">
 
                                                     { this.state.selectedOrdonnance ? (
                                                         <div id="prescription-tab-pane">
