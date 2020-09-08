@@ -37,6 +37,7 @@ class DoctorDetailForm extends React.Component {
         SpecialiteDataService.getAll()
             .then((response) => {
             this.setState({ specialites: response.data });
+            console.log("dmldkzeldkzelk");
             })
             .catch((error) => {
             if (error.response) {
