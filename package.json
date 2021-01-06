@@ -14,7 +14,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@toast-ui/react-calendar": "^1.0.5",
     "avataaars": "^1.2.1",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "bootstrap": "^3.4.1",
     "draft-js": "^0.11.6",
     "draft-js-plugins-editor": "^3.0.0",
